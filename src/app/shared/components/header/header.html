@@ -1,0 +1,100 @@
+<header class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200 shadow">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
+        <!-- Logo -->
+        <a routerLink="/" class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center font-bold text-white shadow-lg"
+                style="background: linear-gradient(135deg,#f25123,#ff7a57)">
+                JC
+            </div>
+            <div class="hidden sm:flex flex-col leading-tight">
+                <span class="font-bold text-gray-800">AMARU</span>
+                <span class="text-xs text-gray-500">Cultura · Eventos</span>
+            </div>
+        </a>
+
+        <!-- Desktop Nav -->
+        <nav class="hidden md:flex items-center gap-4">
+            <a routerLink="/" routerLinkActive="text-[#f25123]"
+                class="px-3 py-2 font-medium text-gray-700 hover:text-[#f25123] transition">Inicio</a>
+
+            <!-- Talleres dropdown -->
+
+            <a routerLink="/talleres" routerLinkActive="text-[#f25123]"
+                class="px-3 py-2 font-medium text-gray-700 hover:text-[#f25123] transition">Talleres</a>
+
+
+            <!-- Festivales dropdown -->
+            <a routerLink="/talleres" routerLinkActive="text-[#f25123]"
+                class="px-3 py-2 font-medium text-gray-700 hover:text-[#f25123] transition">Festivales y Premios</a>
+
+
+            <a routerLink="/servicios" routerLinkActive="text-[#f25123]"
+                class="px-3 py-2 font-medium text-gray-700 hover:text-[#f25123] transition">Servicios</a>
+            <a routerLink="/contactos" routerLinkActive="text-[#f25123]"
+                class="px-3 py-2 font-medium text-gray-700 hover:text-[#f25123] transition">Contactos</a>
+        </nav>
+
+        <!-- Botones -->
+        <div class="hidden md:flex items-center gap-3">
+            <button
+                class="px-4 py-2 rounded-lg font-semibold text-[#f25123] border border-[#f25123]/30 hover:bg-[#f25123]/5 transition">
+                Registro
+            </button>
+            <button routerLink="/login" class="px-4 py-2 rounded-lg font-semibold text-white shadow-lg transition"
+                style="background: linear-gradient(90deg,#f25123,#ff7a57)">
+                Iniciar sesión
+            </button>
+        </div>
+
+        <!-- Mobile hamburger -->
+        <button (click)="toggleMenu()" class="md:hidden p-2 rounded-lg hover:bg-gray-100">
+            <span class="block w-6 h-0.5 bg-gray-800 mb-1"></span>
+            <span class="block w-6 h-0.5 bg-gray-800 mb-1"></span>
+            <span class="block w-6 h-0.5 bg-gray-800"></span>
+        </button>
+    </div>
+    @if (isOpen){
+    <div class="md:hidden bg-white border-t">
+        <nav class="flex flex-col px-4 py-2 space-y-2">
+            <a routerLink="/" class="py-2">Inicio</a>
+
+            <details>
+                <summary class="py-2 cursor-pointer">Talleres</summary>
+                <div class="pl-4 flex flex-col space-y-1">
+                    <a routerLink="/talleres/presenciales" class="py-1">Presenciales</a>
+                    <a routerLink="/talleres/online" class="py-1">Online</a>
+                    <a routerLink="/talleres/inscripciones" class="py-1">Inscripciones</a>
+                </div>
+            </details>
+
+            <details>
+                <summary class="py-2 cursor-pointer">Festivales y Premios</summary>
+                <div class="pl-4 flex flex-col space-y-1">
+                    <a routerLink="/festivales/proximos" class="py-1">Próximos</a>
+                    <a routerLink="/festivales/ganadores" class="py-1">Ganadores</a>
+                    <a routerLink="/festivales/bases" class="py-1">Bases</a>
+                </div>
+            </details>
+
+            <a routerLink="/servicios" class="py-2">Servicios</a>
+            <a routerLink="/contactos" class="py-2">Contactos</a>
+
+            <div class="flex gap-2 pt-2">
+                <button
+                    class="flex-1 px-3 py-2 rounded-lg font-semibold text-[#f25123] border border-[#f25123]/30 hover:bg-[#f25123]/5">
+                    Registro
+                </button>
+                <button routerLink="/login" class="flex-1 px-3 py-2 rounded-lg font-semibold text-white"
+                    style="background: linear-gradient(90deg,#f25123,#ff7a57)">
+                    Iniciar sesión
+                </button >
+
+
+
+            </div>
+        </nav>
+    </div>
+
+    }
+
+</header>

@@ -1,0 +1,137 @@
+<header class="sticky top-0 z-40 bg-white shadow-lg rounded-b-2xl">
+  <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
+    <div class="flex items-center gap-3">
+      <mat-icon class="text-[#F7A428] text-4xl drop-shadow-sm">business_center</mat-icon>
+      <h1 class="text-3xl font-extrabold text-gray-800 tracking-wide">
+        Gestión de <span class="text-gray-600">Servicios</span>
+      </h1>
+    </div>
+    <button
+      mat-raised-button
+      (click)="openAgregarServicio()"
+      class="flex items-center gap-2 bg-[#F7A428] text-white hover:bg-[#e69320] rounded-xl px-5 py-2 font-semibold shadow-md transition-all duration-300"
+    >
+      <mat-icon class="text-white">add</mat-icon>
+      Nuevo Servicio
+    </button>
+  </div>
+</header>
+
+<!-- 🔽 FILTROS -->
+<section class="bg-white shadow-md rounded-2xl mt-4 p-5 border border-gray-200">
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+
+    <!-- 🟠 Categoría -->
+    <div>
+      <label for="categoria" class="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
+      <select
+        id="categoria"
+        name="categoria"
+        [(ngModel)]="filtros.id_categoria"
+        (change)="onCategoriaChange()"
+        class="block w-full border-gray-300 rounded-md shadow-sm focus:border-[#F7A428] focus:ring focus:ring-[#F7A428]/50 p-2 bg-white"
+      >
+        <option value="">Seleccione una categoría</option>
+        <option *ngFor="let cat of categorias" [value]="cat._id">{{ cat.nombre }}</option>
+      </select>
+    </div>
+
+    <!-- 🟠 Subcategoría -->
+    <div>
+      <label for="subcategoria" class="block text-sm font-medium text-gray-700 mb-1">Subcategoría</label>
+      <select
+        id="subcategoria"
+        name="subcategoria"
+        [(ngModel)]="filtros.id_subcategoria"
+        class="block w-full border-gray-300 rounded-md shadow-sm focus:border-[#F7A428] focus:ring focus:ring-[#F7A428]/50 p-2 bg-white"
+      >
+        <option value="">Seleccione una subcategoría</option>
+        <option *ngFor="let sub of subcategorias" [value]="sub._id">{{ sub.nombre }}</option>
+      </select>
+    </div>
+
+    <!-- 🟠 Estado -->
+    <div>
+      <label for="estado" class="block text-sm font-medium text-gray-700 mb-1">Estado</label>
+      <select
+        id="estado"
+        name="estado"
+        [(ngModel)]="filtros.estado"
+        class="block w-full border-gray-300 rounded-md shadow-sm focus:border-[#F7A428] focus:ring focus:ring-[#F7A428]/50 p-2 bg-white"
+      >
+        <option value="">Todos</option>
+        <option value="activo">Activo</option>
+        <option value="inactivo">Inactivo</option>
+      </select>
+    </div>
+
+    <!-- 🔘 Botón Filtrar -->
+    <div class="flex items-end">
+      <button
+        class="bg-[#F7A428] hover:bg-[#e69320] text-white px-6 py-2 rounded-lg font-semibold shadow-md transition-all w-full"
+        (click)="cargarServicios()"
+      >
+        <mat-icon class="text-white align-middle mr-1">search</mat-icon>
+        Filtrar
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<!-- 🟣 Cards de Servicios -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+  <div
+    *ngFor="let servicio of servicios"
+    class="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-200 hover:shadow-xl transition-all"
+  >
+    <img
+      [src]="servicio.imagen_url || 'https://via.placeholder.com/400x200?text=Sin+imagen'"
+      alt="{{ servicio.titulo }}"
+      class="w-full h-48 object-cover"
+    />
+
+    <div class="p-4 space-y-3">
+      <!-- Título -->
+      <h2 class="text-lg font-bold text-gray-800">{{ servicio.titulo }}</h2>
+      
+      <!-- Descripción -->
+      <p class="text-gray-600 text-sm line-clamp-2">{{ servicio.descripcion }}</p>
+
+      <!-- Categoría y Subcategoría -->
+      <div class="text-sm text-gray-700">
+        <p><strong>Categoría:</strong> {{ servicio.id_categoria?.nombre }}</p>
+        <p><strong>Subcategoría:</strong> {{ servicio.id_subcategoria?.nombre }}</p>
+      </div>
+
+      <hr class="my-3 border-gray-300" />
+
+      <!-- Estado y Acciones -->
+      <div class="flex justify-between items-center">
+        <span 
+          class="px-2 py-1 rounded-full text-xs font-semibold"
+          [class.bg-green-100]="servicio.estado === 'activo'"
+          [class.text-green-800]="servicio.estado === 'activo'"
+          [class.bg-red-100]="servicio.estado === 'inactivo'"
+          [class.text-red-800]="servicio.estado === 'inactivo'"
+        >
+          {{ servicio.estado === 'activo' ? 'Activo' : 'Inactivo' }}
+        </span>
+        <div class="flex gap-2">
+          <button
+            class="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+            (click)="editarServicio(servicio)"
+          >
+            <mat-icon class="text-sm">edit</mat-icon>
+          </button>
+          <button
+            class="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+            (click)="eliminarServicio(servicio._id)"
+          >
+            <mat-icon class="text-sm">delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

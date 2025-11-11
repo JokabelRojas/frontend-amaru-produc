@@ -1,0 +1,51 @@
+/* Estilos adicionales si los necesitas */
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: #f8fafc;
+}
+
+/* Estilos para la tabla responsiva */
+@media (max-width: 768px) {
+  .max-w-7xl {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  table {
+    font-size: 0.875rem;
+  }
+  
+  .px-6 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .py-4 {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+}
+
+/* Estilos para los snackbars */
+::ng-deep .snackbar-exito {
+  background-color: #10b981 !important;
+  color: white !important;
+}
+
+::ng-deep .snackbar-error {
+  background-color: #ef4444 !important;
+  color: white !important;
+}
+
+/* Estilos para botones deshabilitados */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Loading state */
+.cargando {
+  opacity: 0.7;
+  pointer-events: none;
+}

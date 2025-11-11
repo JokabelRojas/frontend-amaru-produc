@@ -1,0 +1,191 @@
+<header class="sticky top-0 z-40 bg-white shadow-lg rounded-b-2xl">
+  <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
+    <div class="flex items-center gap-3">
+      <mat-icon class="text-[#F7A428] text-4xl drop-shadow-sm">assignment</mat-icon>
+      <h1 class="text-3xl font-extrabold text-gray-800 tracking-wide">
+        Gestión de <span class="text-gray-600">Inscripciones</span>
+      </h1>
+    </div>
+    <button
+      mat-raised-button
+      (click)="exportarExcel()"
+      class="flex items-center gap-2 bg-green-600 text-white hover:bg-green-700 rounded-xl px-5 py-2 font-semibold shadow-md transition-all duration-300"
+    >
+      <mat-icon class="text-white">download</mat-icon>
+      Exportar Excel
+    </button>
+  </div>
+</header>
+
+<div class="max-w-7xl mx-auto px-6 mt-6">
+  <!-- Filtros -->
+  <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Estado</label>
+        <select 
+          [(ngModel)]="filtroEstado" 
+          (change)="aplicarFiltros()"
+          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F7A428] focus:border-transparent"
+        >
+          <option value="">Todos los estados</option>
+          <option value="pendiente">Pendiente</option>
+          <option value="aprobado">Aprobado</option>
+          <option value="rechazado">Rechazado</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Taller</label>
+        <select 
+          [(ngModel)]="filtroTaller" 
+          (change)="aplicarFiltros()"
+          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F7A428] focus:border-transparent"
+        >
+          <option value="">Todos los talleres</option>
+          <option *ngFor="let taller of talleresUnicos" [value]="taller">{{ taller }}</option>
+        </select>
+      </div>
+      <div class="flex items-end">
+        <button
+          (click)="limpiarFiltros()"
+          class="w-full px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
+        >
+          Limpiar Filtros
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de Inscripciones -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <table class="min-w-full">
+      <thead class="bg-[#FFF5E6] text-gray-700 uppercase text-sm font-semibold">
+        <tr>
+          <th class="px-6 py-4 text-left border-b">ID Inscripción</th>
+          <th class="px-6 py-4 text-left border-b">Usuario</th>
+          <th class="px-6 py-4 text-left border-b">Fecha Inscripción</th>
+          <th class="px-6 py-4 text-left border-b">Curso/Servicio</th>
+          <th class="px-6 py-4 text-left border-b">Precio</th>
+          <th class="px-6 py-4 text-left border-b">Estado</th>
+          <th class="px-6 py-4 text-center border-b">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr 
+          *ngFor="let inscripcion of inscripcionesFiltradas" 
+          class="hover:bg-gray-50 transition-all border-b border-gray-200"
+        >
+          <!-- ID Inscripción -->
+          <td class="px-6 py-4">
+            <span class="text-xs font-mono text-gray-500">{{ inscripcion._id }}</span>
+          </td>
+          
+          <!-- Usuario -->
+          <td class="px-6 py-4">
+            <div class="flex flex-col">
+              <span class="font-medium text-gray-900">
+                {{ inscripcion.usuario?.nombre }} {{ inscripcion.usuario?.apellido }}
+              </span>
+              <span class="text-sm text-gray-500">{{ inscripcion.usuario?.email }}</span>
+              <span class="text-xs text-gray-400">DNI: {{ inscripcion.usuario?.dni }}</span>
+            </div>
+          </td>
+          
+          <!-- Fecha Inscripción -->
+          <td class="px-6 py-4">
+            <span class="text-gray-700">{{ inscripcion.fecha_inscripcion | date:'dd/MM/yyyy' }}</span>
+            <br>
+            <span class="text-xs text-gray-500">{{ inscripcion.fecha_inscripcion | date:'HH:mm' }}</span>
+          </td>
+          
+          <!-- Curso/Servicio -->
+          <td class="px-6 py-4">
+            <div class="flex flex-col">
+              <span class="font-medium text-gray-900">{{ inscripcion.taller?.nombre }}</span>
+              <span class="text-sm text-gray-500">{{ inscripcion.taller?.modalidad }}</span>
+              <span class="text-xs text-gray-400">
+                {{ inscripcion.taller?.fecha_inicio | date:'dd/MM/yyyy' }} - {{ inscripcion.taller?.fecha_fin | date:'dd/MM/yyyy' }}
+              </span>
+            </div>
+          </td>
+          
+          <!-- Precio -->
+          <td class="px-6 py-4">
+            <div class="flex flex-col">
+              <span class="font-medium text-gray-900">
+                {{ inscripcion.moneda }} {{ inscripcion.total }}
+              </span>
+              <span class="text-xs text-gray-500">
+                Cantidad: {{ inscripcion.detalle?.cantidad }}
+              </span>
+            </div>
+          </td>
+          
+          <!-- Estado -->
+          <td class="px-6 py-4">
+            <span
+              class="px-3 py-1 rounded-full text-sm font-medium capitalize"
+              [ngClass]="{
+                'bg-yellow-100 text-yellow-700': inscripcion.estado === 'pendiente',
+                'bg-green-100 text-green-700': inscripcion.estado === 'aprobado',
+                'bg-red-100 text-red-700': inscripcion.estado === 'rechazado'
+              }"
+            >
+              {{ inscripcion.estado }}
+            </span>
+          </td>
+          
+          <!-- Acciones -->
+          <td class="px-6 py-4 text-center">
+            <div class="flex justify-center gap-2">
+              <button
+                *ngIf="inscripcion.estado === 'pendiente'"
+                mat-icon-button
+                color="primary"
+                class="!bg-green-500 !text-white hover:!bg-green-600 rounded-lg"
+                (click)="cambiarEstado(inscripcion._id, 'aprobado')"
+                [disabled]="cambiandoEstado"
+                matTooltip="Aceptar inscripción"
+              >
+                <mat-icon>check</mat-icon>
+              </button>
+              
+              <button
+                *ngIf="inscripcion.estado === 'pendiente'"
+                mat-icon-button
+                color="warn"
+                class="!bg-red-500 !text-white hover:!bg-red-600 rounded-lg"
+                (click)="cambiarEstado(inscripcion._id, 'rechazado')"
+                [disabled]="cambiandoEstado"
+                matTooltip="Rechazar inscripción"
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+              
+              <span 
+                *ngIf="inscripcion.estado !== 'pendiente'"
+                class="text-sm text-gray-500 italic"
+              >
+                {{ inscripcion.estado === 'aprobado' ? 'Aprobada' : 'Rechazada' }}
+              </span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <!-- Mensaje cuando no hay datos -->
+    <div *ngIf="inscripcionesFiltradas.length === 0" class="text-center py-8">
+      <mat-icon class="text-gray-400 text-6xl mb-4">assignment</mat-icon>
+      <p class="text-gray-500 text-lg">No se encontraron inscripciones</p>
+      <p class="text-gray-400 text-sm">Intenta ajustar los filtros o verifica si hay datos disponibles</p>
+    </div>
+  </div>
+
+  <!-- Paginación -->
+  <div class="mt-6 flex justify-between items-center">
+    <div class="text-sm text-gray-600">
+      Mostrando {{ inscripcionesFiltradas.length }} de {{ inscripcionesCombinadas.length }} inscripciones
+    </div>
+  </div>
+</div>

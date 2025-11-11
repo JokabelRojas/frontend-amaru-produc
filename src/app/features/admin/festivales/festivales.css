@@ -1,0 +1,4 @@
+/* Opcional para suavizar transición del carrusel */
+.flex > div {
+  transition: transform 0.3s ease-in-out;
+}

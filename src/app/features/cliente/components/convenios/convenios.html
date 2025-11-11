@@ -1,0 +1,40 @@
+<div class="w-screen h-auto flex flex-col bg-gradient-to-br from-gray-900 to-black overflow-hidden relative p-4">
+
+  <!-- Efectos de fondo -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute -top-24 -left-24 w-48 h-48 bg-orange-500/10 rounded-full blur-3xl floating"></div>
+    <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl floating" style="animation-delay: 2s;"></div>
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-pink-500/5 rounded-full blur-3xl floating" style="animation-delay: 4s;"></div>
+  </div>
+
+  <div class="w-full max-w-5xl mx-auto relative z-10 fade-in">
+
+    <div class="text-center mb-6">
+      <h1 class="text-2xl md:text-4xl font-black mb-3">
+        <span class="text-4xl md:text-6xl font-black mb-4 bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-pink-500">Nuestros Convenios</span>
+      </h1>
+      <p class="text-base md:text-lg text-gray-300 max-w-3xl mx-auto mb-4">
+        Colaboramos con las mejores instituciones y marcas para ofrecerte experiencias únicas
+      </p>
+    </div>
+
+    <!-- Carrusel -->
+    <div class="glass-effect rounded-2xl p-3 md:p-4 shadow-2xl border border-white/10 mb-4">
+      <div class="slider-container overflow-hidden rounded-xl">
+        <div #track class="slider-track flex gap-3 md:gap-4 py-2 transition-transform duration-500 ease-linear">
+          <ng-container *ngFor="let logo of logosLoop">
+            <div class="logo-item flex-shrink-0 w-36 md:w-40 h-24 md:h-28 glass-effect rounded-2xl p-3 border border-white/10 hover:border-orange-400/30 transition-all duration-300 logo-hover group">
+              <div class="w-full h-full flex items-center justify-center relative">
+                <div class="text-xl md:text-2xl font-bold gradient-text opacity-80 group-hover:opacity-100 transition-opacity">
+                  LOGO<span class="text-white">{{logo}}</span>
+                </div>
+                <div class="absolute -top-1 -right-1 w-3 h-3 bg-orange-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

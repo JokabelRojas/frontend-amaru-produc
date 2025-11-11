@@ -1,0 +1,180 @@
+<header class="sticky top-0 z-40 bg-white shadow-lg rounded-b-2xl">
+  <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
+    <div class="flex items-center gap-3">
+      <mat-icon class="text-[#F7A428] text-4xl drop-shadow-sm">category</mat-icon>
+      <h1 class="text-3xl font-extrabold text-gray-800 tracking-wide">
+        Gestión de <span class="text-gray-600">Categorías</span> y 
+        <span class="text-gray-600">Subcategorías</span>
+      </h1>
+    </div>
+  </div>
+</header>
+
+<div class="max-w-7xl mx-auto px-6 mt-6">
+  <div class="flex justify-center gap-6">
+    <button
+      (click)="activeTab = 'categorias'"
+      [ngClass]="{
+        'bg-[#F7A428] text-white shadow-md': activeTab === 'categorias',
+        'bg-white text-gray-700 border border-gray-300 hover:bg-gray-100':
+          activeTab !== 'categorias'
+      }"
+      class="px-6 py-2 rounded-xl font-semibold transition-all duration-300"
+    >
+      Categorías
+    </button>
+
+    <button
+      (click)="activeTab = 'subcategorias'"
+      [ngClass]="{
+        'bg-[#F7A428] text-white shadow-md': activeTab === 'subcategorias',
+        'bg-white text-gray-700 border border-gray-300 hover:bg-gray-100':
+          activeTab !== 'subcategorias'
+      }"
+      class="px-6 py-2 rounded-xl font-semibold transition-all duration-300"
+    >
+      Subcategorías
+    </button>
+  </div>
+
+  <div class="mt-10">
+    <div *ngIf="activeTab === 'categorias'">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">Lista de Categorías</h2>
+<button
+  mat-raised-button
+  (click)="abrirModalCategoria()"
+  class="flex items-center gap-2 bg-[#F7A428] text-white hover:bg-[#e69320] rounded-xl px-5 py-2 font-semibold shadow-md transition-all duration-300"
+>
+  <mat-icon class="text-white">add</mat-icon>
+  Nueva Categoría
+</button>
+
+      </div>
+
+      <table class="min-w-full bg-white border border-gray-300 rounded-xl shadow-sm overflow-hidden">
+        <thead class="bg-[#FFF5E6] text-gray-700 uppercase text-sm font-semibold">
+          <tr>
+            <th class="px-6 py-3 text-left border-b">ID</th>
+            <th class="px-6 py-3 text-left border-b">Nombre</th>
+            <th class="px-6 py-3 text-left border-b">Tipo</th>
+            <th class="px-6 py-3 text-left border-b">Descripción</th>
+            <th class="px-6 py-3 text-left border-b">Estado</th>
+            <th class="px-6 py-3 text-left border-b">Fecha de Creación</th>
+            <th class="px-6 py-3 text-center border-b">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let categoria of categorias"
+            class="hover:bg-gray-50 transition-all"
+          >
+            <td class="px-6 py-3 border-b">{{ categoria._id }}</td>
+            <td class="px-6 py-3 border-b">{{ categoria.nombre }}</td>
+            <td class="px-6 py-3 border-b">{{ categoria.tipo }}</td>
+            <td class="px-6 py-3 border-b">{{ categoria.descripcion }}</td>
+            <td class="px-6 py-3 border-b">
+              <span
+                class="px-3 py-1 rounded-full text-sm font-medium"
+                [ngClass]="{
+                  'bg-green-100 text-green-700': categoria.estado === 'activo',
+                  'bg-red-100 text-red-700': categoria.estado === 'inactivo'
+                }"
+              >
+                {{ categoria.estado }}
+              </span>
+            </td>
+            <td class="px-6 py-3 border-b">{{ categoria.createdAt | date:'shortDate' }}</td>
+            <td class="px-6 py-3 text-center border-b">
+              <button
+                mat-icon-button
+                color="primary"
+                class="hover:text-[#F7A428]"
+                (click)="editarCategoria(categoria)" 
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                color="warn"
+                class="hover:text-red-600"
+                (click)="eliminarCategoria(categoria._id)"
+
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="activeTab === 'subcategorias'">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">Lista de Subcategorías</h2>
+        <button
+          mat-raised-button
+          (click)="abrirModalSubcategoria()"
+          class="flex items-center gap-2 bg-[#F7A428] text-white hover:bg-[#e69320] rounded-xl px-5 py-2 font-semibold shadow-md transition-all duration-300"
+        >
+          <mat-icon class="text-white">add</mat-icon>
+          Nueva Subcategoría
+        </button>
+      </div>
+
+      <table class="min-w-full bg-white border border-gray-300 rounded-xl shadow-sm overflow-hidden">
+        <thead class="bg-[#FFF5E6] text-gray-700 uppercase text-sm font-semibold">
+          <tr>
+            <th class="px-6 py-3 text-left border-b">ID</th>
+            <th class="px-6 py-3 text-left border-b">Categoría</th>
+            <th class="px-6 py-3 text-left border-b">Descripción</th>
+            <th class="px-6 py-3 text-left border-b">Estado</th>
+            <th class="px-6 py-3 text-left border-b">Fecha de Creación</th>
+            <th class="px-6 py-3 text-center border-b">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let subcategoria of subcategorias"
+            class="hover:bg-gray-50 transition-all"
+          >
+            <td class="px-6 py-3 border-b">{{ subcategoria._id }}</td>
+    <td class="px-6 py-3 border-b">
+      {{ subcategoria.categoria || 'Cargando...' }}
+    </td>            <td class="px-6 py-3 border-b">{{ subcategoria.descripcion }}</td>
+            <td class="px-6 py-3 border-b">
+              <span
+                class="px-3 py-1 rounded-full text-sm font-medium"
+                [ngClass]="{
+                  'bg-green-100 text-green-700': subcategoria.estado === 'activo',
+                  'bg-red-100 text-red-700': subcategoria.estado === 'inactivo'
+                }"
+              >
+                {{ subcategoria.estado }}
+              </span>
+            </td>
+            <td class="px-6 py-3 border-b">{{ subcategoria.createdAt | date:'shortDate' }}</td>
+            <td class="px-6 py-3 text-center border-b">
+              <button
+                mat-icon-button
+                (click)="editarSubcategoria(subcategoria)"
+                color="primary"
+                class="hover:text-[#F7A428]"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                (click)="eliminarSubcategoria(subcategoria._id)"
+                color="warn"
+                class="hover:text-red-600"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

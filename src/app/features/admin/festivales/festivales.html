@@ -1,0 +1,23 @@
+<div class="p-6">
+  <div class="flex justify-between items-center mb-4">
+    <h1 class="text-2xl font-bold">Festivales</h1>
+    <div class="space-x-2">
+      <button (click)="abrirModalFestival()" class="btn btn-primary">Agregar Festival</button>
+      <button (click)="abrirModalPremio()" class="btn btn-secondary">Agregar Premio</button>
+    </div>
+  </div>
+
+  <div *ngFor="let festival of festivales" class="bg-white p-4 rounded-lg shadow mb-4">
+    <h2 class="text-xl font-semibold">{{ festival.titulo }}</h2>
+    <p class="text-gray-600">Lugar: {{ festival.lugar }}</p>
+    <p class="text-gray-600">Fecha: {{ festival.fecha_evento | date:'dd/MM/yyyy' }}</p>
+
+    <ul class="mt-2 list-disc ml-5">
+      <li *ngFor="let premio of getPremiosPorFestival(festival._id)">
+        <span [ngClass]="{'text-green-600': premio.estado==='activo', 'text-red-600': premio.estado==='inactivo'}">
+          {{ premio.nombre }} - Valor: {{ premio.valor }} - Estado: {{ premio.estado }}
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>

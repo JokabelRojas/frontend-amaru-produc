@@ -1,0 +1,68 @@
+<div class="w-screen h-screen flex flex-col bg-gradient-to-br from-gray-900 to-black overflow-hidden relative">
+  <!-- Contenedor del carrusel -->
+  <div class="flex flex-1 transition-transform duration-700 ease-in-out"
+       [style.transform]="'translateX(-' + currentIndex * 100 + '%)'">
+    <div *ngFor="let taller of talleres" class="flex-none w-full h-full flex flex-col md:flex-row items-center justify-center p-6">
+      <!-- Contenido del taller -->
+      <div class="flex-1 flex flex-col justify-center text-center md:text-left px-4">
+        <span class="text-sm uppercase text-orange-500 font-bold mb-2">{{taller.categoria}}</span>
+        <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-4">{{taller.nombre}}</h2>
+        <p class="text-gray-300 mb-6">{{taller.descripcion}}</p>
+
+        <div class="flex flex-wrap justify-center md:justify-start gap-4 mb-6">
+          <div class="flex items-center gap-2 text-gray-300">
+            <mat-icon>calendar_today</mat-icon>
+            <span>{{taller.fecha_inicio | date:'mediumDate'}} - {{taller.fecha_fin | date:'mediumDate'}}</span>
+          </div>
+          <div class="flex items-center gap-2 text-gray-300">
+            <mat-icon>schedule</mat-icon>
+            <span>{{taller.duracion}} horas</span>
+          </div>
+          <div class="flex items-center gap-2 text-gray-300">
+            <mat-icon>groups</mat-icon>
+            <span>{{taller.cupos}} participantes</span>
+          </div>
+          <div class="flex items-center gap-2 text-gray-300">
+            <mat-icon>place</mat-icon>
+            <span>{{taller.lugar}}</span>
+          </div>
+        </div>
+
+        <div class="flex justify-center md:justify-start gap-4 flex-wrap">
+          <button class="px-6 py-3 border border-orange-500 text-white hover:bg-orange-500 transition rounded-full">Ver Detalle</button>
+          <button class="px-6 py-3 bg-orange-500 hover:bg-orange-600 transition rounded-full text-white">Inscribirse</button>
+        </div>
+      </div>
+
+      <!-- Imagen del taller -->
+      <div class="flex-1 flex items-center justify-center h-80 md:h-96 mt-6 md:mt-0">
+        <div class="relative w-full h-full rounded-xl overflow-hidden shadow-lg">
+          <img [src]="taller.imagen_url" alt="{{taller.nombre}}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+          <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-transparent to-transparent p-4 text-white">
+            <h3 class="text-lg font-semibold">{{taller.subtitulo}}</h3>
+            <p class="text-sm">{{taller.subdescripcion}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botones de navegación -->
+  <button (click)="prevSlide()"
+          class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-3 shadow-lg">
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+  <button (click)="nextSlide()"
+          class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-3 shadow-lg">
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+
+  <!-- Indicadores -->
+  <div class="absolute bottom-6 w-full flex justify-center gap-3">
+    <span *ngFor="let taller of talleres; let i = index"
+          (click)="irSlide(i)"
+          class="w-3 h-3 rounded-full cursor-pointer transition"
+          [ngClass]="{'bg-orange-500 scale-125': i === currentIndex, 'bg-gray-600': i !== currentIndex}">
+    </span>
+  </div>
+</div>

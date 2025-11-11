@@ -1,0 +1,12 @@
+/* Opcional: estilos adicionales para suavizar transición y sombras */
+.flex {
+  transition: transform 0.5s ease-in-out;
+}
+
+button {
+  outline: none;
+}
+
+button:focus {
+  outline: none;
+}

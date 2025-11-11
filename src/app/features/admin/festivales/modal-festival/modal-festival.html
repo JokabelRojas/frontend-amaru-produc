@@ -1,0 +1,18 @@
+<h2 class="text-xl font-bold mb-4">Nuevo Festival</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()" class="space-y-4">
+  <input type="text" placeholder="Título" formControlName="titulo" class="input w-full" />
+  <textarea placeholder="Descripción" formControlName="descripcion" class="input w-full"></textarea>
+  <input type="date" formControlName="fecha_evento" class="input w-full" />
+  <input type="text" placeholder="Lugar" formControlName="lugar" class="input w-full" />
+  <input type="text" placeholder="Organizador" formControlName="organizador" class="input w-full" />
+
+  <select formControlName="id_categoria" class="input w-full">
+    <option *ngFor="let cat of categorias" [value]="cat._id">{{ cat.nombre }}</option>
+  </select>
+
+  <div class="flex justify-end space-x-2">
+    <button type="button" class="btn btn-secondary" (click)="cerrar()">Cancelar</button>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+  </div>
+</form>

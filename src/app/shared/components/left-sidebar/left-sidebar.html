@@ -1,0 +1,33 @@
+    <div
+    class="sidenav"
+    [ngClass]="isLeftSidebarCollapsed() ? 'sidenav-collapsed' : ''"
+    >
+    <div class="logo-container">
+        <button class="logo" (click)="toggleCollapse()">
+        <mat-icon>menu</mat-icon>
+        </button>
+        @if (!isLeftSidebarCollapsed()) {
+            <img src="" alt="LOGO" class="logo-img" />
+        }
+
+    </div>
+    <div class="sidenav-nav">
+        @for (item of items; track $index) {
+        <li class="sidenav-nav-item">
+            <a
+            class="sidenav-nav-link"
+            [matTooltip]="isLeftSidebarCollapsed() ? item.label : ''"            
+            matTooltipPosition="right"
+            [routerLink]="item.routeLink"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            >
+            <mat-icon class="sidenav-link-icon">{{ item.icon }}</mat-icon>
+            @if (!isLeftSidebarCollapsed()) {
+                <span class="sidenav-link-text">{{ item.label }}</span>
+            }
+            </a>
+        </li>
+        }
+    </div>
+    </div>

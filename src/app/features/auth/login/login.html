@@ -1,0 +1,32 @@
+    <div class="relative min-h-screen w-full">
+      <img src="img_login.jpg" alt="" class="absolute inset-0 w-full h-full object-cover">
+
+      <div class="relative z-10 flex items-center justify-center min-h-screen">
+        <div class="bg-black/65 p-8 border border-white rounded-lg shadow-lg w-full max-w-sm">
+          <h2 class="text-white text-2xl font-semibold text-center mb-8">Iniciar Sesión</h2>
+
+          <form class="space-y-8" (ngSubmit)="login()" #loginForm="ngForm">
+            <input 
+              name="email"
+              type="text" 
+              placeholder="Correo" 
+              [(ngModel)]="email"
+              class="w-full py-4 px-3 rounded-md bg-[#2e3132] placeholder-[#6e6c6e] text-white focus:outline-none"
+            >
+            <input 
+              name="password"
+              type="password" 
+              placeholder="Contraseña" 
+              [(ngModel)]="password"
+              class="w-full py-4 px-3 rounded-md bg-[#2e3132] placeholder-[#6e6c6e] text-white focus:outline-none"
+            >
+            <button 
+              type="submit" 
+              class="w-full py-4 px-3 rounded-md bg-[#f24e1e] text-white font-semibold hover:bg-[#d9441a] transition">
+              Iniciar Sesión
+            </button>
+          </form>
+
+        </div>
+      </div>
+    </div>

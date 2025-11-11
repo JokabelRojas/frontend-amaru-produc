@@ -1,0 +1,325 @@
+<header class="sticky top-0 z-40 bg-white shadow-lg rounded-b-2xl transition-all duration-300">
+  <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
+    <div class="flex items-center gap-3">
+      <div class="relative">
+        <mat-icon class="text-[#F7A428] text-4xl drop-shadow-sm transition-transform hover:scale-110">article</mat-icon>
+        <div class="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+      </div>
+      <div>
+        <h1 class="text-3xl font-extrabold text-gray-800 tracking-wide">
+          Gestión de <span class="text-[#F7A428]">Talleres</span>
+        </h1>
+        <p class="text-sm text-gray-500 mt-1">{{ talleres.length }} talleres registrados</p>
+      </div>
+    </div>
+    <button
+      (click)="openAgregarTaller()"
+      class="flex items-center gap-2 bg-gradient-to-r from-[#F7A428] to-[#FFB74D] text-white hover:from-[#e69320] hover:to-[#F7A428] rounded-xl px-5 py-3 font-semibold shadow-md transition-all duration-300 hover:shadow-lg hover:scale-105 active:scale-95 group"
+    >
+      <mat-icon class="text-white transition-transform group-hover:rotate-90">add</mat-icon>
+      Nuevo Taller
+    </button>
+  </div>
+</header>
+
+<!-- 🔽 FILTROS MEJORADOS -->
+<section class="bg-white shadow-md rounded-2xl mt-6 p-6 border border-gray-200 transition-all duration-300">
+  <div class="flex items-center gap-2 mb-4">
+    <mat-icon class="text-[#F7A428]">filter_list</mat-icon>
+    <h2 class="text-lg font-semibold text-gray-800">Filtros de búsqueda</h2>
+  </div>
+  
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
+    <!-- Categoría -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-1">
+        <mat-icon class="text-[#F7A428] text-sm">category</mat-icon>
+        Categoría
+      </label>
+      <select
+        [(ngModel)]="filtros.id_categoria"
+        class="block w-full border border-gray-300 rounded-lg shadow-sm focus:border-[#F7A428] focus:ring-2 focus:ring-[#F7A428]/30 p-2.5 bg-white transition-all duration-200"
+      >
+        <option value="">Todas las categorías</option>
+        <option *ngFor="let cat of categorias" [value]="cat._id">{{ cat.nombre }}</option>
+      </select>
+    </div>
+
+    <!-- Estado -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-1">
+        <mat-icon class="text-[#F7A428] text-sm">toggle_on</mat-icon>
+        Estado
+      </label>
+      <select
+        [(ngModel)]="filtros.estado"
+        class="block w-full border border-gray-300 rounded-lg shadow-sm focus:border-[#F7A428] focus:ring-2 focus:ring-[#F7A428]/30 p-2.5 bg-white transition-all duration-200"
+      >
+        <option value="">Todos los estados</option>
+        <option value="activo">Activo</option>
+        <option value="inactivo">Inactivo</option>
+      </select>
+    </div>
+
+    <!-- Fecha Inicio -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-1">
+        <mat-icon class="text-[#F7A428] text-sm">event_available</mat-icon>
+        Fecha Inicio
+      </label>
+      <input
+        type="date"
+        [(ngModel)]="filtros.fecha_inicio"
+        class="block w-full border border-gray-300 rounded-lg shadow-sm focus:border-[#F7A428] focus:ring-2 focus:ring-[#F7A428]/30 p-2.5 bg-white transition-all duration-200"
+      />
+    </div>
+
+    <!-- Fecha Fin -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-1">
+        <mat-icon class="text-[#F7A428] text-sm">event_busy</mat-icon>
+        Fecha Fin
+      </label>
+      <input
+        type="date"
+        [(ngModel)]="filtros.fecha_fin"
+        class="block w-full border border-gray-300 rounded-lg shadow-sm focus:border-[#F7A428] focus:ring-2 focus:ring-[#F7A428]/30 p-2.5 bg-white transition-all duration-200"
+      />
+    </div>
+  </div>
+
+  <div class="flex justify-between mt-6">
+    <button
+      class="flex items-center gap-2 text-gray-600 hover:text-gray-800 px-4 py-2 rounded-lg font-medium transition-all duration-200 hover:bg-gray-100"
+      (click)="limpiarFiltros()"
+    >
+      <mat-icon class="text-gray-500">clear_all</mat-icon>
+      Limpiar filtros
+    </button>
+    
+    <div class="flex gap-3">
+      <button
+        class="flex items-center gap-2 bg-[#F7A428] hover:bg-[#e69320] text-white px-5 py-2.5 rounded-lg font-semibold shadow-md transition-all duration-200 hover:shadow-lg"
+        (click)="cargarTalleres()"
+      >
+        <mat-icon class="text-white">search</mat-icon>
+        Aplicar filtros
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- 🟣 Cards de Talleres mejoradas -->
+<section class="mt-8">
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+      <mat-icon class="text-[#F7A428]">workshop</mat-icon>
+      Lista de Talleres
+    </h2>
+    
+    <div class="flex items-center gap-3">
+      <div class="text-sm text-gray-600">
+        Mostrando <span class="font-bold">{{ talleres.length }}</span> de <span class="font-bold">{{ totalTalleres }}</span> talleres
+      </div>
+      <div class="flex items-center bg-gray-100 rounded-lg p-1">
+        <button 
+          class="p-2 rounded-md transition-all"
+          [class.bg-white]="vista === 'grid'"
+          [class.shadow-sm]="vista === 'grid'"
+          (click)="cambiarVista('grid')"
+        >
+          <mat-icon class="text-gray-600">grid_view</mat-icon>
+        </button>
+        <button 
+          class="p-2 rounded-md transition-all"
+          [class.bg-white]="vista === 'list'"
+          [class.shadow-sm]="vista === 'list'"
+          (click)="cambiarVista('list')"
+        >
+          <mat-icon class="text-gray-600">view_list</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vista de Grid (predeterminada) -->
+  <div *ngIf="vista === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div
+      *ngFor="let taller of talleres"
+      class="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-200 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group"
+    >
+      <!-- Badge de estado -->
+      <div class="absolute top-4 right-4 z-10">
+        <span 
+          class="px-3 py-1 rounded-full text-xs font-semibold shadow-sm"
+          [class.bg-green-100]="taller.estado === 'activo'"
+          [class.text-green-800]="taller.estado === 'activo'"
+          [class.bg-red-100]="taller.estado === 'inactivo'"
+          [class.text-red-800]="taller.estado === 'inactivo'"
+        >
+          {{ taller.estado === 'activo' ? 'Activo' : 'Inactivo' }}
+        </span>
+      </div>
+      
+      <!-- Imagen con overlay -->
+      <div class="relative overflow-hidden">
+        <img
+          [src]="taller.imagen_url || 'https://via.placeholder.com/400x200?text=Sin+imagen'"
+          alt="{{ taller.nombre }}"
+          class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+        <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      </div>
+
+      <div class="p-5 space-y-3">
+        <h2 class="text-xl font-bold text-gray-800 line-clamp-1">{{ taller.nombre }}</h2>
+        <p class="text-gray-600 text-sm line-clamp-2">{{ taller.descripcion }}</p>
+        
+        <div class="flex items-center gap-2 text-sm text-gray-700">
+          <mat-icon class="text-[#F7A428] text-sm">schedule</mat-icon>
+          <span>{{ taller.horario }}</span>
+        </div>
+
+        <div class="flex justify-between text-sm text-gray-700">
+          <div class="flex items-center gap-1">
+            <mat-icon class="text-[#F7A428] text-sm">event_available</mat-icon>
+            <span>{{ taller.fecha_inicio | date:'dd/MM/yyyy' }}</span>
+          </div>
+          <div class="flex items-center gap-1">
+            <mat-icon class="text-[#F7A428] text-sm">event_busy</mat-icon>
+            <span>{{ taller.fecha_fin | date:'dd/MM/yyyy' }}</span>
+          </div>
+        </div>
+
+        <hr class="my-3 border-gray-300" />
+
+        <div class="flex justify-between items-center">
+          <span class="text-xl font-bold text-[#F7A428]">S/ {{ taller.precio | number:'1.2-2' }}</span>
+          
+          <div class="flex items-center gap-2">
+            <!-- Toggle Estado mejorado -->
+            <div class="flex flex-col items-center">
+              <label class="flex items-center gap-2 cursor-pointer relative">
+                <input
+                  type="checkbox"
+                  class="sr-only"
+                  [checked]="taller.estado === 'activo'"
+                  (change)="cambiarEstado(taller, $event.target.checked)"
+                />
+                <div class="w-12 h-6 bg-gray-300 rounded-full shadow-inner transition-colors duration-300"
+                     [class.bg-green-500]="taller.estado === 'activo'"></div>
+                <div class="dot absolute w-5 h-5 bg-white rounded-full shadow left-0.5 top-0.5 transition-transform duration-300"
+                     [class.translate-x-6]="taller.estado === 'activo'"></div>
+              </label>
+              <span class="text-xs mt-1 font-medium" [ngClass]="taller.estado === 'activo' ? 'text-green-600' : 'text-gray-500'">
+                {{ taller.estado === 'activo' ? 'Activo' : 'Inactivo' }}
+              </span>
+            </div>
+
+            <button
+              class="p-2 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition-all duration-200 hover:scale-110"
+              (click)="editarTaller(taller)"
+              matTooltip="Editar taller"
+            >
+              <mat-icon class="text-sm">edit</mat-icon>
+            </button>
+            <button
+              class="p-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-all duration-200 hover:scale-110"
+              (click)="eliminarTaller(taller._id)"
+              matTooltip="Eliminar taller"
+            >
+              <mat-icon class="text-sm">delete</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vista de Lista (alternativa) -->
+  <div *ngIf="vista === 'list'" class="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-200">
+    <table class="w-full">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Taller</th>
+          <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Categoría</th>
+          <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Horario</th>
+          <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Fechas</th>
+          <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Precio</th>
+          <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Estado</th>
+          <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr *ngFor="let taller of talleres" class="hover:bg-gray-50 transition-colors">
+          <td class="py-3 px-4">
+            <div class="flex items-center gap-3">
+              <img 
+                [src]="taller.imagen_url || 'https://via.placeholder.com/60x40?text=Sin+imagen'" 
+                alt="{{ taller.nombre }}"
+                class="w-12 h-10 object-cover rounded"
+              />
+              <div>
+                <div class="font-medium text-gray-900">{{ taller.nombre }}</div>
+                <div class="text-xs text-gray-500 line-clamp-1">{{ taller.descripcion }}</div>
+              </div>
+            </div>
+          </td>
+          <td class="py-3 px-4 text-sm text-gray-700">{{ obtenerNombreCategoria(taller.id_categoria) }}</td>
+          <td class="py-3 px-4 text-sm text-gray-700">{{ taller.horario }}</td>
+          <td class="py-3 px-4 text-sm text-gray-700">
+            <div>{{ taller.fecha_inicio | date:'dd/MM/yyyy' }}</div>
+            <div class="text-xs text-gray-500">al {{ taller.fecha_fin | date:'dd/MM/yyyy' }}</div>
+          </td>
+          <td class="py-3 px-4 text-sm font-semibold text-[#F7A428]">S/ {{ taller.precio | number:'1.2-2' }}</td>
+          <td class="py-3 px-4">
+            <label class="flex items-center gap-2 cursor-pointer relative">
+              <input
+                type="checkbox"
+                class="sr-only"
+                [checked]="taller.estado === 'activo'"
+                (change)="cambiarEstado(taller, $event.target.checked)"
+              />
+              <div class="w-10 h-5 bg-gray-300 rounded-full shadow-inner transition-colors duration-300"
+                   [class.bg-green-500]="taller.estado === 'activo'"></div>
+              <div class="dot absolute w-4 h-4 bg-white rounded-full shadow left-0.5 top-0.5 transition-transform duration-300"
+                   [class.translate-x-5]="taller.estado === 'activo'"></div>
+            </label>
+          </td>
+          <td class="py-3 px-4">
+            <div class="flex gap-2">
+              <button
+                class="p-1.5 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition-colors"
+                (click)="editarTaller(taller)"
+                matTooltip="Editar taller"
+              >
+                <mat-icon class="text-sm">edit</mat-icon>
+              </button>
+              <button
+                class="p-1.5 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors"
+                (click)="eliminarTaller(taller._id)"
+                matTooltip="Eliminar taller"
+              >
+                <mat-icon class="text-sm">delete</mat-icon>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Mensaje cuando no hay talleres -->
+  <div *ngIf="talleres.length === 0" class="text-center py-12 bg-white rounded-2xl shadow-sm border border-gray-200">
+    <mat-icon class="text-6xl text-gray-300 mb-4">workshop</mat-icon>
+    <h3 class="text-xl font-semibold text-gray-600 mb-2">No se encontraron talleres</h3>
+    <p class="text-gray-500 mb-6">No hay talleres que coincidan con los filtros aplicados.</p>
+    <button
+      (click)="limpiarFiltros()"
+      class="bg-[#F7A428] hover:bg-[#e69320] text-white px-5 py-2.5 rounded-lg font-semibold shadow-md transition-all duration-200"
+    >
+      <mat-icon class="text-white align-middle mr-1">refresh</mat-icon>
+      Ver todos los talleres
+    </button>
+  </div>
+</section>
