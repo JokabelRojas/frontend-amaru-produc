@@ -17,6 +17,9 @@ import { Categoria } from './features/admin/categoria/categoria';
 
 // Guard
 import { AuthGuard } from './core/guards/auth.guard';
+import { Profesor } from './features/admin/profesor/profesor';
+import { Actividades } from './features/admin/actividades/actividades';
+import { Premios } from './features/admin/premios/premios';
 
 export const routes: Routes = [
   // Página principal
@@ -69,13 +72,25 @@ export const routes: Routes = [
         path: 'categoria',
         component: Categoria
       },
+            {
+        path: 'profesor',
+        component: Profesor
+      },
       {
         path: 'talleres',
         component: Talleres
       },
       {
+        path: 'actividades',
+        component: Actividades
+      },
+      {
         path: 'festivales',
         component: Festivales
+      },
+            {
+        path: 'premios',
+        component: Premios
       },
       {
         path: 'servicios',

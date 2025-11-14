@@ -1,0 +1,96 @@
+<div class="p-6 bg-white rounded-2xl shadow-2xl border border-gray-200 relative">
+  <!-- Botón de cerrar -->
+  <button (click)="cerrarModal()" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 transition-all">
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <!-- Título del modal -->
+  <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+    <mat-icon class="text-[#F7A428]">school</mat-icon>
+    {{ modoEdicion ? 'Editar Profesor' : 'Nuevo Profesor' }}
+  </h2>
+
+  <form (ngSubmit)="guardarProfesor()" #profesorForm="ngForm" class="space-y-4">
+    <!-- Nombre -->
+    <div>
+      <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
+      <input
+        type="text"
+        id="nombre"
+        name="nombre"
+        [(ngModel)]="nuevoProfesor.nombre"
+        required
+        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-[#F7A428] focus:ring focus:ring-[#F7A428]/50 p-2"
+      />
+    </div>
+
+    <!-- Especialidad -->
+    <div>
+      <label for="especialidad" class="block text-sm font-medium text-gray-700">Especialidad</label>
+      <input
+        type="text"
+        id="especialidad"
+        name="especialidad"
+        [(ngModel)]="nuevoProfesor.especialidad"
+        required
+        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-[#F7A428] focus:ring focus:ring-[#F7A428]/50 p-2"
+      />
+    </div>
+
+    <!-- Descripción -->
+    <div>
+      <label for="descripcion" class="block text-sm font-medium text-gray-700">Descripción</label>
+      <textarea
+        id="descripcion"
+        name="descripcion"
+        [(ngModel)]="nuevoProfesor.descripcion"
+        rows="3"
+        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-[#F7A428] focus:ring focus:ring-[#F7A428]/50 p-2 resize-none"
+      ></textarea>
+    </div>
+
+    <!-- URL de Imagen -->
+    <div>
+      <label for="imagen_url" class="block text-sm font-medium text-gray-700">URL de Imagen</label>
+      <input
+        type="url"
+        id="imagen_url"
+        name="imagen_url"
+        [(ngModel)]="nuevoProfesor.imagen_url"
+        placeholder="https://example.com/foto.jpg"
+        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-[#F7A428] focus:ring focus:ring-[#F7A428]/50 p-2"
+      />
+    </div>
+
+    <!-- Vista previa de imagen -->
+    <div *ngIf="nuevoProfesor.imagen_url" class="mt-2">
+      <label class="block text-sm font-medium text-gray-700 mb-2">Vista previa:</label>
+      <img 
+        [src]="nuevoProfesor.imagen_url" 
+        alt="Vista previa" 
+        class="w-20 h-20 rounded-full object-cover border border-gray-300"
+        onerror="this.style.display='none'"
+      >
+    </div>
+
+    <!-- Botones -->
+    <div class="flex justify-end gap-3 pt-4">
+      <button
+        type="button"
+        (click)="cerrarModal()"
+        class="px-5 py-2 rounded-xl font-semibold border border-gray-300 text-gray-700 hover:bg-gray-100 transition-all"
+      >
+        Cancelar
+      </button>
+
+      <button
+        type="submit"
+        [disabled]="!profesorForm.valid"
+        class="px-5 py-2 rounded-xl font-semibold bg-[#F7A428] text-white hover:bg-[#e69320] shadow-md transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center"
+      >
+        <mat-icon class="text-white mr-1">save</mat-icon>
+        {{ modoEdicion ? 'Guardar Cambios' : 'Guardar' }}
+      </button>
+    </div>
+  </form>
+</div>

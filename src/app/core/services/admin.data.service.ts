@@ -110,4 +110,44 @@ addServicio(servicioData: any): Observable<any> {
   return this.http.patch<any>(`${environment.apiUrl}inscripciones/${id}/estado`, { estado });
 }
 
+createProfesor(profesorData: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}profesor`, profesorData);
+  }
+getProfesores(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}profesor`);
+  }
+
+  updateProfesor(idProfesor: string, profesorData: any): Observable<any> {
+    return this.http.patch<any>(`${environment.apiUrl}profesor/${idProfesor}`, profesorData);
+  }
+  deleteProfesor(idProfesor: string): Observable<any> {
+    return this.http.delete<any>(`${environment.apiUrl}profesor/${idProfesor}`);
+  }
+
+  createActividad(actividadData: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}actividades`, actividadData);
+  }
+  getActividades(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}actividades`);
+  }
+  updateActividad(idActividad: string, actividadData: any): Observable<any> {
+    return this.http.patch<any>(`${environment.apiUrl}actividades/${idActividad}`, actividadData);
+  }
+  deleteActividad(idActividad: string): Observable<any> {
+    return this.http.delete<any>(`${environment.apiUrl}actividades/${idActividad}`);
+  }
+
+  createPremios(premioData: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}premios`, premioData);
+  }
+  getPremios(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}premios`);
+  }
+  updatePremio(idPremio: string, premioData: any): Observable<any> {
+    return this.http.patch<any>(`${environment.apiUrl}premios/${idPremio}`, premioData);
+  }
+  deletePremio(idPremio: string): Observable<any> {
+    return this.http.delete<any>(`${environment.apiUrl}premios/${idPremio}`);
+  }
+
 }

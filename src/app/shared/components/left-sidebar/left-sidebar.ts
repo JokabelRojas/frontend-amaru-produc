@@ -24,15 +24,30 @@ items = [
     icon: 'category',
     label: 'Gestion de Categoria y Subcategoria',
   },
+    {
+    routeLink: 'profesor',
+    icon: 'school',
+    label: 'Gestion de Profesores',
+  },
   {
     routeLink: 'talleres',
     icon: 'article',
     label: 'Gestion de Talleres',
   },
+    {
+    routeLink: 'actividades',
+    icon: 'event',
+    label: 'Gestion de Actividades',
+  },
   {
     routeLink: 'festivales',
     icon: 'celebration',
-    label: 'Gestion de Festivales y Premios',
+    label: 'Gestion de Festivales',
+  },
+    {
+    routeLink: 'premios',
+    icon: 'card_giftcard',
+    label: 'Gestion de Premios',
   },
     {
     routeLink: 'servicios',

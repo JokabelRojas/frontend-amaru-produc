@@ -44,12 +44,49 @@
       </select>
     </div>
 
-    <!-- Descripción automática -->
-    <div *ngIf="nuevoTaller.descripcion">
-      <label class="block text-sm font-medium text-gray-700">Descripción</label>
-      <p class="mt-1 p-2 border border-gray-300 rounded-md bg-gray-50 text-gray-800">
-        {{ nuevoTaller.descripcion }}
-      </p>
+    <!-- Profesor -->
+    <div>
+      <label for="profesor" class="block text-sm font-medium text-gray-700">Profesor</label>
+      <select
+        id="profesor"
+        name="profesor"
+        [(ngModel)]="nuevoTaller.id_profesor"
+        required
+        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-[#F7A428] focus:ring focus:ring-[#F7A428]/50 p-2 bg-white"
+      >
+        <option value="">Seleccione un profesor</option>
+        <option *ngFor="let profesor of profesores" [value]="profesor._id">
+          {{ profesor.nombre }} - {{ profesor.especialidad }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Nombre del Taller (campo manual) -->
+    <div>
+      <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre del Taller</label>
+      <input
+        type="text"
+        id="nombre"
+        name="nombre"
+        [(ngModel)]="nuevoTaller.nombre"
+        required
+        placeholder="Ej: Taller de Cocina Italiana Avanzada"
+        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-[#F7A428] focus:ring focus:ring-[#F7A428]/50 p-2"
+      />
+    </div>
+
+    <!-- Descripción del Taller (campo manual) -->
+    <div>
+      <label for="descripcion" class="block text-sm font-medium text-gray-700">Descripción del Taller</label>
+      <textarea
+        id="descripcion"
+        name="descripcion"
+        [(ngModel)]="nuevoTaller.descripcion"
+        rows="3"
+        required
+        placeholder="Describa los detalles, objetivos y contenido del taller..."
+        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-[#F7A428] focus:ring focus:ring-[#F7A428]/50 p-2 resize-none"
+      ></textarea>
     </div>
 
     <!-- Fecha Inicio / Fin -->
@@ -108,20 +145,8 @@
       </select>
     </div>
 
-    <!-- Duración / Precio / Cupo -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div>
-        <label for="duracion" class="block text-sm font-medium text-gray-700">Duración (horas)</label>
-        <input
-          type="number"
-          id="duracion"
-          name="duracion"
-          [(ngModel)]="nuevoTaller.duracion"
-          required
-          min="1"
-          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-[#F7A428] focus:ring focus:ring-[#F7A428]/50 p-2"
-        />
-      </div>
+    <!-- Precio / Cupo -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
         <label for="precio" class="block text-sm font-medium text-gray-700">Precio ($)</label>
         <input

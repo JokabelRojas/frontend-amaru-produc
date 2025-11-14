@@ -12,11 +12,11 @@ interface Taller {
   fecha_fin: string;
   horario: string;
   modalidad: 'presencial' | 'virtual' | 'hibrido';
-  duracion: number | null;
   precio: number | null;
   cupo_total: number | null;
   id_categoria: string;
   id_subcategoria: string;
+  id_profesor: string;
   estado: 'activo' | 'inactivo';
   imagen_url: string;
 }
@@ -35,6 +35,7 @@ export class AgregarTaller implements OnInit {
 
   categorias: any[] = [];
   subcategorias: any[] = [];
+  profesores: any[] = [];
 
   nuevoTaller: Taller = {
     nombre: '',
@@ -43,11 +44,11 @@ export class AgregarTaller implements OnInit {
     fecha_fin: '',
     horario: '',
     modalidad: 'presencial',
-    duracion: null,
     precio: null,
     cupo_total: null,
     id_categoria: '',
     id_subcategoria: '',
+    id_profesor: '',
     estado: 'activo',
     imagen_url: ''
   };
@@ -60,6 +61,7 @@ export class AgregarTaller implements OnInit {
 
   ngOnInit(): void {
     this.cargarCategorias();
+    this.cargarProfesores();
 
     if (this.data?.taller) {
       this.modoEdicion = true;
@@ -75,14 +77,21 @@ export class AgregarTaller implements OnInit {
     });
   }
 
-  // Cargar subcategorías según categoría seleccionada
+  cargarProfesores(): void {
+    this.adminDataService.getProfesores().subscribe({
+      next: res => {
+        this.profesores = res;
+        console.log('Profesores cargados:', this.profesores);
+      },
+      error: err => console.error('Error al cargar profesores:', err)
+    });
+  }
+
   onCategoriaChange(): void {
     const catId = this.nuevoTaller.id_categoria;
     if (!catId) {
       this.subcategorias = [];
       this.nuevoTaller.id_subcategoria = '';
-      this.nuevoTaller.nombre = '';
-      this.nuevoTaller.descripcion = '';
       return;
     }
 
@@ -90,33 +99,21 @@ export class AgregarTaller implements OnInit {
       next: res => {
         this.subcategorias = res;
 
-        // Si estamos editando, mantener la subcategoría seleccionada
         if (this.modoEdicion && this.nuevoTaller.id_subcategoria) {
           const existeSub = this.subcategorias.some(s => s._id === this.nuevoTaller.id_subcategoria);
           if (!existeSub) this.nuevoTaller.id_subcategoria = '';
         } else {
           this.nuevoTaller.id_subcategoria = '';
         }
-
-        // Limpiar nombre y descripción al cambiar categoría
-        this.nuevoTaller.nombre = '';
-        this.nuevoTaller.descripcion = '';
       },
       error: err => console.error('Error al cargar subcategorías:', err)
     });
   }
 
-  // Actualizar nombre y descripción al elegir subcategoría
   onSubcategoriaChange(): void {
-    const subcat = this.subcategorias.find(s => s._id === this.nuevoTaller.id_subcategoria);
-    if (subcat) {
-      // Algunos subcategorías pueden tener nombre_taller y descripcion_taller
-      this.nuevoTaller.nombre = subcat.nombre_taller ?? subcat.nombre ?? '';
-      this.nuevoTaller.descripcion = subcat.descripcion_taller ?? subcat.descripcion ?? '';
-    } else {
-      this.nuevoTaller.nombre = '';
-      this.nuevoTaller.descripcion = '';
-    }
+    // ❌ ELIMINADO: Ya no auto-completamos nombre y descripción
+    // El usuario debe ingresar manualmente el nombre y descripción del taller
+    console.log('Subcategoría seleccionada:', this.nuevoTaller.id_subcategoria);
   }
 
   cargarDatosEdicion(): void {
@@ -124,7 +121,7 @@ export class AgregarTaller implements OnInit {
 
     const formatDateForInput = (dateStr: string) => {
       if (!dateStr) return '';
-      return new Date(dateStr).toISOString().slice(0,16); // compatible con datetime-local
+      return new Date(dateStr).toISOString().slice(0,16);
     };
 
     this.nuevoTaller = {
@@ -134,22 +131,28 @@ export class AgregarTaller implements OnInit {
       fecha_fin: formatDateForInput(taller.fecha_fin),
       horario: taller.horario || '',
       modalidad: taller.modalidad || 'presencial',
-      duracion: taller.duracion || null,
       precio: taller.precio || null,
       cupo_total: taller.cupo_total || null,
       id_categoria: taller.id_categoria?._id || taller.id_categoria || '',
       id_subcategoria: taller.id_subcategoria?._id || taller.id_subcategoria || '',
+      id_profesor: taller.id_profesor?._id || taller.id_profesor || '',
       estado: taller.estado || 'activo',
       imagen_url: taller.imagen_url || ''
     };
 
-    // Cargar subcategorías de la categoría seleccionada
     if (this.nuevoTaller.id_categoria) this.onCategoriaChange();
   }
 
   guardarTaller(): void {
-    // Validación
-    if (!this.nuevoTaller.id_categoria || !this.nuevoTaller.id_subcategoria || !this.nuevoTaller.horario || !this.nuevoTaller.fecha_inicio || !this.nuevoTaller.fecha_fin) {
+    // Validación mejorada
+    if (!this.nuevoTaller.id_categoria || 
+        !this.nuevoTaller.id_subcategoria || 
+        !this.nuevoTaller.id_profesor || 
+        !this.nuevoTaller.nombre || // ✅ Ahora validamos nombre
+        !this.nuevoTaller.descripcion || // ✅ Ahora validamos descripción
+        !this.nuevoTaller.horario || 
+        !this.nuevoTaller.fecha_inicio || 
+        !this.nuevoTaller.fecha_fin) {
       alert('Por favor complete todos los campos obligatorios');
       return;
     }
@@ -158,10 +161,11 @@ export class AgregarTaller implements OnInit {
       ...this.nuevoTaller,
       fecha_inicio: new Date(this.nuevoTaller.fecha_inicio).toISOString(),
       fecha_fin: new Date(this.nuevoTaller.fecha_fin).toISOString(),
-      duracion: this.nuevoTaller.duracion || 1,
       precio: this.nuevoTaller.precio || 0,
       cupo_total: this.nuevoTaller.cupo_total || 1
     };
+
+    console.log('📤 Enviando datos del taller:', dataToSend);
 
     const observable = this.modoEdicion && this.idTaller
       ? this.adminDataService.updateTaller(this.idTaller, dataToSend)

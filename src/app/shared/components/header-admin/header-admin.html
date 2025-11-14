@@ -13,7 +13,7 @@
       </div>
     </div>
 
-    <div class="flex items-center gap-5 ml-4">
+    <div class="flex items-center gap-4 ml-4">
       <button mat-icon-button class="relative">
         <mat-icon class="text-gray-700">notifications</mat-icon>
         <span class="absolute top-1 right-1 block w-2 h-2 bg-red-500 rounded-full"></span>
@@ -21,6 +21,14 @@
 
       <button mat-icon-button class="w-10 h-10 rounded-full overflow-hidden border border-gray-300 shadow">
         <img src="https://i.pravatar.cc/100" alt="Usuario" class="w-full h-full object-cover" />
+      </button>
+
+      <!-- Botón de salir -->
+      <button mat-icon-button 
+              class="text-gray-700 hover:text-red-600 transition-colors"
+              (click)="logout()"
+              title="Cerrar sesión">
+        <mat-icon>logout</mat-icon>
       </button>
     </div>
   </div>

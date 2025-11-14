@@ -6,10 +6,11 @@ import { Mision } from "../../cliente/components/mision/mision";
 import { Vision } from "../../cliente/components/vision/vision";
 import { Servicios } from "../../cliente/components/servicios/servicios";
 import { Convenios } from "../../cliente/components/convenios/convenios";
+import { Servicios2 } from '../../cliente/components/servicios2/servicios2';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [HeaderCliente, Carrusel, Mision, Vision, Servicios, Convenios],
+  imports: [HeaderCliente, Carrusel, Mision, Vision, Servicios2 , Convenios],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })

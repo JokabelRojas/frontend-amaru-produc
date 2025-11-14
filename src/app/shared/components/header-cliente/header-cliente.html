@@ -15,31 +15,25 @@
 
     <!-- Desktop Nav -->
     <nav class="hidden md:flex items-center gap-6 relative">
-      <a routerLink="/" routerLinkActive="text-orange-400 border-b-2 border-orange-400"
+      <a routerLink="/" 
+         routerLinkActive="text-orange-400 border-b-2 border-orange-400"
+         [routerLinkActiveOptions]="{ exact: true }"
          class="hover:text-orange-400 transition pb-1">INICIO</a>
 
-      <!-- Submenú Talleres -->
-      <div class="relative" (mouseenter)="toggleTalleresMenu(true)" (mouseleave)="toggleTalleresMenu(false)">
-        <a routerLink="./talleres" routerLinkActive="text-orange-400 border-b-2 border-orange-400"
-           class="hover:text-orange-400 transition pb-1 flex items-center gap-1">
-          TALLERES
-          <i class="fa-solid fa-chevron-down text-xs"></i>
-        </a>
-
-        @if (showTalleresMenu) {
-          <div class="absolute left-0 mt-2 bg-gray-900 text-white rounded-lg shadow-lg w-56 py-2 border border-gray-700 animate-fade-in">
-            <a routerLink="/talleres/presenciales" class="block px-4 py-2 hover:bg-gray-800">Presenciales</a>
-            <a routerLink="/talleres/online" class="block px-4 py-2 hover:bg-gray-800">Online</a>
-            <a routerLink="/talleres/inscripciones" class="block px-4 py-2 hover:bg-gray-800">Inscripciones</a>
-          </div>
-        }
-      </div>
-
-      <a routerLink="/festivales" routerLinkActive="text-orange-400 border-b-2 border-orange-400"
+      <a routerLink="/talleres" 
+         routerLinkActive="text-orange-400 border-b-2 border-orange-400"
+         class="hover:text-orange-400 transition pb-1">TALLERES</a>
+         
+      <a routerLink="/festivales" 
+         routerLinkActive="text-orange-400 border-b-2 border-orange-400"
          class="hover:text-orange-400 transition pb-1">FESTIVALES</a>
-      <a routerLink="/servicios" routerLinkActive="text-orange-400 border-b-2 border-orange-400"
+         
+      <a routerLink="/servicios" 
+         routerLinkActive="text-orange-400 border-b-2 border-orange-400"
          class="hover:text-orange-400 transition pb-1">SERVICIOS</a>
-      <a routerLink="/contacto" routerLinkActive="text-orange-400 border-b-2 border-orange-400"
+         
+      <a routerLink="/contacto" 
+         routerLinkActive="text-orange-400 border-b-2 border-orange-400"
          class="hover:text-orange-400 transition pb-1">CONTACTO</a>
     </nav>
 
@@ -60,18 +54,32 @@
   <!-- Menú móvil -->
   @if (isMenuOpen) {
     <div class="md:hidden bg-gray-900 text-white px-6 py-3 space-y-2 animate-fade-in">
-      <a routerLink="/" (click)="toggleMenu()" class="block py-2">Inicio</a>
-      <details>
-        <summary class="py-2 cursor-pointer">Talleres</summary>
-        <div class="pl-4 flex flex-col space-y-1">
-          <a routerLink="/talleres/presenciales" (click)="toggleMenu()">Presenciales</a>
-          <a routerLink="/talleres/online" (click)="toggleMenu()">Online</a>
-          <a routerLink="/talleres/inscripciones" (click)="toggleMenu()">Inscripciones</a>
-        </div>
-      </details>
-      <a routerLink="/festivales" (click)="toggleMenu()" class="block py-2">Festivales</a>
-      <a routerLink="/servicios" (click)="toggleMenu()" class="block py-2">Servicios</a>
-      <a routerLink="/contacto" (click)="toggleMenu()" class="block py-2">Contacto</a>
+      <a routerLink="/" 
+         routerLinkActive="text-orange-400"
+         [routerLinkActiveOptions]="{ exact: true }"
+         (click)="toggleMenu()" 
+         class="block py-2">Inicio</a>
+
+      <a routerLink="/talleres" 
+         routerLinkActive="text-orange-400"
+         (click)="toggleMenu()" 
+         class="block py-2">Talleres</a>
+         
+      <a routerLink="/festivales" 
+         routerLinkActive="text-orange-400"
+         (click)="toggleMenu()" 
+         class="block py-2">Festivales</a>
+         
+      <a routerLink="/servicios" 
+         routerLinkActive="text-orange-400"
+         (click)="toggleMenu()" 
+         class="block py-2">Servicios</a>
+         
+      <a routerLink="/contacto" 
+         routerLinkActive="text-orange-400"
+         (click)="toggleMenu()" 
+         class="block py-2">Contacto</a>
+         
       <button routerLink="/login" (click)="toggleMenu()"
               class="w-full mt-2 py-2 rounded-lg font-semibold text-white"
               style="background: linear-gradient(90deg,#f25123,#ff7a57)">

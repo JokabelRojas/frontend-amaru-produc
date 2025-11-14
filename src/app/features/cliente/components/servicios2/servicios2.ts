@@ -5,12 +5,12 @@ import { Servicio } from '../../models/servicio.model';
 import { HeaderCliente } from '../../../../shared/components/header-cliente/header-cliente';
 
 @Component({
-  selector: 'app-servicios',
+  selector: 'app-servicios2',
   standalone: true,
   imports: [CommonModule, HttpClientModule, HeaderCliente],
-  templateUrl: './servicios.html',
+  templateUrl: './servicios2.html',
 })
-export class Servicios implements OnInit {
+export class Servicios2 implements OnInit {
 
   servicios: Servicio[] = [];
   cargando: boolean = true;
@@ -26,7 +26,6 @@ export class Servicios implements OnInit {
     this.http.get<Servicio[]>('http://localhost:3000/servicios/activos')
       .subscribe({
         next: (data) => {
-          // Solo tomar los primeros 3 servicios
           this.servicios = data.slice(0, 3);
           this.cargando = false;
         },

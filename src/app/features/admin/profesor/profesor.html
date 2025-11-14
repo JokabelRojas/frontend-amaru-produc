@@ -1,0 +1,75 @@
+<header class="sticky top-0 z-40 bg-white shadow-lg rounded-b-2xl">
+  <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
+    <div class="flex items-center gap-3">
+      <mat-icon class="text-[#F7A428] text-4xl drop-shadow-sm">school</mat-icon>
+      <h1 class="text-3xl font-extrabold text-gray-800 tracking-wide">
+        Gestión de <span class="text-gray-600">Profesores</span>
+      </h1>
+    </div>
+  </div>
+</header>
+
+<div class="max-w-7xl mx-auto px-6 mt-6">
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-bold text-gray-800">Lista de Profesores</h2>
+    <button
+      mat-raised-button
+      (click)="abrirModalProfesor()"
+      class="flex items-center gap-2 bg-[#F7A428] text-white hover:bg-[#e69320] rounded-xl px-5 py-2 font-semibold shadow-md transition-all duration-300"
+    >
+      <mat-icon class="text-white">add</mat-icon>
+      Nuevo Profesor
+    </button>
+  </div>
+
+  <table class="min-w-full bg-white border border-gray-300 rounded-xl shadow-sm overflow-hidden">
+    <thead class="bg-[#FFF5E6] text-gray-700 uppercase text-sm font-semibold">
+      <tr>
+        <th class="px-6 py-3 text-left border-b">ID</th>
+        <th class="px-6 py-3 text-left border-b">Nombre</th>
+        <th class="px-6 py-3 text-left border-b">Especialidad</th>
+        <th class="px-6 py-3 text-left border-b">Descripción</th>
+        <th class="px-6 py-3 text-left border-b">Imagen</th>
+        <th class="px-6 py-3 text-center border-b">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let profesor of profesores"
+        class="hover:bg-gray-50 transition-all"
+      >
+        <td class="px-6 py-3 border-b">{{ profesor._id }}</td>
+        <td class="px-6 py-3 border-b">{{ profesor.nombre }}</td>
+        <td class="px-6 py-3 border-b">{{ profesor.especialidad }}</td>
+        <td class="px-6 py-3 border-b">{{ profesor.descripcion }}</td>
+        <td class="px-6 py-3 border-b">
+          <img 
+            *ngIf="profesor.imagen_url" 
+            [src]="profesor.imagen_url" 
+            alt="Imagen del profesor"
+            class="w-12 h-12 rounded-full object-cover"
+          >
+          <span *ngIf="!profesor.imagen_url" class="text-gray-400">Sin imagen</span>
+        </td>
+        <td class="px-6 py-3 text-center border-b">
+          <button
+            mat-icon-button
+            color="primary"
+            class="hover:text-[#F7A428]"
+            (click)="editarProfesor(profesor)" 
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            color="warn"
+            class="hover:text-red-600"
+            (click)="eliminarProfesor(profesor._id)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
