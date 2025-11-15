@@ -4,7 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --configuration=production",
+    "postbuild": "cp dist/amaru-frontend/browser/index.html dist/amaru-frontend/browser/404.html",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:amaru-frontend": "node dist/amaru-frontend/server/server.mjs"

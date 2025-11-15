@@ -2,7 +2,20 @@
   command = "ng build --configuration=production"
   publish = "dist/amaru-frontend/browser"
 
+[build.environment]
+  NODE_VERSION = "18"  # Usar Node 18
+
+[functions]
+  # Deshabilitar funciones si no las usas
+  directory = ""
+
+# Configuración para SPA
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
+# Deshabilitar el plugin de Angular
+[plugins]
+  [plugins.inputs]
+    disabled = true
