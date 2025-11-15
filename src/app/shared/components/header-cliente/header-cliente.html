@@ -72,11 +72,6 @@
         <div class="absolute inset-0 bg-gradient-to-r from-orange-400 to-red-500 rounded-xl opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
       </a>
 
-      <a routerLink="/contacto" routerLinkActive="text-yellow-300"
-        class="relative px-4 py-2 rounded-xl font-semibold hover:bg-white/5 transition-all duration-300 group">
-        <span class="relative z-10">CONTACTO</span>
-        <div class="absolute inset-0 bg-gradient-to-r from-pink-400 to-rose-500 rounded-xl opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
-      </a>
     </nav>
 
     <!-- Botón sesión / Usuario logueado -->
@@ -147,10 +142,6 @@
       <span class="font-semibold">Servicios</span>
     </a>
 
-    <a routerLink="/contacto" routerLinkActive="text-yellow-300" (click)="toggleMenu()"
-      class="block py-3 px-4 rounded-xl hover:bg-white/5 transition-all duration-300 border border-transparent hover:border-pink-400/30 group">
-      <span class="font-semibold">Contacto</span>
-    </a>
 
     @if (isLoggedIn()) {
       <!-- Usuario logueado en móvil -->
