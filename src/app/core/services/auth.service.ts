@@ -21,7 +21,7 @@ export class AuthService {
   }
 
 login(email: string, password: string): Observable<any> {
-  return this.http.post(`${environment.apiUrl}/auth/login`, { email, password }).pipe(
+  return this.http.post(`${environment.apiUrl}auth/login`, { email, password }).pipe(
     tap((res: any) => {
       if (res.access_token && this.isBrowser()) {
         localStorage.setItem(this.tokenKey, res.access_token);

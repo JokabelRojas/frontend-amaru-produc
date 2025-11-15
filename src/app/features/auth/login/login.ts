@@ -34,7 +34,7 @@ export class Login {
   login() {
     this.authService.login(this.email, this.password).subscribe({
       next: () => {
-        this.router.navigate(['/']); // Redirige a la página principal
+        this.router.navigate(['/panel/panel-administracion']); // Redirige a la página principal
       },
       error: () => {
         alert('Login failed');
