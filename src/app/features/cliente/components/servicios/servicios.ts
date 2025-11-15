@@ -23,7 +23,7 @@ export class Servicios implements OnInit {
   }
 
   cargarServicios(): void {
-    this.http.get<Servicio[]>('http://localhost:3000/servicios/activos')
+    this.http.get<Servicio[]>('https://amaru-produc-backend.onrender.com/servicios/activos')
       .subscribe({
         next: (data) => {
           // Solo tomar los primeros 3 servicios
