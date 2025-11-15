@@ -1,34 +1,82 @@
-<header class="sticky top-0 z-50 transition-all duration-300" [class.bg-black]="!isScrolled"
-  [class.bg-gray-900/95]="isScrolled">
-  <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3 text-white">
-    <!-- Logo -->
-    <a routerLink="/" class="flex items-center gap-3">
-      <img src="assets/img/logo-amaru.png" alt="Amaru Logo" class="w-10 h-10" />
+<header class="sticky top-0 z-50 transition-all duration-500 backdrop-blur-xl" 
+        [class.bg-gradient-to-r]="true"
+        [class.from-indigo-900/95]="!isScrolled"
+        [class.via-purple-900/95]="!isScrolled"
+        [class.to-pink-900/95]="!isScrolled"
+        [class.bg-gray-900/95]="isScrolled">
+  
+  <!-- Efecto de partículas decorativas -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute -top-10 -left-10 w-20 h-20 bg-yellow-400/20 rounded-full blur-xl animate-pulse"></div>
+    <div class="absolute -top-5 -right-5 w-16 h-16 bg-cyan-400/20 rounded-full blur-xl animate-pulse delay-1000"></div>
+    <div class="absolute -bottom-8 left-1/4 w-12 h-12 bg-pink-400/20 rounded-full blur-xl animate-pulse delay-500"></div>
+  </div>
+
+  <div class="relative max-w-7xl mx-auto flex items-center justify-between px-4 py-4 text-white">
+    
+    <!-- Logo con efecto artístico -->
+    <a routerLink="/" class="flex items-center gap-3 group relative">
+      <!-- Efecto de resplandor -->
+      <div class="absolute -inset-3 bg-gradient-to-r from-yellow-400 to-pink-500 rounded-full blur opacity-0 group-hover:opacity-30 transition-opacity duration-500"></div>
+      
+      <div class="relative bg-gradient-to-br from-gray-800 to-black rounded-2xl p-2 border border-white/10 group-hover:border-yellow-400/30 transition-all duration-300">
+        <img src="amru.png" alt="Amaru Logo" class="w-8 h-8 transform group-hover:scale-110 transition-transform duration-300" />
+      </div>
+      
       <div class="flex flex-col leading-tight">
-        <span class="font-bold text-lg tracking-wide">AMARU</span>
-        <span class="text-xs text-gray-400">PRODUCCIONES</span>
+        <span class="font-black text-xl tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 via-pink-300 to-cyan-300 group-hover:from-yellow-400 group-hover:via-pink-400 group-hover:to-cyan-400 transition-all duration-500">
+          AMARU
+        </span>
+        <span class="text-xs bg-clip-text text-transparent bg-gradient-to-r from-gray-400 to-gray-300 font-semibold tracking-widest">
+          PRODUCCIONES
+        </span>
       </div>
     </a>
 
-    <!-- Desktop Nav -->
-    <nav class="hidden md:flex items-center gap-6 relative">
-      <a routerLink="/" routerLinkActive="text-orange-400 border-b-2 border-orange-400"
-        [routerLinkActiveOptions]="{ exact: true }" class="hover:text-orange-400 transition pb-1">INICIO</a>
+    <!-- Desktop Nav con estilo artístico -->
+    <nav class="hidden md:flex items-center gap-1 relative">
+      <!-- Efecto de fondo para nav -->
+      <div class="absolute -inset-4 bg-gradient-to-r from-purple-500/5 to-pink-500/5 rounded-3xl blur-xl opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
+      
+      <a routerLink="/" routerLinkActive="text-yellow-300" [routerLinkActiveOptions]="{ exact: true }"
+        class="relative px-4 py-2 rounded-xl font-semibold hover:bg-white/5 transition-all duration-300 group"
+        [class.bg-gradient-to-r]="false"
+        [class.from-yellow-500/20]="false"
+        [class.via-orange-500/20]="false"
+        [class.to-pink-500/20]="false">
+        <span class="relative z-10">INICIO</span>
+        <div class="absolute inset-0 bg-gradient-to-r from-yellow-400 to-pink-500 rounded-xl opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+      </a>
 
-      <a routerLink="/talleres" routerLinkActive="text-orange-400 border-b-2 border-orange-400"
-        class="hover:text-orange-400 transition pb-1">TALLERES</a>
+      <a routerLink="/talleres" routerLinkActive="text-yellow-300"
+        class="relative px-4 py-2 rounded-xl font-semibold hover:bg-white/5 transition-all duration-300 group">
+        <span class="relative z-10">TALLERES</span>
+        <div class="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-xl opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+      </a>
 
-      <a routerLink="/festivales" routerLinkActive="text-orange-400 border-b-2 border-orange-400"
-        class="hover:text-orange-400 transition pb-1">FESTIVALES</a>
+      <a routerLink="/festivales" routerLinkActive="text-yellow-300"
+        class="relative px-4 py-2 rounded-xl font-semibold hover:bg-white/5 transition-all duration-300 group">
+        <span class="relative z-10">FESTIVALES</span>
+        <div class="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-500 rounded-xl opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+      </a>
 
-      <a routerLink="/premios" routerLinkActive="text-orange-400 border-b-2 border-orange-400"
-        class="hover:text-orange-400 transition pb-1">PREMIOS</a>
+      <a routerLink="/premios" routerLinkActive="text-yellow-300"
+        class="relative px-4 py-2 rounded-xl font-semibold hover:bg-white/5 transition-all duration-300 group">
+        <span class="relative z-10">PREMIOS</span>
+        <div class="absolute inset-0 bg-gradient-to-r from-purple-400 to-indigo-500 rounded-xl opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+      </a>
 
-      <a routerLink="/servicios" routerLinkActive="text-orange-400 border-b-2 border-orange-400"
-        class="hover:text-orange-400 transition pb-1">SERVICIOS</a>
+      <a routerLink="/servicios" routerLinkActive="text-yellow-300"
+        class="relative px-4 py-2 rounded-xl font-semibold hover:bg-white/5 transition-all duration-300 group">
+        <span class="relative z-10">SERVICIOS</span>
+        <div class="absolute inset-0 bg-gradient-to-r from-orange-400 to-red-500 rounded-xl opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+      </a>
 
-      <a routerLink="/contacto" routerLinkActive="text-orange-400 border-b-2 border-orange-400"
-        class="hover:text-orange-400 transition pb-1">CONTACTO</a>
+      <a routerLink="/contacto" routerLinkActive="text-yellow-300"
+        class="relative px-4 py-2 rounded-xl font-semibold hover:bg-white/5 transition-all duration-300 group">
+        <span class="relative z-10">CONTACTO</span>
+        <div class="absolute inset-0 bg-gradient-to-r from-pink-400 to-rose-500 rounded-xl opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+      </a>
     </nav>
 
     <!-- Botón sesión / Usuario logueado -->
@@ -36,60 +84,142 @@
       @if (isLoggedIn()) {
         <!-- Usuario logueado -->
         <div class="flex items-center gap-3">
-          <span class="text-white">Hola, {{ getUserName() }}</span>
-          <button (click)="logout()" class="px-4 py-2 rounded-lg font-semibold text-white bg-gray-600 hover:bg-gray-700 transition">
+          <div class="flex items-center gap-2 bg-white/5 rounded-2xl px-4 py-2 border border-white/10 hover:border-yellow-400/30 transition-all duration-300">
+            <div class="w-2 h-2 bg-gradient-to-r from-green-400 to-cyan-400 rounded-full animate-pulse"></div>
+            <span class="text-white font-medium">Hola, {{ getUserName() }}</span>
+          </div>
+          <button (click)="logout()" 
+            class="px-4 py-2 rounded-xl font-semibold text-white bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 transition-all duration-300 border border-white/10 hover:border-red-400/30 transform hover:scale-105">
             Cerrar sesión
           </button>
         </div>
       } @else {
         <!-- Usuario no logueado -->
-        <button routerLink="/login" class="px-4 py-2 rounded-lg font-semibold text-white shadow-lg transition"
-          style="background: linear-gradient(90deg,#f25123,#ff7a57)">
-          Iniciar sesión
-        </button>
+        <div class="relative group">
+          <div class="absolute -inset-1 bg-gradient-to-r from-yellow-400 via-pink-500 to-cyan-400 rounded-2xl blur opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
+          <button routerLink="/login" 
+            class="relative px-6 py-3 rounded-2xl font-bold text-white bg-gradient-to-r from-yellow-500 via-pink-500 to-cyan-500 hover:from-yellow-600 hover:via-pink-600 hover:to-cyan-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-yellow-500/25">
+            Iniciar sesión
+          </button>
+        </div>
       }
     </div>
 
-    <!-- Botón menú móvil -->
-    <button class="md:hidden text-white" (click)="toggleMenu()">
-      <i class="fa-solid" [ngClass]="isMenuOpen ? 'fa-xmark' : 'fa-bars'"></i>
+    <!-- Botón menú móvil artístico -->
+    <button class="md:hidden relative w-10 h-10 bg-gradient-to-br from-gray-800 to-black rounded-xl border border-white/10 hover:border-yellow-400/30 transition-all duration-300 flex items-center justify-center group"
+            (click)="toggleMenu()">
+      <div class="absolute -inset-2 bg-gradient-to-r from-yellow-400 to-pink-500 rounded-xl blur opacity-0 group-hover:opacity-30 transition-opacity duration-500"></div>
+      <i class="fa-solid text-white text-lg relative z-10 transform transition-transform duration-300"
+         [ngClass]="isMenuOpen ? 'fa-xmark rotate-90' : 'fa-bars'"></i>
     </button>
   </div>
 
-  <!-- Menú móvil -->
+  <!-- Menú móvil artístico -->
   @if (isMenuOpen) {
-  <div class="md:hidden bg-gray-900 text-white px-6 py-3 space-y-2 animate-fade-in">
-    <a routerLink="/" routerLinkActive="text-orange-400" [routerLinkActiveOptions]="{ exact: true }"
-      (click)="toggleMenu()" class="block py-2">Inicio</a>
+  <div class="md:hidden relative bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900 text-white px-6 py-4 space-y-1 animate-fade-in border-t border-white/10">
+    
+    <!-- Efecto de fondo para menú móvil -->
+    <div class="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-pink-500/5 to-cyan-500/5 pointer-events-none"></div>
+    
+    <a routerLink="/" routerLinkActive="text-yellow-300" [routerLinkActiveOptions]="{ exact: true }"
+      (click)="toggleMenu()" 
+      class="block py-3 px-4 rounded-xl hover:bg-white/5 transition-all duration-300 border border-transparent hover:border-yellow-400/30 group">
+      <span class="font-semibold">Inicio</span>
+    </a>
 
-    <a routerLink="/talleres" routerLinkActive="text-orange-400" (click)="toggleMenu()" class="block py-2">Talleres</a>
+    <a routerLink="/talleres" routerLinkActive="text-yellow-300" (click)="toggleMenu()"
+      class="block py-3 px-4 rounded-xl hover:bg-white/5 transition-all duration-300 border border-transparent hover:border-cyan-400/30 group">
+      <span class="font-semibold">Talleres</span>
+    </a>
 
-    <a routerLink="/festivales" routerLinkActive="text-orange-400" (click)="toggleMenu()"
-      class="block py-2">Festivales</a>
+    <a routerLink="/festivales" routerLinkActive="text-yellow-300" (click)="toggleMenu()"
+      class="block py-3 px-4 rounded-xl hover:bg-white/5 transition-all duration-300 border border-transparent hover:border-green-400/30 group">
+      <span class="font-semibold">Festivales</span>
+    </a>
           
-    <a routerLink="/premios" routerLinkActive="text-orange-400" (click)="toggleMenu()"
-      class="block py-2">Premios</a>
+    <a routerLink="/premios" routerLinkActive="text-yellow-300" (click)="toggleMenu()"
+      class="block py-3 px-4 rounded-xl hover:bg-white/5 transition-all duration-300 border border-transparent hover:border-purple-400/30 group">
+      <span class="font-semibold">Premios</span>
+    </a>
 
-    <a routerLink="/servicios" routerLinkActive="text-orange-400" (click)="toggleMenu()"
-      class="block py-2">Servicios</a>
+    <a routerLink="/servicios" routerLinkActive="text-yellow-300" (click)="toggleMenu()"
+      class="block py-3 px-4 rounded-xl hover:bg-white/5 transition-all duration-300 border border-transparent hover:border-orange-400/30 group">
+      <span class="font-semibold">Servicios</span>
+    </a>
 
-    <a routerLink="/contacto" routerLinkActive="text-orange-400" (click)="toggleMenu()" class="block py-2">Contacto</a>
+    <a routerLink="/contacto" routerLinkActive="text-yellow-300" (click)="toggleMenu()"
+      class="block py-3 px-4 rounded-xl hover:bg-white/5 transition-all duration-300 border border-transparent hover:border-pink-400/30 group">
+      <span class="font-semibold">Contacto</span>
+    </a>
 
     @if (isLoggedIn()) {
       <!-- Usuario logueado en móvil -->
-      <div class="border-t border-gray-700 pt-2 mt-2">
-        <div class="text-orange-400 py-2">Hola, {{ getUserName() }}</div>
-        <button (click)="logout()" class="w-full mt-2 py-2 rounded-lg font-semibold text-white bg-gray-600 hover:bg-gray-700 transition">
+      <div class="border-t border-white/10 pt-3 mt-3">
+        <div class="flex items-center gap-3 py-3 px-4 rounded-xl bg-white/5 border border-white/10">
+          <div class="w-2 h-2 bg-gradient-to-r from-green-400 to-cyan-400 rounded-full animate-pulse"></div>
+          <span class="text-yellow-300 font-semibold">Hola, {{ getUserName() }}</span>
+        </div>
+        <button (click)="logout()" 
+          class="w-full mt-2 py-3 px-4 rounded-xl font-semibold text-white bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 transition-all duration-300 border border-white/10 hover:border-red-400/30">
           Cerrar sesión
         </button>
       </div>
     } @else {
       <!-- Usuario no logueado en móvil -->
-      <button routerLink="/login" (click)="toggleMenu()" class="w-full mt-2 py-2 rounded-lg font-semibold text-white"
-        style="background: linear-gradient(90deg,#f25123,#ff7a57)">
-        Iniciar sesión
-      </button>
+      <div class="border-t border-white/10 pt-3 mt-3">
+        <button routerLink="/login" (click)="toggleMenu()" 
+          class="w-full py-3 px-4 rounded-xl font-bold text-white bg-gradient-to-r from-yellow-500 via-pink-500 to-cyan-500 hover:from-yellow-600 hover:via-pink-600 hover:to-cyan-600 transition-all duration-300 transform hover:scale-105 shadow-lg">
+          Iniciar sesión
+        </button>
+      </div>
     }
   </div>
   }
 </header>
+
+<!-- Estilos personalizados adicionales -->
+<style>
+  .animate-fade-in {
+    animation: fadeInDown 0.5s ease-out;
+  }
+
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Efectos de gradiente para textos activos */
+  .router-link-active:not(.bg-gradient-to-r) {
+    background: linear-gradient(135deg, rgba(253, 224, 71, 0.1), rgba(236, 72, 153, 0.1));
+    border: 1px solid rgba(253, 224, 71, 0.3);
+  }
+
+  /* Mejora la legibilidad del texto con gradientes */
+  .bg-clip-text {
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  /* Transiciones suaves para todos los elementos */
+  * {
+    transition-property: color, background-color, border-color, transform, box-shadow;
+    transition-duration: 300ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Efecto de pulso más suave */
+  @keyframes gentle-pulse {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.4; }
+  }
+
+  .animate-pulse {
+    animation: gentle-pulse 3s ease-in-out infinite;
+  }
+</style>

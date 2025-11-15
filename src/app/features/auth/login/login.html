@@ -1,149 +1,456 @@
-<div class="relative min-h-screen w-full">
-  <img src="img_login.jpg" alt="" class="absolute inset-0 w-full h-full object-cover">
+<div class="relative min-h-screen w-full overflow-hidden">
+  <!-- Fondo con efectos -->
+  <img src="img_login.jpg" alt="Background" class="absolute inset-0 w-full h-full object-cover">
+  
+  <!-- Overlay con gradiente artístico -->
+  <div class="absolute inset-0 bg-gradient-to-br from-purple-900/40 via-pink-900/30 to-cyan-900/40 backdrop-blur-sm"></div>
+  
+  <!-- Elementos decorativos flotantes -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <!-- Partículas decorativas -->
+    <div class="absolute top-1/4 left-1/4 w-32 h-32 bg-yellow-400/10 rounded-full blur-2xl animate-pulse-slow"></div>
+    <div class="absolute top-1/3 right-1/4 w-24 h-24 bg-pink-400/10 rounded-full blur-2xl animate-pulse-slow delay-1000"></div>
+    <div class="absolute bottom-1/4 left-1/3 w-28 h-28 bg-cyan-400/10 rounded-full blur-2xl animate-pulse-slow delay-500"></div>
+    <div class="absolute bottom-1/3 right-1/3 w-20 h-20 bg-purple-400/10 rounded-full blur-2xl animate-pulse-slow delay-1500"></div>
+  </div>
 
-  <div class="relative z-10 flex items-center justify-center min-h-screen">
-    <div class="bg-black/65 p-8 border border-white rounded-lg shadow-lg w-full max-w-sm">
-      <h2 class="text-white text-2xl font-semibold text-center mb-8">Iniciar Sesión</h2>
 
-      <form class="space-y-8" (ngSubmit)="login()" #loginForm="ngForm">
-        <input 
-          name="email"
-          type="text" 
-          placeholder="Correo" 
-          [(ngModel)]="email"
-          class="w-full py-4 px-3 rounded-md bg-[#2e3132] placeholder-[#6e6c6e] text-white focus:outline-none"
-        >
-        <input 
-          name="password"
-          type="password" 
-          placeholder="Contraseña" 
-          [(ngModel)]="password"
-          class="w-full py-4 px-3 rounded-md bg-[#2e3132] placeholder-[#6e6c6e] text-white focus:outline-none"
-        >
-        <button 
-          type="submit" 
-          class="w-full py-4 px-3 rounded-md bg-[#f24e1e] text-white font-semibold hover:bg-[#d9441a] transition">
-          Iniciar Sesión
-        </button>
-      </form>
+  <!-- Contenido principal -->
+  <div class="relative z-10 flex items-center justify-center min-h-screen p-4">
+    <!-- Tarjeta de login principal -->
+    <div class="relative w-full max-w-md">
+      <!-- Efecto de borde gradiente exterior -->
+      <div class="absolute -inset-4 bg-gradient-to-r from-yellow-400 via-pink-500 to-cyan-400 rounded-3xl blur-xl opacity-30 animate-pulse-slow"></div>
+      
+      <div class="relative bg-gradient-to-br from-gray-900/90 to-black/90 backdrop-blur-2xl rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
+        
+        <!-- Header de la tarjeta -->
+        <div class="relative p-6 border-b border-white/10 bg-gradient-to-r from-yellow-500/5 via-pink-500/5 to-cyan-500/5">
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-yellow-400/20 to-pink-400/20 rounded-2xl border border-white/10 flex items-center justify-center">
+              <mat-icon class="text-2xl bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 to-pink-300">lock</mat-icon>
+            </div>
+            <h2 class="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 via-pink-300 to-cyan-300">
+              Iniciar Sesión
+            </h2>
+            <p class="text-gray-400 text-sm mt-2">Accede a tu cuenta de administración</p>
+          </div>
+        </div>
 
-      <!-- Botones adicionales para cliente -->
-      <div class="mt-6 space-y-4">
-        <button 
-          (click)="openRegisterModal()"
-          class="w-full py-3 px-3 rounded-md bg-[#3b82f6] text-white font-semibold hover:bg-[#2563eb] transition">
-          Registrar Cliente
-        </button>
-        <button 
-          (click)="openLoginClienteModal()"
-          class="w-full py-3 px-3 rounded-md bg-[#10b981] text-white font-semibold hover:bg-[#059669] transition">
-          Ingresar como Cliente
-        </button>
+        <!-- Formulario -->
+        <div class="p-6">
+          <form class="space-y-6" (ngSubmit)="login()" #loginForm="ngForm">
+            
+            <!-- Campo Email -->
+            <div class="relative group">
+              <div class="absolute -inset-2 bg-gradient-to-r from-yellow-500/10 to-pink-500/10 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-500"></div>
+              
+              <div class="relative">
+                <label class="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                  <mat-icon class="text-yellow-400 text-lg">email</mat-icon>
+                  Correo Electrónico
+                </label>
+                <input 
+                  name="email"
+                  type="text" 
+                  placeholder="tu@email.com" 
+                  [(ngModel)]="email"
+                  class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400
+                         focus:outline-none focus:ring-2 focus:ring-yellow-500/50 focus:border-yellow-500/30
+                         transition-all duration-300 group-focus-within:border-yellow-500/30"
+                >
+              </div>
+            </div>
+
+            <!-- Campo Contraseña -->
+            <div class="relative group">
+              <div class="absolute -inset-2 bg-gradient-to-r from-pink-500/10 to-cyan-500/10 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-500"></div>
+              
+              <div class="relative">
+                <label class="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                  <mat-icon class="text-pink-400 text-lg">lock</mat-icon>
+                  Contraseña
+                </label>
+                <input 
+                  name="password"
+                  type="password" 
+                  placeholder="••••••••" 
+                  [(ngModel)]="password"
+                  class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400
+                         focus:outline-none focus:ring-2 focus:ring-pink-500/50 focus:border-pink-500/30
+                         transition-all duration-300 group-focus-within:border-pink-500/30"
+                >
+              </div>
+            </div>
+
+            <!-- Botón Login -->
+            <div class="relative group pt-4">
+              <div class="absolute -inset-1 bg-gradient-to-r from-yellow-500 to-pink-500 rounded-2xl blur opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
+              <button 
+                type="submit" 
+                class="relative w-full bg-gradient-to-r from-yellow-500 to-pink-500 text-white rounded-2xl border border-yellow-500/30
+                       px-6 py-4 font-bold text-lg hover:shadow-lg hover:shadow-yellow-500/25 transform hover:scale-105
+                       transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
+                Iniciar Sesión
+              </button>
+            </div>
+          </form>
+
+          <!-- Botones adicionales para cliente -->
+          <div class="mt-8 space-y-4">
+            <!-- Registrar Cliente -->
+            <div class="relative group">
+              <div class="absolute -inset-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl blur opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
+              <button 
+                (click)="openRegisterModal()"
+                class="relative w-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-2xl border border-blue-500/30
+                       px-6 py-3 font-semibold hover:shadow-lg hover:shadow-blue-500/25 transform hover:scale-105
+                       transition-all duration-300 flex items-center justify-center gap-2">
+                <mat-icon class="text-lg">person_add</mat-icon>
+                Registrar Cliente
+              </button>
+            </div>
+
+            <!-- Ingresar como Cliente -->
+            <div class="relative group">
+              <div class="absolute -inset-1 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl blur opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
+              <button 
+                (click)="openLoginClienteModal()"
+                class="relative w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-2xl border border-green-500/30
+                       px-6 py-3 font-semibold hover:shadow-lg hover:shadow-green-500/25 transform hover:scale-105
+                       transition-all duration-300 flex items-center justify-center gap-2">
+                <mat-icon class="text-lg">login</mat-icon>
+                Ingresar como Cliente
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer de la tarjeta -->
+        <div class="px-6 py-4 border-t border-white/10 bg-gradient-to-r from-yellow-500/5 via-pink-500/5 to-cyan-500/5">
+          <p class="text-center text-xs text-gray-400">
+            AMARU PRODUCCIONES © 2024
+          </p>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 <!-- Modal para Registrar Cliente -->
-<div *ngIf="showRegisterModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-  <div class="bg-[#1f2937] p-6 rounded-lg w-full max-w-md mx-4">
-    <h3 class="text-white text-xl font-semibold mb-4">Registrar Cliente</h3>
+<div *ngIf="showRegisterModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+  <div class="relative w-full max-w-md max-h-[90vh] overflow-hidden">
     
-    <form class="space-y-4" (ngSubmit)="registrarCliente()" #registerForm="ngForm">
-      <input 
-        name="nombre"
-        type="text" 
-        placeholder="Nombre" 
-        [(ngModel)]="clienteData.nombre"
-        required
-        class="w-full py-3 px-3 rounded-md bg-[#2e3132] placeholder-[#6e6c6e] text-white focus:outline-none"
-      >
-      <input 
-        name="apellido"
-        type="text" 
-        placeholder="Apellido" 
-        [(ngModel)]="clienteData.apellido"
-        required
-        class="w-full py-3 px-3 rounded-md bg-[#2e3132] placeholder-[#6e6c6e] text-white focus:outline-none"
-      >
-      <input 
-        name="dni"
-        type="text" 
-        placeholder="DNI" 
-        [(ngModel)]="clienteData.dni"
-        required
-        class="w-full py-3 px-3 rounded-md bg-[#2e3132] placeholder-[#6e6c6e] text-white focus:outline-none"
-      >
-      <input 
-        name="email"
-        type="email" 
-        placeholder="Correo" 
-        [(ngModel)]="clienteData.email"
-        required
-        class="w-full py-3 px-3 rounded-md bg-[#2e3132] placeholder-[#6e6c6e] text-white focus:outline-none"
-      >
-      <input 
-        name="telefono"
-        type="text" 
-        placeholder="Teléfono" 
-        [(ngModel)]="clienteData.telefono"
-        required
-        class="w-full py-3 px-3 rounded-md bg-[#2e3132] placeholder-[#6e6c6e] text-white focus:outline-none"
-      >
-      <input 
-        name="direccion"
-        type="text" 
-        placeholder="Dirección" 
-        [(ngModel)]="clienteData.direccion"
-        required
-        class="w-full py-3 px-3 rounded-md bg-[#2e3132] placeholder-[#6e6c6e] text-white focus:outline-none"
-      >
+    <!-- Efecto de borde gradiente exterior -->
+    <div class="absolute -inset-4 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-3xl blur-xl opacity-30 animate-pulse-slow"></div>
+    
+    <div class="relative bg-gradient-to-br from-gray-900/95 to-black/95 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
       
-      <div class="flex space-x-3">
-        <button 
-          type="button"
-          (click)="closeModals()"
-          class="flex-1 py-3 px-3 rounded-md bg-gray-600 text-white font-semibold hover:bg-gray-700 transition">
-          Cancelar
-        </button>
-        <button 
-          type="submit" 
-          class="flex-1 py-3 px-3 rounded-md bg-[#3b82f6] text-white font-semibold hover:bg-[#2563eb] transition">
-          Registrar
-        </button>
+      <!-- Header del modal -->
+      <div class="relative p-6 border-b border-white/10 bg-gradient-to-r from-blue-500/5 to-indigo-500/5">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 rounded-xl border border-white/10 flex items-center justify-center">
+              <mat-icon class="text-xl bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400">person_add</mat-icon>
+            </div>
+            <div>
+              <h3 class="text-xl font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-300 to-indigo-300">
+                Registrar Cliente
+              </h3>
+              <p class="text-sm text-gray-400 mt-1">Completa los datos para registrar un nuevo cliente</p>
+            </div>
+          </div>
+          
+          <!-- Botón cerrar modal -->
+          <button 
+            (click)="closeModals()"
+            class="w-10 h-10 bg-gradient-to-br from-gray-800/60 to-black/80 rounded-xl border border-white/10 text-gray-400 hover:text-white hover:border-red-500/30 transition-all duration-300 flex items-center justify-center group">
+            <mat-icon class="text-lg group-hover:scale-110 transition-transform">close</mat-icon>
+          </button>
+        </div>
       </div>
-    </form>
+
+      <!-- Formulario con scroll -->
+      <div class="overflow-y-auto custom-scrollbar max-h-[60vh]">
+        <div class="p-6">
+          <form class="space-y-4" (ngSubmit)="registrarCliente()" #registerForm="ngForm">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Nombre -->
+              <div class="relative group">
+                <input 
+                  name="nombre"
+                  type="text" 
+                  placeholder="Nombre" 
+                  [(ngModel)]="clienteData.nombre"
+                  required
+                  class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400
+                         focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/30
+                         transition-all duration-300 group-focus-within:border-blue-500/30"
+                >
+              </div>
+
+              <!-- Apellido -->
+              <div class="relative group">
+                <input 
+                  name="apellido"
+                  type="text" 
+                  placeholder="Apellido" 
+                  [(ngModel)]="clienteData.apellido"
+                  required
+                  class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400
+                         focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/30
+                         transition-all duration-300 group-focus-within:border-blue-500/30"
+                >
+              </div>
+            </div>
+
+            <!-- DNI -->
+            <div class="relative group">
+              <input 
+                name="dni"
+                type="text" 
+                placeholder="DNI" 
+                [(ngModel)]="clienteData.dni"
+                required
+                class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400
+                       focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/30
+                       transition-all duration-300 group-focus-within:border-blue-500/30"
+              >
+            </div>
+
+            <!-- Email -->
+            <div class="relative group">
+              <input 
+                name="email"
+                type="email" 
+                placeholder="Correo Electrónico" 
+                [(ngModel)]="clienteData.email"
+                required
+                class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400
+                       focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/30
+                       transition-all duration-300 group-focus-within:border-blue-500/30"
+              >
+            </div>
+
+            <!-- Teléfono -->
+            <div class="relative group">
+              <input 
+                name="telefono"
+                type="text" 
+                placeholder="Teléfono" 
+                [(ngModel)]="clienteData.telefono"
+                required
+                class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400
+                       focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/30
+                       transition-all duration-300 group-focus-within:border-blue-500/30"
+              >
+            </div>
+
+            <!-- Dirección -->
+            <div class="relative group">
+              <input 
+                name="direccion"
+                type="text" 
+                placeholder="Dirección" 
+                [(ngModel)]="clienteData.direccion"
+                required
+                class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400
+                       focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/30
+                       transition-all duration-300 group-focus-within:border-blue-500/30"
+              >
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+      <!-- Footer del modal -->
+      <div class="relative p-6 border-t border-white/10 bg-gradient-to-r from-blue-500/5 to-indigo-500/5">
+        <div class="flex gap-3">
+          <button 
+            type="button"
+            (click)="closeModals()"
+            class="flex-1 px-4 py-3 bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm rounded-2xl border border-white/10 
+                   text-gray-300 hover:text-white hover:border-gray-500/30 transition-all duration-300 font-semibold">
+            Cancelar
+          </button>
+          <button 
+            type="submit" 
+            (click)="registrarCliente()"
+            class="flex-1 px-4 py-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-2xl border border-blue-500/30
+                   hover:shadow-lg hover:shadow-blue-500/25 transform hover:scale-105 transition-all duration-300 font-semibold">
+            Registrar
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
 <!-- Modal para Login Cliente -->
-<div *ngIf="showLoginClienteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-  <div class="bg-[#1f2937] p-6 rounded-lg w-full max-w-md mx-4">
-    <h3 class="text-white text-xl font-semibold mb-4">Ingresar como Cliente</h3>
+<div *ngIf="showLoginClienteModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+  <div class="relative w-full max-w-md">
     
-    <form class="space-y-4" (ngSubmit)="loginCliente()" #loginClienteForm="ngForm">
-      <input 
-        name="emailCliente"
-        type="email" 
-        placeholder="Correo" 
-        [(ngModel)]="emailCliente"
-        required
-        class="w-full py-3 px-3 rounded-md bg-[#2e3132] placeholder-[#6e6c6e] text-white focus:outline-none"
-      >
+    <!-- Efecto de borde gradiente exterior -->
+    <div class="absolute -inset-4 bg-gradient-to-r from-green-500 to-emerald-500 rounded-3xl blur-xl opacity-30 animate-pulse-slow"></div>
+    
+    <div class="relative bg-gradient-to-br from-gray-900/95 to-black/95 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
       
-      <div class="flex space-x-3">
-        <button 
-          type="button"
-          (click)="closeModals()"
-          class="flex-1 py-3 px-3 rounded-md bg-gray-600 text-white font-semibold hover:bg-gray-700 transition">
-          Cancelar
-        </button>
-        <button 
-          type="submit" 
-          class="flex-1 py-3 px-3 rounded-md bg-[#10b981] text-white font-semibold hover:bg-[#059669] transition">
-          Ingresar
-        </button>
+      <!-- Header del modal -->
+      <div class="relative p-6 border-b border-white/10 bg-gradient-to-r from-green-500/5 to-emerald-500/5">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-xl border border-white/10 flex items-center justify-center">
+              <mat-icon class="text-xl bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-emerald-400">login</mat-icon>
+            </div>
+            <div>
+              <h3 class="text-xl font-black bg-clip-text text-transparent bg-gradient-to-r from-green-300 to-emerald-300">
+                Ingresar como Cliente
+              </h3>
+              <p class="text-sm text-gray-400 mt-1">Accede con tu correo electrónico</p>
+            </div>
+          </div>
+          
+          <!-- Botón cerrar modal -->
+          <button 
+            (click)="closeModals()"
+            class="w-10 h-10 bg-gradient-to-br from-gray-800/60 to-black/80 rounded-xl border border-white/10 text-gray-400 hover:text-white hover:border-red-500/30 transition-all duration-300 flex items-center justify-center group">
+            <mat-icon class="text-lg group-hover:scale-110 transition-transform">close</mat-icon>
+          </button>
+        </div>
       </div>
-    </form>
+
+      <!-- Formulario -->
+      <div class="p-6">
+        <form class="space-y-6" (ngSubmit)="loginCliente()" #loginClienteForm="ngForm">
+          
+          <div class="relative group">
+            <div class="absolute -inset-2 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-500"></div>
+            
+            <div class="relative">
+              <label class="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                <mat-icon class="text-green-400 text-lg">email</mat-icon>
+                Correo Electrónico
+              </label>
+              <input 
+                name="emailCliente"
+                type="email" 
+                placeholder="cliente@email.com" 
+                [(ngModel)]="emailCliente"
+                required
+                class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400
+                       focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500/30
+                       transition-all duration-300 group-focus-within:border-green-500/30"
+              >
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- Footer del modal -->
+      <div class="relative p-6 border-t border-white/10 bg-gradient-to-r from-green-500/5 to-emerald-500/5">
+        <div class="flex gap-3">
+          <button 
+            type="button"
+            (click)="closeModals()"
+            class="flex-1 px-4 py-3 bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm rounded-2xl border border-white/10 
+                   text-gray-300 hover:text-white hover:border-gray-500/30 transition-all duration-300 font-semibold">
+            Cancelar
+          </button>
+          <button 
+            type="submit" 
+            (click)="loginCliente()"
+            class="flex-1 px-4 py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-2xl border border-green-500/30
+                   hover:shadow-lg hover:shadow-green-500/25 transform hover:scale-105 transition-all duration-300 font-semibold">
+            Ingresar
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+
+<!-- Estilos personalizados -->
+<style>
+  /* Animación para el fondo del modal */
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse-slow 4s ease-in-out infinite;
+  }
+
+  /* Scrollbar personalizado */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+    margin: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #3b82f6, #06b6d4);
+    border-radius: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #2563eb, #0891b2);
+  }
+
+  /* Para Firefox */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #3b82f6 rgba(255, 255, 255, 0.05);
+  }
+
+  /* Efectos de gradiente para textos */
+  .bg-clip-text {
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  /* Transiciones suaves */
+  * {
+    transition-property: color, background-color, border-color, transform, box-shadow;
+    transition-duration: 300ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Mejora para inputs */
+  input::placeholder {
+    color: rgba(156, 163, 175, 0.7);
+    transition: color 0.3s ease;
+  }
+
+  input:focus::placeholder {
+    color: rgba(156, 163, 175, 0.4);
+  }
+
+  /* Validación visual */
+  input:invalid:not(:focus):not(:placeholder-shown) {
+    border-color: rgba(239, 68, 68, 0.5);
+  }
+
+  input:valid:not(:focus):not(:placeholder-shown) {
+    border-color: rgba(34, 197, 94, 0.5);
+  }
+
+  /* Animación para el texto del botón de salida */
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+</style>
