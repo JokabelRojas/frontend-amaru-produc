@@ -5,10 +5,11 @@ import { AdminDataService } from '../../../core/services/admin.data.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-talleres',
-  imports: [MatIconModule, CommonModule, FormsModule],
+  imports: [MatIconModule, CommonModule, FormsModule, MatTooltipModule],
   templateUrl: './talleres.html',
   styleUrls: ['./talleres.css']
 })

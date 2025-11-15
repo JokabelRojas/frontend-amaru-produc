@@ -1,88 +1,39 @@
-import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { AgregarServicios } from './modales/agregar-servicios/agregar-servicios';
 import { AdminDataService } from '../../../core/services/admin.data.service';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ModalServicio } from './modales/agregar-servicios/agregar-servicios';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
-  selector: 'app-servicios',
-  imports: [MatIconModule, CommonModule, FormsModule],
+  selector: 'app-servicio',
+  standalone: true,
+  imports: [MatIconModule, CommonModule, MatTooltipModule],
   templateUrl: './servicios.html',
   styleUrl: './servicios.css'
 })
-export class Servicios implements OnInit {
-  categorias: any[] = [];
-  subcategorias: any[] = [];
+export class Servicio {
   servicios: any[] = [];
 
-  filtros = {
-    id_categoria: '',
-    id_subcategoria: '',
-    estado: ''
-  };
-
-  constructor(
-    private dialog: MatDialog,
-    private adminDataService: AdminDataService
-  ) {}
+  constructor(private adminDataService: AdminDataService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
-    this.cargarCategorias();
     this.cargarServicios();
   }
 
-  cargarCategorias(): void {
-    this.adminDataService.getCategorias().subscribe({
-      next: (data) => (this.categorias = data),
-      error: (err) => console.error('Error al cargar categorías', err)
-    });
-  }
-
-  onCategoriaChange(): void {
-    if (this.filtros.id_categoria) {
-      this.adminDataService.getSubcategoriasPorCategoria(this.filtros.id_categoria).subscribe({
-        next: (data) => (this.subcategorias = data),
-        error: (err) => console.error('Error al cargar subcategorías', err)
-      });
-    } else {
-      this.subcategorias = [];
-      this.filtros.id_subcategoria = '';
-    }
-  }
-
   cargarServicios(): void {
-    this.adminDataService.getServiciosFiltrados(this.filtros).subscribe({
-      next: (data) => (this.servicios = data),
-      error: (err) => console.error('Error al cargar servicios', err)
+    this.adminDataService.getServicios().subscribe({
+      next: (servicios) => {
+        this.servicios = servicios;
+      },
+      error: (err) => console.error('Error al cargar servicios:', err)
     });
   }
 
-  openAgregarServicio(): void {
-    const dialogRef = this.dialog.open(AgregarServicios, {
-      width: '600px',
-      panelClass: 'custom-modalbox',
-      data: { 
-        categorias: this.categorias
-      }
-    });
-
-    dialogRef.afterClosed().subscribe((resultado) => {
-      if (resultado === true) {
-        this.cargarServicios();
-      }
-    });
-  }
-
-  editarServicio(servicio: any): void {
-    const dialogRef = this.dialog.open(AgregarServicios, {
-      width: '600px',
-      panelClass: 'custom-modalbox',
-      data: { 
-        servicio: servicio,
-        categorias: this.categorias
-      }
+  abrirModalServicio(): void {
+    const dialogRef = this.dialog.open(ModalServicio, {
+      width: '500px',
     });
 
     dialogRef.afterClosed().subscribe((resultado) => {
@@ -95,12 +46,27 @@ export class Servicios implements OnInit {
   eliminarServicio(id: string): void {
     if (confirm('¿Seguro que deseas eliminar este servicio?')) {
       this.adminDataService.deleteServicio(id).subscribe({
-        next: () => {
-          alert('Servicio eliminado correctamente');
+        next: (res) => {
+          console.log('Servicio eliminado correctamente:', res);
           this.cargarServicios();
         },
-        error: (err) => console.error('Error al eliminar servicio', err)
+        error: (err) => {
+          console.error('Error al eliminar el servicio:', err);
+        }
       });
     }
+  }
+
+  editarServicio(servicio: any): void {
+    const dialogRef = this.dialog.open(ModalServicio, {
+      width: '500px',
+      data: { servicio }
+    });
+
+    dialogRef.afterClosed().subscribe((resultado) => {
+      if (resultado === true) {
+        this.cargarServicios();
+      }
+    });
   }
 }

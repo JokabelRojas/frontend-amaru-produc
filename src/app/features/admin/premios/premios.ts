@@ -4,11 +4,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { AdminDataService } from '../../../core/services/admin.data.service';
 import { ModalPremios } from './modal-premios/modal-premios';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-premio',
   standalone: true,
-  imports: [MatIconModule, CommonModule],
+  imports: [MatIconModule, CommonModule, MatTooltipModule],
   templateUrl: './premios.html',
   styleUrl: './premios.css'
 })

@@ -4,10 +4,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { AdminDataService } from '../../../core/services/admin.data.service';
 import { ModalProfesor } from './modal-profesor/modal-profesor';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-profesor',
-  imports: [MatIconModule, CommonModule],
+  imports: [MatIconModule, CommonModule, MatTooltipModule],
   templateUrl: './profesor.html',
   styleUrl: './profesor.css'
 })

@@ -1,40 +1,154 @@
-<div class="w-screen h-auto flex flex-col bg-gradient-to-br from-gray-900 to-black overflow-hidden relative p-4">
+<div class="w-screen h-auto flex flex-col bg-gradient-to-br from-gray-900 to-black overflow-hidden relative py-16 md:py-24 px-4 md:px-8">
 
-  <!-- Efectos de fondo -->
-  <div class="fixed inset-0 overflow-hidden pointer-events-none">
-    <div class="absolute -top-24 -left-24 w-48 h-48 bg-orange-500/10 rounded-full blur-3xl floating"></div>
-    <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl floating" style="animation-delay: 2s;"></div>
-    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-pink-500/5 rounded-full blur-3xl floating" style="animation-delay: 4s;"></div>
+  <!-- Fondos decorativos -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-20 left-10 w-60 h-60 bg-orange-500/10 rounded-full blur-3xl animate-float"></div>
+    <div class="absolute bottom-20 right-10 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl animate-float" style="animation-delay: 2s;"></div>
+    <div class="absolute top-1/2 left-1/3 w-52 h-52 bg-pink-500/10 rounded-full blur-3xl animate-float" style="animation-delay: 4s;"></div>
+    
+    <!-- Líneas de conexión artísticas -->
+    <div class="absolute inset-0 opacity-[0.03]">
+      <div class="absolute top-1/4 right-1/4 w-px h-40 bg-white rotate-45"></div>
+      <div class="absolute bottom-1/3 left-1/3 w-px h-32 bg-white -rotate-12"></div>
+      <div class="absolute top-1/2 right-1/3 w-24 h-px bg-white rotate-45"></div>
+    </div>
   </div>
 
-  <div class="w-full max-w-5xl mx-auto relative z-10 fade-in">
+  <!-- Contenedor principal -->
+  <div class="w-full max-w-6xl mx-auto relative z-10">
 
-    <div class="text-center mb-6">
-      <h1 class="text-2xl md:text-4xl font-black mb-3">
-        <span class="text-4xl md:text-6xl font-black mb-4 bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-pink-500">Nuestros Convenios</span>
+    <!-- Header con estilo artístico -->
+    <div class="text-center mb-12 md:mb-16 relative">
+      <!-- Elementos decorativos -->
+      <div class="absolute -top-6 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-transparent via-orange-500 to-transparent rounded-full"></div>
+      <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-gradient-to-r from-transparent via-pink-500 to-transparent opacity-60"></div>
+      
+      <h1 class="text-4xl md:text-6xl font-black mb-4 bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-pink-500 to-purple-600 tracking-tight">
+        Nuestros Convenios
       </h1>
-      <p class="text-base md:text-lg text-gray-300 max-w-3xl mx-auto mb-4">
-        Colaboramos con las mejores instituciones y marcas para ofrecerte experiencias únicas
-      </p>
+      
+      <div class="relative inline-block max-w-2xl">
+        <p class="text-lg md:text-xl text-gray-300 leading-relaxed">
+          Colaboramos con las mejores <span class="text-orange-400 font-semibold">instituciones</span> y <span class="text-pink-400 font-semibold">marcas</span> para ofrecerte experiencias únicas
+        </p>
+        <!-- Decoración de puntas -->
+        <div class="absolute -bottom-4 left-6 w-2 h-2 bg-orange-500 rotate-45"></div>
+        <div class="absolute -bottom-4 right-6 w-2 h-2 bg-pink-500 rotate-45"></div>
+      </div>
+      
+      <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent rounded-full"></div>
     </div>
 
-    <!-- Carrusel -->
-    <div class="glass-effect rounded-2xl p-3 md:p-4 shadow-2xl border border-white/10 mb-4">
-      <div class="slider-container overflow-hidden rounded-xl">
-        <div #track class="slider-track flex gap-3 md:gap-4 py-2 transition-transform duration-500 ease-linear">
-          <ng-container *ngFor="let logo of logosLoop">
-            <div class="logo-item flex-shrink-0 w-36 md:w-40 h-24 md:h-28 glass-effect rounded-2xl p-3 border border-white/10 hover:border-orange-400/30 transition-all duration-300 logo-hover group">
-              <div class="w-full h-full flex items-center justify-center relative">
-                <div class="text-xl md:text-2xl font-bold gradient-text opacity-80 group-hover:opacity-100 transition-opacity">
-                  LOGO<span class="text-white">{{logo}}</span>
-                </div>
-                <div class="absolute -top-1 -right-1 w-3 h-3 bg-orange-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </div>
-            </div>
-          </ng-container>
+    <!-- Carrusel de convenios mejorado -->
+    <div class="relative group">
+      <!-- Efecto de borde gradiente -->
+      <div class="absolute -inset-4 bg-gradient-to-r from-orange-500/20 to-pink-500/20 rounded-3xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity duration-500 animate-pulse-slow"></div>
+      
+      <!-- Contenedor del carrusel -->
+      <div class="relative bg-gradient-to-br from-gray-900/80 to-black/90 backdrop-blur-xl rounded-3xl border border-white/10 p-6 md:p-8 shadow-2xl">
+        
+        <!-- Número decorativo -->
+        <div class="absolute -top-4 -left-4 text-6xl md:text-8xl font-black text-white/5 select-none z-0">
+          05
         </div>
+        
+        <!-- Track del carrusel -->
+        <div class="slider-container overflow-hidden rounded-2xl">
+          <div #track class="slider-track flex gap-4 md:gap-6 py-4 transition-transform duration-500 ease-linear">
+            <ng-container *ngFor="let logo of logosLoop; let i = index">
+              <div class="logo-item flex-shrink-0 w-40 md:w-48 h-28 md:h-32 relative group/logo">
+                <!-- Efecto de borde individual -->
+                <div class="absolute -inset-1 bg-gradient-to-r from-orange-500 to-pink-500 rounded-2xl blur opacity-0 group-hover/logo:opacity-30 transition-opacity duration-300"></div>
+                
+                <!-- Card del logo -->
+                <div class="relative bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm rounded-2xl border border-white/10 p-4 w-full h-full flex items-center justify-center group-hover/logo:border-orange-500/30 transition-all duration-300">
+                  
+                  <!-- Contenido del logo -->
+                  <div class="w-full h-full flex items-center justify-center relative">
+                    <!-- Logo con gradiente -->
+                    <div class="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-300 to-pink-300 opacity-80 group-hover/logo:opacity-100 transition-opacity duration-300">
+                      LOGO<span class="text-white/70">{{logo}}</span>
+                    </div>
+                    
+                    <!-- Indicador hover -->
+                    <div class="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full opacity-0 group-hover/logo:opacity-100 transition-opacity duration-300 shadow-lg shadow-orange-500/25"></div>
+                    
+                    <!-- Efecto de esquina decorativa -->
+                    <div class="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-orange-500/40 rounded-tl-lg opacity-0 group-hover/logo:opacity-100 transition-opacity duration-300"></div>
+                    <div class="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-pink-500/40 rounded-br-lg opacity-0 group-hover/logo:opacity-100 transition-opacity duration-300"></div>
+                  </div>
+                  
+                  <!-- Tooltip con nombre del convenio -->
+                  <div class="absolute -bottom-12 left-1/2 transform -translate-x-1/2 bg-black/80 backdrop-blur-sm text-white text-xs py-2 px-3 rounded-lg border border-white/10 opacity-0 group-hover/logo:opacity-100 transition-opacity duration-300 whitespace-nowrap z-20">
+                    <div class="flex items-center gap-2">
+                      <div class="w-1.5 h-1.5 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full"></div>
+                      <span>Convenio {{logo}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+
+        <!-- Elementos decorativos de esquina -->
+        <div class="absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-orange-500/40 rounded-tr-3xl"></div>
+        <div class="absolute bottom-4 left-4 w-6 h-6 border-b-2 border-l-2 border-pink-500/40 rounded-bl-3xl"></div>
+        
+        <!-- Indicador de scroll -->
+        <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 flex items-center gap-2 text-gray-400 text-sm">
+          <i class="fas fa-arrow-left text-xs"></i>
+          <span class="text-xs">Desliza para ver más</span>
+          <i class="fas fa-arrow-right text-xs"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mensaje decorativo inferior -->
+    <div class="text-center mt-12 md:mt-16">
+      <div class="inline-flex items-center gap-4 text-gray-400 text-sm">
+        <div class="w-8 h-px bg-gradient-to-r from-transparent to-orange-500"></div>
+        <span class="font-light italic">Alianzas que construyen experiencias extraordinarias</span>
+        <div class="w-8 h-px bg-gradient-to-r from-pink-500 to-transparent"></div>
       </div>
     </div>
 
   </div>
 </div>
+
+<!-- Estilos CSS personalizados -->
+<style>
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(1deg); }
+  }
+  
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+  }
+  
+  .animate-float {
+    animation: float 8s ease-in-out infinite;
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse-slow 4s ease-in-out infinite;
+  }
+
+  /* Animación de entrada */
+  .fade-in {
+    animation: fadeIn 1s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

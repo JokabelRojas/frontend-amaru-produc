@@ -1,18 +1,408 @@
-<h2 class="text-xl font-bold mb-4">Nuevo Festival</h2>
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+  <div class="relative w-full max-w-2xl max-h-[90vh] overflow-hidden">
+    
+    <!-- Efecto de borde gradiente exterior -->
+    <div class="absolute -inset-4 bg-gradient-to-r from-[#FB2C77] to-[#ff8f4d] rounded-3xl blur-xl opacity-30 animate-pulse-slow"></div>
+    
+    <!-- Contenedor principal del modal -->
+    <div class="relative bg-gradient-to-br from-gray-900/95 to-black/95 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
+      
+      <!-- Header del modal -->
+      <div class="relative p-6 border-b border-white/10 bg-gradient-to-r from-[#FB2C77]/5 to-[#ff8f4d]/5">
+        <!-- Efecto de brillo en el header -->
+        <div class="absolute inset-0 bg-gradient-to-r from-[#FB2C77]/10 to-[#ff8f4d]/10 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+        
+        <div class="relative flex items-center justify-between">
+          <!-- Título -->
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-gradient-to-r from-[#FB2C77]/20 to-[#ff8f4d]/20 rounded-xl border border-white/10 flex items-center justify-center">
+              <mat-icon class="text-xl bg-clip-text text-transparent bg-gradient-to-r from-[#FB2C77] to-[#ff8f4d]">festival</mat-icon>
+            </div>
+            <div>
+              <h2 class="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-[#FB2C77] to-[#ff8f4d]">
+                {{ modoEdicion ? 'Editar Festival' : 'Nuevo Festival' }}
+              </h2>
+              <p class="text-sm text-gray-400 mt-1">
+                {{ modoEdicion ? 'Actualiza los datos del festival' : 'Completa los datos para crear un nuevo festival' }}
+              </p>
+            </div>
+          </div>
+          
+          <!-- Botón de cerrar -->
+          <button 
+            (click)="cerrarModal()" 
+            class="w-10 h-10 bg-gradient-to-br from-gray-800/60 to-black/80 rounded-xl border border-white/10 text-gray-400 hover:text-white hover:border-[#FB2C77]/30 transition-all duration-300 flex items-center justify-center group">
+            <mat-icon class="text-lg group-hover:scale-110 transition-transform">close</mat-icon>
+          </button>
+        </div>
+      </div>
 
-<form [formGroup]="form" (ngSubmit)="submit()" class="space-y-4">
-  <input type="text" placeholder="Título" formControlName="titulo" class="input w-full" />
-  <textarea placeholder="Descripción" formControlName="descripcion" class="input w-full"></textarea>
-  <input type="date" formControlName="fecha_evento" class="input w-full" />
-  <input type="text" placeholder="Lugar" formControlName="lugar" class="input w-full" />
-  <input type="text" placeholder="Organizador" formControlName="organizador" class="input w-full" />
+      <!-- Contenido del formulario con scroll -->
+      <div class="overflow-y-auto custom-scrollbar max-h-[60vh]">
+        <div class="p-6">
+          <form (ngSubmit)="guardarFestival()" #festivalForm="ngForm" class="space-y-6">
+            
+            <!-- Campo Título -->
+            <div class="relative group">
+              <div class="absolute -inset-2 bg-gradient-to-r from-[#FB2C77]/10 to-[#ff8f4d]/10 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
+              
+              <div class="relative">
+                <label for="titulo" class="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                  <mat-icon class="text-[#FB2C77] text-lg">title</mat-icon>
+                  Título del Festival
+                </label>
+                <input
+                  type="text"
+                  id="titulo"
+                  name="titulo"
+                  [(ngModel)]="nuevoFestival.titulo"
+                  required
+                  class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400
+                         focus:outline-none focus:ring-2 focus:ring-[#FB2C77]/50 focus:border-[#FB2C77]/30
+                         transition-all duration-300 group-focus-within:border-[#FB2C77]/30"
+                  placeholder="Ingresa el título del festival"
+                />
+                <!-- Indicador de validación -->
+                <div class="absolute right-3 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-gradient-to-r from-[#FB2C77] to-[#ff8f4d] rounded-full opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
+              </div>
+            </div>
 
-  <select formControlName="id_categoria" class="input w-full">
-    <option *ngFor="let cat of categorias" [value]="cat._id">{{ cat.nombre }}</option>
-  </select>
+            <!-- Campo Descripción -->
+            <div class="relative group">
+              <div class="absolute -inset-2 bg-gradient-to-r from-[#FB2C77]/10 to-[#ff8f4d]/10 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
+              
+              <div class="relative">
+                <label for="descripcion" class="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                  <mat-icon class="text-[#ff8f4d] text-lg">description</mat-icon>
+                  Descripción
+                </label>
+                <textarea
+                  id="descripcion"
+                  name="descripcion"
+                  [(ngModel)]="nuevoFestival.descripcion"
+                  rows="3"
+                  required
+                  class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400
+                         focus:outline-none focus:ring-2 focus:ring-[#FB2C77]/50 focus:border-[#FB2C77]/30
+                         transition-all duration-300 group-focus-within:border-[#FB2C77]/30 resize-none custom-scrollbar"
+                  placeholder="Describe el festival"
+                ></textarea>
+                <!-- Contador de caracteres -->
+                <div class="absolute bottom-2 right-2 text-xs text-gray-400">
+                  {{ nuevoFestival.descripcion?.length || 0 }}/500
+                </div>
+              </div>
+            </div>
 
-  <div class="flex justify-end space-x-2">
-    <button type="button" class="btn btn-secondary" (click)="cerrar()">Cancelar</button>
-    <button type="submit" class="btn btn-primary">Guardar</button>
+            <!-- Fecha Inicio y Fecha Fin en fila -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Campo Fecha Inicio -->
+              <div class="relative group">
+                <div class="absolute -inset-2 bg-gradient-to-r from-[#FB2C77]/10 to-[#ff8f4d]/10 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
+                
+                <div class="relative">
+                  <label for="fecha_inicio" class="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                    <mat-icon class="text-[#FB2C77] text-lg">event_available</mat-icon>
+                    Fecha Inicio
+                  </label>
+                  <input
+                    type="datetime-local"
+                    id="fecha_inicio"
+                    name="fecha_inicio"
+                    [(ngModel)]="nuevoFestival.fecha_inicio"
+                    required
+                    class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white
+                           focus:outline-none focus:ring-2 focus:ring-[#FB2C77]/50 focus:border-[#FB2C77]/30
+                           transition-all duration-300 group-focus-within:border-[#FB2C77]/30"
+                  />
+                </div>
+              </div>
+
+              <!-- Campo Fecha Fin -->
+              <div class="relative group">
+                <div class="absolute -inset-2 bg-gradient-to-r from-[#FB2C77]/10 to-[#ff8f4d]/10 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
+                
+                <div class="relative">
+                  <label for="fecha_fin" class="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                    <mat-icon class="text-[#ff8f4d] text-lg">event_busy</mat-icon>
+                    Fecha Fin
+                  </label>
+                  <input
+                    type="datetime-local"
+                    id="fecha_fin"
+                    name="fecha_fin"
+                    [(ngModel)]="nuevoFestival.fecha_fin"
+                    required
+                    class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white
+                           focus:outline-none focus:ring-2 focus:ring-[#FB2C77]/50 focus:border-[#FB2C77]/30
+                           transition-all duration-300 group-focus-within:border-[#FB2C77]/30"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Campo Lugar -->
+            <div class="relative group">
+              <div class="absolute -inset-2 bg-gradient-to-r from-[#FB2C77]/10 to-[#ff8f4d]/10 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
+              
+              <div class="relative">
+                <label for="lugar" class="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                  <mat-icon class="text-[#FB2C77] text-lg">location_on</mat-icon>
+                  Lugar
+                </label>
+                <input
+                  type="text"
+                  id="lugar"
+                  name="lugar"
+                  [(ngModel)]="nuevoFestival.lugar"
+                  required
+                  class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400
+                         focus:outline-none focus:ring-2 focus:ring-[#FB2C77]/50 focus:border-[#FB2C77]/30
+                         transition-all duration-300 group-focus-within:border-[#FB2C77]/30"
+                  placeholder="Ingresa el lugar del festival"
+                />
+              </div>
+            </div>
+
+            <!-- Campo Organizador -->
+            <div class="relative group">
+              <div class="absolute -inset-2 bg-gradient-to-r from-[#FB2C77]/10 to-[#ff8f4d]/10 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
+              
+              <div class="relative">
+                <label for="organizador" class="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                  <mat-icon class="text-[#ff8f4d] text-lg">person</mat-icon>
+                  Organizador
+                </label>
+                <input
+                  type="text"
+                  id="organizador"
+                  name="organizador"
+                  [(ngModel)]="nuevoFestival.organizador"
+                  required
+                  class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400
+                         focus:outline-none focus:ring-2 focus:ring-[#FB2C77]/50 focus:border-[#FB2C77]/30
+                         transition-all duration-300 group-focus-within:border-[#FB2C77]/30"
+                  placeholder="Ingresa el organizador del festival"
+                />
+              </div>
+            </div>
+
+            <!-- Campo Tipo -->
+            <div class="relative group">
+              <div class="absolute -inset-2 bg-gradient-to-r from-[#FB2C77]/10 to-[#ff8f4d]/10 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
+              
+              <div class="relative">
+                <label for="tipo" class="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                  <mat-icon class="text-[#FB2C77] text-lg">category</mat-icon>
+                  Tipo de Festival
+                </label>
+                <input
+                  type="text"
+                  id="tipo"
+                  name="tipo"
+                  [(ngModel)]="nuevoFestival.tipo"
+                  required
+                  class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400
+                         focus:outline-none focus:ring-2 focus:ring-[#FB2C77]/50 focus:border-[#FB2C77]/30
+                         transition-all duration-300 group-focus-within:border-[#FB2C77]/30"
+                  placeholder="Ingresa el tipo de festival"
+                />
+              </div>
+            </div>
+
+            <!-- Campo Actividad -->
+            <div class="relative group">
+              <div class="absolute -inset-2 bg-gradient-to-r from-[#FB2C77]/10 to-[#ff8f4d]/10 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
+              
+              <div class="relative">
+                <label for="id_actividad" class="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                  <mat-icon class="text-[#ff8f4d] text-lg">sports_esports</mat-icon>
+                  Actividad
+                </label>
+                <select
+                  id="id_actividad"
+                  name="id_actividad"
+                  [(ngModel)]="nuevoFestival.id_actividad"
+                  required
+                  class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white
+                         focus:outline-none focus:ring-2 focus:ring-[#FB2C77]/50 focus:border-[#FB2C77]/30
+                         transition-all duration-300 group-focus-within:border-[#FB2C77]/30 appearance-none cursor-pointer"
+                >
+                  <option value="" disabled class="bg-gray-800 text-white">Selecciona una actividad</option>
+                  <option *ngFor="let actividad of actividades" [value]="actividad._id" class="bg-gray-800 text-white">
+                    {{ actividad.nombre }}
+                  </option>
+                </select>
+                <!-- Icono de flecha personalizado -->
+                <div class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                  <mat-icon class="text-gray-400 group-focus-within:text-[#FB2C77] transition-colors">arrow_drop_down</mat-icon>
+                </div>
+              </div>
+            </div>
+
+            <!-- Campo URL de Imagen -->
+            <div class="relative group">
+              <div class="absolute -inset-2 bg-gradient-to-r from-[#FB2C77]/10 to-[#ff8f4d]/10 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
+              
+              <div class="relative">
+                <label for="imagen_url" class="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                  <mat-icon class="text-[#FB2C77] text-lg">image</mat-icon>
+                  URL de Imagen
+                </label>
+                <input
+                  type="url"
+                  id="imagen_url"
+                  name="imagen_url"
+                  [(ngModel)]="nuevoFestival.imagen_url"
+                  placeholder="https://example.com/festival.jpg"
+                  class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400
+                         focus:outline-none focus:ring-2 focus:ring-[#FB2C77]/50 focus:border-[#FB2C77]/30
+                         transition-all duration-300 group-focus-within:border-[#FB2C77]/30"
+                />
+              </div>
+            </div>
+
+            <!-- Vista previa de imagen -->
+            <div *ngIf="nuevoFestival.imagen_url" class="relative group">
+              <div class="absolute -inset-2 bg-gradient-to-r from-[#FB2C77]/10 to-[#ff8f4d]/10 rounded-2xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              
+              <div class="relative p-4 bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl">
+                <label class="block text-sm font-medium text-gray-300 mb-2">Vista previa:</label>
+                <img 
+                  [src]="nuevoFestival.imagen_url" 
+                  alt="Vista previa del festival" 
+                  class="w-24 h-24 rounded-lg object-cover border border-white/10 shadow-lg transition-transform duration-300 group-hover:scale-105"
+                  onerror="this.style.display='none'"
+                >
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+      <!-- Footer del modal -->
+      <div class="relative p-6 border-t border-white/10 bg-gradient-to-r from-[#FB2C77]/5 to-[#ff8f4d]/5">
+        <div class="flex justify-end gap-3">
+          <!-- Botón Cancelar -->
+          <div class="relative group">
+            <div class="absolute -inset-1 bg-gradient-to-r from-gray-500/10 to-gray-600/10 rounded-2xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <button
+              type="button"
+              (click)="cerrarModal()"
+              class="relative px-6 py-3 bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm rounded-2xl border border-white/10 
+                     text-gray-300 hover:text-white hover:border-gray-500/30 transition-all duration-300 font-semibold flex items-center gap-2"
+            >
+              <mat-icon class="text-lg">cancel</mat-icon>
+              Cancelar
+            </button>
+          </div>
+
+          <!-- Botón Guardar -->
+          <div class="relative group">
+            <div class="absolute -inset-1 bg-gradient-to-r from-[#FB2C77] to-[#ff8f4d] rounded-2xl blur opacity-30 group-hover:opacity-50 transition-opacity duration-300"></div>
+            <button
+              type="submit"
+              [disabled]="!festivalForm.valid"
+              (click)="guardarFestival()"
+              class="relative px-6 py-3 bg-gradient-to-r from-[#FB2C77] to-[#ff8f4d] text-white rounded-2xl border border-[#FB2C77]/30
+                     hover:shadow-lg hover:shadow-[#FB2C77]/25 transform hover:scale-105 transition-all duration-300 font-semibold
+                     disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none flex items-center gap-2"
+            >
+              <mat-icon class="text-lg">{{ modoEdicion ? 'update' : 'save' }}</mat-icon>
+              {{ modoEdicion ? 'Actualizar' : 'Crear Festival' }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Elementos decorativos de esquina -->
+      <div class="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-[#FB2C77]/40 rounded-tl-2xl"></div>
+      <div class="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-[#ff8f4d]/40 rounded-tr-2xl"></div>
+      <div class="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-[#FB2C77]/40 rounded-bl-2xl"></div>
+      <div class="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-[#ff8f4d]/40 rounded-br-2xl"></div>
+    </div>
   </div>
-</form>
+</div>
+
+<!-- Estilos personalizados -->
+<style>
+  /* Animación para el fondo del modal */
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse-slow 4s ease-in-out infinite;
+  }
+
+  /* Scrollbar personalizado para el contenido del modal */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+    margin: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #FB2C77, #ff8f4d);
+    border-radius: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #e02468, #e67c3d);
+  }
+
+  /* Para Firefox */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #FB2C77 rgba(255, 255, 255, 0.05);
+  }
+
+  /* Mejora para el select nativo */
+  select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Remover la flecha por defecto en IE */
+  select::-ms-expand {
+    display: none;
+  }
+
+  /* Estilos para el textarea */
+  textarea {
+    min-height: 100px;
+  }
+
+  /* Efecto de focus mejorado */
+  input:focus, select:focus, textarea:focus {
+    transform: translateY(-1px);
+  }
+
+  /* Transición suave para todos los elementos */
+  * {
+    transition-property: color, background-color, border-color, transform, box-shadow;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Estilos específicos para inputs de fecha */
+  input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.5);
+    cursor: pointer;
+  }
+
+  input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+    filter: invert(0.7);
+  }
+</style>

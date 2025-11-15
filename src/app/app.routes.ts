@@ -6,8 +6,6 @@ import { Login } from './features/auth/login/login';
 
 // Secciones visibles desde el header
 import { Talleres } from './features/admin/talleres/talleres';
-import { Festivales } from './features/admin/festivales/festivales';
-import { Servicios } from './features/admin/servicios/servicios';
 import { Inscripciones } from './features/admin/inscripciones/inscripciones';
 
 // Panel administrativo
@@ -20,6 +18,8 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { Profesor } from './features/admin/profesor/profesor';
 import { Actividades } from './features/admin/actividades/actividades';
 import { Premios } from './features/admin/premios/premios';
+import { Festival } from './features/admin/festivales/festivales';
+import { Servicio } from './features/admin/servicios/servicios';
 
 export const routes: Routes = [
   // Página principal
@@ -43,6 +43,10 @@ export const routes: Routes = [
   {
     path: 'festivales',
     loadComponent: () => import('./features/cliente/components/festivales/festivales').then(m=> m.Festivales)
+  },
+    {
+    path: 'premios',
+    loadComponent: () => import('./features/cliente/components/premios/premios').then(m=> m.Premios)
   },
   {
     path: 'servicios',
@@ -86,7 +90,7 @@ export const routes: Routes = [
       },
       {
         path: 'festivales',
-        component: Festivales
+        component: Festival
       },
             {
         path: 'premios',
@@ -94,7 +98,7 @@ export const routes: Routes = [
       },
       {
         path: 'servicios',
-        component: Servicios
+        component: Servicio
       },
       {
         path: 'inscripciones',

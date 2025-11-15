@@ -1,8 +1,5 @@
-<header
-  class="sticky top-0 z-50 transition-all duration-300"
-  [class.bg-black]="!isScrolled"
-  [class.bg-gray-900/95]="isScrolled"
->
+<header class="sticky top-0 z-50 transition-all duration-300" [class.bg-black]="!isScrolled"
+  [class.bg-gray-900/95]="isScrolled">
   <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3 text-white">
     <!-- Logo -->
     <a routerLink="/" class="flex items-center gap-3">
@@ -15,34 +12,42 @@
 
     <!-- Desktop Nav -->
     <nav class="hidden md:flex items-center gap-6 relative">
-      <a routerLink="/" 
-         routerLinkActive="text-orange-400 border-b-2 border-orange-400"
-         [routerLinkActiveOptions]="{ exact: true }"
-         class="hover:text-orange-400 transition pb-1">INICIO</a>
+      <a routerLink="/" routerLinkActive="text-orange-400 border-b-2 border-orange-400"
+        [routerLinkActiveOptions]="{ exact: true }" class="hover:text-orange-400 transition pb-1">INICIO</a>
 
-      <a routerLink="/talleres" 
-         routerLinkActive="text-orange-400 border-b-2 border-orange-400"
-         class="hover:text-orange-400 transition pb-1">TALLERES</a>
-         
-      <a routerLink="/festivales" 
-         routerLinkActive="text-orange-400 border-b-2 border-orange-400"
-         class="hover:text-orange-400 transition pb-1">FESTIVALES</a>
-         
-      <a routerLink="/servicios" 
-         routerLinkActive="text-orange-400 border-b-2 border-orange-400"
-         class="hover:text-orange-400 transition pb-1">SERVICIOS</a>
-         
-      <a routerLink="/contacto" 
-         routerLinkActive="text-orange-400 border-b-2 border-orange-400"
-         class="hover:text-orange-400 transition pb-1">CONTACTO</a>
+      <a routerLink="/talleres" routerLinkActive="text-orange-400 border-b-2 border-orange-400"
+        class="hover:text-orange-400 transition pb-1">TALLERES</a>
+
+      <a routerLink="/festivales" routerLinkActive="text-orange-400 border-b-2 border-orange-400"
+        class="hover:text-orange-400 transition pb-1">FESTIVALES</a>
+
+      <a routerLink="/premios" routerLinkActive="text-orange-400 border-b-2 border-orange-400"
+        class="hover:text-orange-400 transition pb-1">PREMIOS</a>
+
+      <a routerLink="/servicios" routerLinkActive="text-orange-400 border-b-2 border-orange-400"
+        class="hover:text-orange-400 transition pb-1">SERVICIOS</a>
+
+      <a routerLink="/contacto" routerLinkActive="text-orange-400 border-b-2 border-orange-400"
+        class="hover:text-orange-400 transition pb-1">CONTACTO</a>
     </nav>
 
-    <!-- Botón sesión -->
+    <!-- Botón sesión / Usuario logueado -->
     <div class="hidden md:flex items-center gap-3">
-      <button routerLink="/login" class="px-4 py-2 rounded-lg font-semibold text-white shadow-lg transition"
-              style="background: linear-gradient(90deg,#f25123,#ff7a57)">
-        Iniciar sesión
-      </button>
+      @if (isLoggedIn()) {
+        <!-- Usuario logueado -->
+        <div class="flex items-center gap-3">
+          <span class="text-white">Hola, {{ getUserName() }}</span>
+          <button (click)="logout()" class="px-4 py-2 rounded-lg font-semibold text-white bg-gray-600 hover:bg-gray-700 transition">
+            Cerrar sesión
+          </button>
+        </div>
+      } @else {
+        <!-- Usuario no logueado -->
+        <button routerLink="/login" class="px-4 py-2 rounded-lg font-semibold text-white shadow-lg transition"
+          style="background: linear-gradient(90deg,#f25123,#ff7a57)">
+          Iniciar sesión
+        </button>
+      }
     </div>
 
     <!-- Botón menú móvil -->
@@ -53,38 +58,38 @@
 
   <!-- Menú móvil -->
   @if (isMenuOpen) {
-    <div class="md:hidden bg-gray-900 text-white px-6 py-3 space-y-2 animate-fade-in">
-      <a routerLink="/" 
-         routerLinkActive="text-orange-400"
-         [routerLinkActiveOptions]="{ exact: true }"
-         (click)="toggleMenu()" 
-         class="block py-2">Inicio</a>
+  <div class="md:hidden bg-gray-900 text-white px-6 py-3 space-y-2 animate-fade-in">
+    <a routerLink="/" routerLinkActive="text-orange-400" [routerLinkActiveOptions]="{ exact: true }"
+      (click)="toggleMenu()" class="block py-2">Inicio</a>
 
-      <a routerLink="/talleres" 
-         routerLinkActive="text-orange-400"
-         (click)="toggleMenu()" 
-         class="block py-2">Talleres</a>
-         
-      <a routerLink="/festivales" 
-         routerLinkActive="text-orange-400"
-         (click)="toggleMenu()" 
-         class="block py-2">Festivales</a>
-         
-      <a routerLink="/servicios" 
-         routerLinkActive="text-orange-400"
-         (click)="toggleMenu()" 
-         class="block py-2">Servicios</a>
-         
-      <a routerLink="/contacto" 
-         routerLinkActive="text-orange-400"
-         (click)="toggleMenu()" 
-         class="block py-2">Contacto</a>
-         
-      <button routerLink="/login" (click)="toggleMenu()"
-              class="w-full mt-2 py-2 rounded-lg font-semibold text-white"
-              style="background: linear-gradient(90deg,#f25123,#ff7a57)">
+    <a routerLink="/talleres" routerLinkActive="text-orange-400" (click)="toggleMenu()" class="block py-2">Talleres</a>
+
+    <a routerLink="/festivales" routerLinkActive="text-orange-400" (click)="toggleMenu()"
+      class="block py-2">Festivales</a>
+          
+    <a routerLink="/premios" routerLinkActive="text-orange-400" (click)="toggleMenu()"
+      class="block py-2">Premios</a>
+
+    <a routerLink="/servicios" routerLinkActive="text-orange-400" (click)="toggleMenu()"
+      class="block py-2">Servicios</a>
+
+    <a routerLink="/contacto" routerLinkActive="text-orange-400" (click)="toggleMenu()" class="block py-2">Contacto</a>
+
+    @if (isLoggedIn()) {
+      <!-- Usuario logueado en móvil -->
+      <div class="border-t border-gray-700 pt-2 mt-2">
+        <div class="text-orange-400 py-2">Hola, {{ getUserName() }}</div>
+        <button (click)="logout()" class="w-full mt-2 py-2 rounded-lg font-semibold text-white bg-gray-600 hover:bg-gray-700 transition">
+          Cerrar sesión
+        </button>
+      </div>
+    } @else {
+      <!-- Usuario no logueado en móvil -->
+      <button routerLink="/login" (click)="toggleMenu()" class="w-full mt-2 py-2 rounded-lg font-semibold text-white"
+        style="background: linear-gradient(90deg,#f25123,#ff7a57)">
         Iniciar sesión
       </button>
-    </div>
+    }
+  </div>
   }
 </header>

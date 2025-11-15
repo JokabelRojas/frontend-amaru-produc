@@ -1,1 +1,198 @@
-<p>footer-cliente works!</p>
+<footer class="bg-gradient-to-br from-gray-900 to-black border-t border-white/10 relative overflow-hidden">
+  <!-- Fondos decorativos -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute -bottom-20 -left-20 w-60 h-60 bg-emerald-500/5 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-32 -right-20 w-72 h-72 bg-teal-500/5 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-80 h-80 bg-green-500/5 rounded-full blur-3xl"></div>
+  </div>
+
+  <!-- Contenido principal -->
+  <div class="relative z-10 max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+      
+      <!-- Columna 1: Logo y descripción -->
+      <div class="text-center md:text-left">
+        <!-- Logo Amaru -->
+        <div class="flex justify-center md:justify-start items-center gap-4 mb-4">
+          <div class="w-16 h-16 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/25 p-2">
+            <!-- Aquí va tu logo PNG -->
+            <img 
+              src="assets/images/logo-amaru.png" 
+              alt="Logo Amaru" 
+              class="w-full h-full object-contain"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+            />
+            <!-- Fallback si no carga la imagen -->
+            <div class="hidden items-center justify-center w-full h-full">
+              <span class="text-white font-bold text-lg">A</span>
+            </div>
+          </div>
+          <div>
+            <span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-teal-400 block">
+              Amaru
+            </span>
+            <span class="text-gray-400 text-sm">Cultura & Arte Visual</span>
+          </div>
+        </div>
+        
+        <p class="text-gray-400 text-sm leading-relaxed mb-6 max-w-md">
+          Transformamos momentos en arte eterno. Especialistas en fotografía, talleres culturales y experiencias visuales que inspiran y perduran en el tiempo.
+        </p>
+        
+        <!-- Badge de calidad -->
+        <div class="inline-flex items-center gap-2 bg-black/40 backdrop-blur-sm px-4 py-2 rounded-full border border-emerald-500/20">
+          <i class="fas fa-leaf text-emerald-400 text-sm"></i>
+          <span class="text-emerald-300 text-sm font-semibold">Arte Natural</span>
+        </div>
+      </div>
+
+      <!-- Columna 2: Contacto -->
+      <div class="text-center md:text-left">
+        <h3 class="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-400 mb-6 flex items-center justify-center md:justify-start gap-2">
+          <i class="fas fa-envelope-open-text"></i>
+          Contacto
+        </h3>
+        
+        <div class="space-y-4">
+          <!-- Ubicación -->
+          <div class="flex items-center gap-3 text-gray-300 group cursor-pointer hover:text-white transition-colors duration-200 justify-center md:justify-start">
+            <div class="w-8 h-8 bg-emerald-500/20 rounded-lg flex items-center justify-center group-hover:bg-emerald-500/30 transition-colors duration-200">
+              <i class="fas fa-map-marker-alt text-emerald-400 text-sm"></i>
+            </div>
+            <div class="text-left">
+              <p class="text-sm font-medium">Ubicación</p>
+              <p class="text-xs text-gray-400 group-hover:text-gray-300">Av. Cultura 456, Ayacucho</p>
+            </div>
+          </div>
+
+          <!-- Teléfono -->
+          <div class="flex items-center gap-3 text-gray-300 group cursor-pointer hover:text-white transition-colors duration-200 justify-center md:justify-start">
+            <div class="w-8 h-8 bg-teal-500/20 rounded-lg flex items-center justify-center group-hover:bg-teal-500/30 transition-colors duration-200">
+              <i class="fas fa-phone text-teal-400 text-sm"></i>
+            </div>
+            <div class="text-left">
+              <p class="text-sm font-medium">Teléfono</p>
+              <p class="text-xs text-gray-400 group-hover:text-gray-300">+51 966 789 123</p>
+            </div>
+          </div>
+
+          <!-- Correo -->
+          <div class="flex items-center gap-3 text-gray-300 group cursor-pointer hover:text-white transition-colors duration-200 justify-center md:justify-start">
+            <div class="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center group-hover:bg-green-500/30 transition-colors duration-200">
+              <i class="fas fa-envelope text-green-400 text-sm"></i>
+            </div>
+            <div class="text-left">
+              <p class="text-sm font-medium">Correo</p>
+              <p class="text-xs text-gray-400 group-hover:text-gray-300">hola@amaru.com</p>
+            </div>
+          </div>
+
+          <!-- Horario -->
+          <div class="flex items-center gap-3 text-gray-300 group justify-center md:justify-start">
+            <div class="w-8 h-8 bg-emerald-500/20 rounded-lg flex items-center justify-center">
+              <i class="fas fa-clock text-emerald-400 text-sm"></i>
+            </div>
+            <div class="text-left">
+              <p class="text-sm font-medium">Horario</p>
+              <p class="text-xs text-gray-400">Lun-Sáb: 8:00 - 20:00</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Columna 3: Redes Sociales -->
+      <div class="text-center md:text-left">
+        <h3 class="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400 mb-6 flex items-center justify-center md:justify-start gap-2">
+          <i class="fas fa-hashtag"></i>
+          Síguenos en Redes
+        </h3>
+        
+        <p class="text-gray-400 text-sm mb-6 max-w-md mx-auto md:mx-0">
+          Conecta con Amaru y descubre el mundo del arte visual, behind the scenes y proyectos exclusivos.
+        </p>
+        
+        <div class="grid grid-cols-2 gap-3 max-w-xs mx-auto md:mx-0">
+          <!-- Instagram -->
+          <a href="#" class="group bg-gradient-to-br from-pink-500/10 to-purple-500/10 backdrop-blur-sm rounded-xl border border-pink-500/20 p-4 text-center hover:scale-105 transform transition-all duration-300 hover:shadow-lg hover:shadow-pink-500/20">
+            <div class="w-10 h-10 mx-auto mb-2 bg-gradient-to-r from-pink-500 to-purple-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <i class="fab fa-instagram text-white text-lg"></i>
+            </div>
+            <span class="text-white text-sm font-semibold">Instagram</span>
+            <p class="text-gray-400 text-xs mt-1">@amaru.arte</p>
+          </a>
+
+          <!-- TikTok -->
+          <a href="#" class="group bg-gradient-to-br from-cyan-500/10 to-blue-500/10 backdrop-blur-sm rounded-xl border border-cyan-500/20 p-4 text-center hover:scale-105 transform transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/20">
+            <div class="w-10 h-10 mx-auto mb-2 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <i class="fab fa-tiktok text-white text-lg"></i>
+            </div>
+            <span class="text-white text-sm font-semibold">TikTok</span>
+            <p class="text-gray-400 text-xs mt-1">@amaru.visual</p>
+          </a>
+
+          <!-- Facebook -->
+          <a href="#" class="group bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-sm rounded-xl border border-blue-500/20 p-4 text-center hover:scale-105 transform transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20">
+            <div class="w-10 h-10 mx-auto mb-2 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <i class="fab fa-facebook-f text-white text-lg"></i>
+            </div>
+            <span class="text-white text-sm font-semibold">Facebook</span>
+            <p class="text-gray-400 text-xs mt-1">Amaru Oficial</p>
+          </a>
+
+          <!-- YouTube -->
+          <a href="#" class="group bg-gradient-to-br from-red-500/10 to-pink-500/10 backdrop-blur-sm rounded-xl border border-red-500/20 p-4 text-center hover:scale-105 transform transition-all duration-300 hover:shadow-lg hover:shadow-red-500/20">
+            <div class="w-10 h-10 mx-auto mb-2 bg-gradient-to-r from-red-500 to-pink-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <i class="fab fa-youtube text-white text-lg"></i>
+            </div>
+            <span class="text-white text-sm font-semibold">YouTube</span>
+            <p class="text-gray-400 text-xs mt-1">Amaru TV</p>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Línea divisoria -->
+    <div class="border-t border-white/10 mt-8 md:mt-12 pt-8 md:pt-12">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+        <!-- Derechos de autor -->
+        <div class="text-center md:text-left">
+          <p class="text-gray-400 text-sm">
+            © 2024 <span class="text-emerald-400 font-semibold">Amaru</span>. Todos los derechos reservados.
+          </p>
+        </div>
+
+        <!-- Enlaces legales -->
+        <div class="flex flex-wrap justify-center gap-4 md:gap-6">
+          <a href="#" class="text-gray-400 hover:text-emerald-400 text-sm transition-colors duration-200">Términos de Servicio</a>
+          <a href="#" class="text-gray-400 hover:text-emerald-400 text-sm transition-colors duration-200">Política de Privacidad</a>
+          <a href="#" class="text-gray-400 hover:text-emerald-400 text-sm transition-colors duration-200">Cookies</a>
+        </div>
+
+        <!-- Métodos de pago -->
+        <div class="flex items-center gap-3">
+          <div class="text-gray-400 text-sm">Aceptamos:</div>
+          <div class="flex gap-2">
+            <div class="w-8 h-5 bg-white/10 rounded flex items-center justify-center">
+              <i class="fab fa-cc-visa text-blue-400 text-xs"></i>
+            </div>
+            <div class="w-8 h-5 bg-white/10 rounded flex items-center justify-center">
+              <i class="fab fa-cc-mastercard text-red-400 text-xs"></i>
+            </div>
+            <div class="w-8 h-5 bg-white/10 rounded flex items-center justify-center">
+              <i class="fas fa-university text-green-400 text-xs"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Elemento decorativo final -->
+    <div class="text-center mt-6">
+      <div class="inline-flex items-center gap-3 text-gray-500 text-xs">
+        <div class="w-8 h-px bg-gradient-to-r from-transparent to-emerald-500"></div>
+        <span>Transformando visiones en arte desde 2020</span>
+        <div class="w-8 h-px bg-gradient-to-r from-emerald-500 to-transparent"></div>
+      </div>
+    </div>
+  </div>
+</footer>

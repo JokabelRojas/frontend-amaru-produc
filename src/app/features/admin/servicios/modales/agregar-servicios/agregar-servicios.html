@@ -1,70 +1,259 @@
-<div class="p-6 bg-white rounded-2xl shadow-2xl border border-gray-200 relative max-h-[85vh] overflow-y-auto custom-scroll">
-  <button (click)="cancelar()" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 transition-all">
-    <mat-icon>close</mat-icon>
-  </button>
-
-  <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-    <mat-icon class="text-[#F7A428]">add_circle</mat-icon>
-    Agregar Servicio
-  </h2>
-
-  <form [formGroup]="servicioForm" (ngSubmit)="guardarServicio()" class="space-y-4">
-
-    <div>
-      <label for="categoria" class="block text-sm font-medium text-gray-700">Categoría</label>
-      <select
-        id="categoria"
-        formControlName="id_categoria"
-        (change)="onCategoriaChange()"
-        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-[#F7A428] focus:ring focus:ring-[#F7A428]/50 p-2 bg-white"
-      >
-        <option value="">Seleccione una categoría</option>
-        <option *ngFor="let cat of categorias" [value]="cat._id">{{ cat.nombre }}</option>
-      </select>
-    </div>
-
-    <div *ngIf="subcategorias.length > 0">
-      <label for="subcategoria" class="block text-sm font-medium text-gray-700">Subcategoría</label>
-      <select
-        id="subcategoria"
-        formControlName="id_subcategoria"
-        (change)="onSubcategoriaChange()"
-        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-[#F7A428] focus:ring focus:ring-[#F7A428]/50 p-2 bg-white"
-      >
-        <option value="">Seleccione una subcategoría</option>
-        <option *ngFor="let sub of subcategorias" [value]="sub._id">{{ sub.nombre }}</option>
-      </select>
-
-      <div *ngIf="descripcionSubcategoria" class="mt-2 p-2 border border-gray-300 rounded-md bg-gray-50 text-gray-800">
-        <p class="text-sm italic">{{ descripcionSubcategoria }}</p>
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+  <div class="relative w-full max-w-md max-h-[90vh] overflow-hidden">
+    
+    <!-- Efecto de borde gradiente exterior -->
+    <div class="absolute -inset-4 bg-gradient-to-r from-[#FB2C77] to-[#ff8f4d] rounded-3xl blur-xl opacity-30 animate-pulse-slow"></div>
+    
+    <!-- Contenedor principal del modal -->
+    <div class="relative bg-gradient-to-br from-gray-900/95 to-black/95 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
+      
+      <!-- Header del modal -->
+      <div class="relative p-6 border-b border-white/10 bg-gradient-to-r from-[#FB2C77]/5 to-[#ff8f4d]/5">
+        <!-- Efecto de brillo en el header -->
+        <div class="absolute inset-0 bg-gradient-to-r from-[#FB2C77]/10 to-[#ff8f4d]/10 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+        
+        <div class="relative flex items-center justify-between">
+          <!-- Título -->
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-gradient-to-r from-[#FB2C77]/20 to-[#ff8f4d]/20 rounded-xl border border-white/10 flex items-center justify-center">
+              <mat-icon class="text-xl bg-clip-text text-transparent bg-gradient-to-r from-[#FB2C77] to-[#ff8f4d]">handyman</mat-icon>
+            </div>
+            <div>
+              <h2 class="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-[#FB2C77] to-[#ff8f4d]">
+                {{ modoEdicion ? 'Editar Servicio' : 'Nuevo Servicio' }}
+              </h2>
+              <p class="text-sm text-gray-400 mt-1">
+                {{ modoEdicion ? 'Actualiza los datos del servicio' : 'Completa los datos para crear un nuevo servicio' }}
+              </p>
+            </div>
+          </div>
+          
+          <!-- Botón de cerrar -->
+          <button 
+            (click)="cerrarModal()" 
+            class="w-10 h-10 bg-gradient-to-br from-gray-800/60 to-black/80 rounded-xl border border-white/10 text-gray-400 hover:text-white hover:border-[#FB2C77]/30 transition-all duration-300 flex items-center justify-center group">
+            <mat-icon class="text-lg group-hover:scale-110 transition-transform">close</mat-icon>
+          </button>
+        </div>
       </div>
+
+      <!-- Contenido del formulario con scroll -->
+      <div class="overflow-y-auto custom-scrollbar max-h-[50vh]">
+        <div class="p-6">
+          <form (ngSubmit)="guardarServicio()" #servicioForm="ngForm" class="space-y-6">
+            
+            <!-- Campo Título -->
+            <div class="relative group">
+              <div class="absolute -inset-2 bg-gradient-to-r from-[#FB2C77]/10 to-[#ff8f4d]/10 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
+              
+              <div class="relative">
+                <label for="titulo" class="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                  <mat-icon class="text-[#FB2C77] text-lg">title</mat-icon>
+                  Título del Servicio
+                </label>
+                <input
+                  type="text"
+                  id="titulo"
+                  name="titulo"
+                  [(ngModel)]="nuevoServicio.titulo"
+                  required
+                  class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400
+                         focus:outline-none focus:ring-2 focus:ring-[#FB2C77]/50 focus:border-[#FB2C77]/30
+                         transition-all duration-300 group-focus-within:border-[#FB2C77]/30"
+                  placeholder="Ingresa el título del servicio"
+                />
+                <!-- Indicador de validación -->
+                <div class="absolute right-3 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-gradient-to-r from-[#FB2C77] to-[#ff8f4d] rounded-full opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
+              </div>
+            </div>
+
+            <!-- Campo Descripción -->
+            <div class="relative group">
+              <div class="absolute -inset-2 bg-gradient-to-r from-[#FB2C77]/10 to-[#ff8f4d]/10 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
+              
+              <div class="relative">
+                <label for="descripcion" class="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                  <mat-icon class="text-[#ff8f4d] text-lg">description</mat-icon>
+                  Descripción
+                </label>
+                <textarea
+                  id="descripcion"
+                  name="descripcion"
+                  [(ngModel)]="nuevoServicio.descripcion"
+                  rows="3"
+                  required
+                  class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400
+                         focus:outline-none focus:ring-2 focus:ring-[#FB2C77]/50 focus:border-[#FB2C77]/30
+                         transition-all duration-300 group-focus-within:border-[#FB2C77]/30 resize-none custom-scrollbar"
+                  placeholder="Describe el servicio y sus características"
+                ></textarea>
+                <!-- Contador de caracteres -->
+                <div class="absolute bottom-2 right-2 text-xs text-gray-400">
+                  {{ nuevoServicio.descripcion?.length || 0 }}/500
+                </div>
+              </div>
+            </div>
+
+            <!-- Campo URL de Imagen -->
+            <div class="relative group">
+              <div class="absolute -inset-2 bg-gradient-to-r from-[#FB2C77]/10 to-[#ff8f4d]/10 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
+              
+              <div class="relative">
+                <label for="imagen_url" class="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                  <mat-icon class="text-[#FB2C77] text-lg">image</mat-icon>
+                  URL de Imagen
+                </label>
+                <input
+                  type="url"
+                  id="imagen_url"
+                  name="imagen_url"
+                  [(ngModel)]="nuevoServicio.imagen_url"
+                  placeholder="https://example.com/servicio.jpg"
+                  class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400
+                         focus:outline-none focus:ring-2 focus:ring-[#FB2C77]/50 focus:border-[#FB2C77]/30
+                         transition-all duration-300 group-focus-within:border-[#FB2C77]/30"
+                />
+              </div>
+            </div>
+
+            <!-- Vista previa de imagen -->
+            <div *ngIf="nuevoServicio.imagen_url" class="relative group">
+              <div class="absolute -inset-2 bg-gradient-to-r from-[#FB2C77]/10 to-[#ff8f4d]/10 rounded-2xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              
+              <div class="relative p-4 bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl">
+                <label class="block text-sm font-medium text-gray-300 mb-2">Vista previa:</label>
+                <img 
+                  [src]="nuevoServicio.imagen_url" 
+                  alt="Vista previa del servicio" 
+                  class="w-20 h-20 rounded-lg object-cover border border-white/10 shadow-lg transition-transform duration-300 group-hover:scale-105"
+                  onerror="this.style.display='none'"
+                >
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+      <!-- Footer del modal -->
+      <div class="relative p-6 border-t border-white/10 bg-gradient-to-r from-[#FB2C77]/5 to-[#ff8f4d]/5">
+        <div class="flex justify-end gap-3">
+          <!-- Botón Cancelar -->
+          <div class="relative group">
+            <div class="absolute -inset-1 bg-gradient-to-r from-gray-500/10 to-gray-600/10 rounded-2xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <button
+              type="button"
+              (click)="cerrarModal()"
+              class="relative px-6 py-3 bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm rounded-2xl border border-white/10 
+                     text-gray-300 hover:text-white hover:border-gray-500/30 transition-all duration-300 font-semibold flex items-center gap-2"
+            >
+              <mat-icon class="text-lg">cancel</mat-icon>
+              Cancelar
+            </button>
+          </div>
+
+          <!-- Botón Guardar -->
+          <div class="relative group">
+            <div class="absolute -inset-1 bg-gradient-to-r from-[#FB2C77] to-[#ff8f4d] rounded-2xl blur opacity-30 group-hover:opacity-50 transition-opacity duration-300"></div>
+            <button
+              type="submit"
+              [disabled]="!servicioForm.valid"
+              (click)="guardarServicio()"
+              class="relative px-6 py-3 bg-gradient-to-r from-[#FB2C77] to-[#ff8f4d] text-white rounded-2xl border border-[#FB2C77]/30
+                     hover:shadow-lg hover:shadow-[#FB2C77]/25 transform hover:scale-105 transition-all duration-300 font-semibold
+                     disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none flex items-center gap-2"
+            >
+              <mat-icon class="text-lg">{{ modoEdicion ? 'update' : 'save' }}</mat-icon>
+              {{ modoEdicion ? 'Actualizar' : 'Crear Servicio' }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Elementos decorativos de esquina -->
+      <div class="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-[#FB2C77]/40 rounded-tl-2xl"></div>
+      <div class="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-[#ff8f4d]/40 rounded-tr-2xl"></div>
+      <div class="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-[#FB2C77]/40 rounded-bl-2xl"></div>
+      <div class="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-[#ff8f4d]/40 rounded-br-2xl"></div>
     </div>
-
-    <div>
-      <label for="imagen_url" class="block text-sm font-medium text-gray-700">Imagen (URL)</label>
-      <input
-        type="url"
-        id="imagen_url"
-        formControlName="imagen_url"
-        placeholder="https://ejemplo.com/imagen.jpg"
-        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-[#F7A428] focus:ring focus:ring-[#F7A428]/50 p-2"
-      />
-    </div>
-
-    <div class="flex justify-end gap-3 pt-4">
-      <button type="button" (click)="cancelar()" class="px-5 py-2 rounded-xl font-semibold border border-gray-300 text-gray-700 hover:bg-gray-100 transition-all">
-        Cancelar
-      </button>
-
-      <button
-        type="submit"
-        [disabled]="!servicioForm.valid"
-        class="px-5 py-2 rounded-xl font-semibold bg-[#F7A428] text-white hover:bg-[#e69320] shadow-md transition-all disabled:opacity-60 disabled:cursor-not-allowed"
-      >
-        <mat-icon class="text-white align-middle mr-1">save</mat-icon>
-        Guardar Servicio
-      </button>
-    </div>
-
-  </form>
+  </div>
 </div>
+
+<!-- Estilos personalizados -->
+<style>
+  /* Animación para el fondo del modal */
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse-slow 4s ease-in-out infinite;
+  }
+
+  /* Scrollbar personalizado para el contenido del modal */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+    margin: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #FB2C77, #ff8f4d);
+    border-radius: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #e02468, #e67c3d);
+  }
+
+  /* Para Firefox */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #FB2C77 rgba(255, 255, 255, 0.05);
+  }
+
+  /* Estilos para el textarea */
+  textarea {
+    min-height: 100px;
+  }
+
+  /* Efecto de focus mejorado */
+  input:focus, select:focus, textarea:focus {
+    transform: translateY(-1px);
+  }
+
+  /* Transición suave para todos los elementos */
+  * {
+    transition-property: color, background-color, border-color, transform, box-shadow;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Placeholder styling */
+  ::placeholder {
+    color: rgba(156, 163, 175, 0.7);
+  }
+
+  /* Validación visual mejorada */
+  input:invalid:not(:focus):not(:placeholder-shown) {
+    border-color: rgba(239, 68, 68, 0.5);
+  }
+
+  input:valid:not(:focus):not(:placeholder-shown) {
+    border-color: rgba(34, 197, 94, 0.5);
+  }
+
+  /* Mejora para inputs de URL */
+  input[type="url"]:valid:not(:focus):not(:placeholder-shown) {
+    border-color: rgba(34, 197, 94, 0.5);
+  }
+
+  input[type="url"]:invalid:not(:focus):not(:placeholder-shown) {
+    border-color: rgba(239, 68, 68, 0.5);
+  }
+</style>

@@ -1,0 +1,289 @@
+<app-header-cliente ngSkipHydration></app-header-cliente>       
+<div class="w-screen min-h-screen flex flex-col bg-gradient-to-br from-gray-900 to-black overflow-hidden relative p-4 md:p-8" ngSkipHydration>
+
+  <!-- Fondos decorativos mejorados -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-10 left-10 w-60 h-60 bg-amber-500/10 rounded-full blur-3xl animate-float"></div>
+    <div class="absolute bottom-10 right-10 w-72 h-72 bg-yellow-500/10 rounded-full blur-3xl animate-float" style="animation-delay: 2s;"></div>
+    <div class="absolute top-1/2 right-1/4 w-52 h-52 bg-orange-500/10 rounded-full blur-3xl animate-float" style="animation-delay: 4s;"></div>
+    
+    <!-- Líneas de conexión artísticas -->
+    <div class="absolute inset-0 opacity-[0.03]">
+      <div class="absolute top-1/4 left-1/4 w-px h-40 bg-white rotate-45"></div>
+      <div class="absolute bottom-1/3 right-1/3 w-px h-32 bg-white -rotate-12"></div>
+      <div class="absolute top-1/3 right-1/4 w-24 h-px bg-white rotate-45"></div>
+    </div>
+  </div>
+
+  <!-- Header artístico -->
+  <div class="text-center mb-12 md:mb-16 z-10 px-2 relative">
+    <!-- Elemento decorativo superior -->
+    <div class="absolute -top-6 left-1/2 transform -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-amber-500 to-transparent"></div>
+    <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-yellow-500 to-transparent opacity-60"></div>
+    
+    <h2 class="text-4xl md:text-6xl font-black mb-4 md:mb-6 bg-clip-text text-transparent bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-600 tracking-tight">
+      Nuestros Premios
+    </h2>
+    
+    <div class="relative inline-block">
+      <p class="text-gray-300 text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-light">
+        Reconocimientos que <span class="text-amber-400 font-semibold">inspiran</span> nuestra <span class="text-yellow-400 font-semibold">excelencia</span>
+      </p>
+      <!-- Decoración de puntas -->
+      <div class="absolute -bottom-3 left-4 w-2 h-2 bg-amber-500 rotate-45"></div>
+      <div class="absolute -bottom-3 right-4 w-2 h-2 bg-yellow-500 rotate-45"></div>
+    </div>
+  </div>
+
+  <!-- Mensaje de carga / error -->
+  <div *ngIf="cargando" class="text-center text-white mt-6 text-lg z-10">
+    <div class="inline-flex items-center gap-3 bg-black/40 backdrop-blur-lg px-6 py-4 rounded-2xl border border-white/10 shadow-2xl">
+      <div class="w-6 h-6 border-2 border-white/40 border-t-amber-500 rounded-full animate-spin"></div>
+      <span class="text-gray-200">Cargando premios...</span>
+    </div>
+  </div>
+  
+  <div *ngIf="error" class="text-center text-red-300 mt-6 text-lg z-10 bg-red-900/30 backdrop-blur-lg inline-block px-6 py-3 rounded-xl border border-red-500/30 shadow-lg max-w-md mx-auto">
+    <i class="fas fa-exclamation-triangle mr-2"></i>{{ error }}
+  </div>
+
+  <!-- Grid de premios -->
+  <div *ngIf="!cargando && !error && premios.length" class="z-10 px-2 lg:px-0 max-w-7xl mx-auto w-full">
+    
+    <!-- Estadísticas destacadas -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-12 md:mb-16">
+      <div class="bg-gradient-to-br from-amber-500/10 to-yellow-500/10 backdrop-blur-xl rounded-2xl border border-amber-500/20 p-4 text-center">
+        <div class="text-2xl md:text-3xl font-bold text-amber-400 mb-1">{{ premios.length }}</div>
+        <div class="text-xs text-amber-300 font-semibold">PREMIOS TOTALES</div>
+      </div>
+      <div class="bg-gradient-to-br from-yellow-500/10 to-orange-500/10 backdrop-blur-xl rounded-2xl border border-yellow-500/20 p-4 text-center">
+        <div class="text-2xl md:text-3xl font-bold text-yellow-400 mb-1">{{ premiosRecientes.length }}</div>
+        <div class="text-xs text-yellow-300 font-semibold">PREMIOS RECIENTES</div>
+      </div>
+      <div class="bg-gradient-to-br from-orange-500/10 to-amber-500/10 backdrop-blur-xl rounded-2xl border border-orange-500/20 p-4 text-center">
+        <div class="text-2xl md:text-3xl font-bold text-orange-400 mb-1">{{ anyoActual }}</div>
+        <div class="text-xs text-orange-300 font-semibold">AÑO ACTUAL</div>
+      </div>
+      <div class="bg-gradient-to-br from-amber-500/10 to-yellow-500/10 backdrop-blur-xl rounded-2xl border border-amber-500/20 p-4 text-center">
+        <div class="text-2xl md:text-3xl font-bold text-amber-400 mb-1">{{ premiosPorAnyo[anyoActual] || 0 }}</div>
+        <div class="text-xs text-amber-300 font-semibold">PREMIOS {{ anyoActual }}</div>
+      </div>
+    </div>
+
+    <!-- Contenedor grid responsivo -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8 auto-rows-fr">
+      
+      <!-- Card artística para cada premio -->
+      <div *ngFor="let premio of premios; let i = index" 
+           class="group relative"
+           [style.animation-delay]="(i * 0.1) + 's'">
+        
+        <!-- Efecto de borde gradiente -->
+        <div class="absolute -inset-0.5 bg-gradient-to-r from-amber-500 to-yellow-500 rounded-2xl blur opacity-30 group-hover:opacity-70 transition duration-300 animate-tilt"></div>
+        
+        <!-- Card principal -->
+        <div class="relative bg-gradient-to-br from-gray-900/90 to-black/95 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden h-full flex flex-col transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-amber-500/20">
+          
+          <!-- Encabezado de la card con número artístico -->
+          <div class="relative h-48 md:h-56 overflow-hidden">
+            <!-- Número decorativo -->
+            <div class="absolute -top-4 -right-4 text-8xl font-black text-white/5 z-0 select-none">
+              {{ i + 1 }}
+            </div>
+            
+            <!-- Imagen con overlay gradiente -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-10"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-amber-500/10 to-yellow-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-5"></div>
+            
+            <img 
+              [src]="premio.url_imagen" 
+              [alt]="premio.titulo"
+              class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 z-0"
+            />
+            
+            <!-- Badge de año -->
+            <div class="absolute top-4 left-4 z-20 bg-black/60 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-full border border-white/20">
+              <span class="bg-gradient-to-r from-amber-400 to-yellow-400 bg-clip-text text-transparent">
+                {{ obtenerAnyoPremio(premio.fecha) }}
+              </span>
+            </div>
+            
+            <!-- Badge de premio reciente -->
+            <div *ngIf="esPremioReciente(premio)" class="absolute top-4 right-4 z-20 bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs font-bold px-3 py-1.5 rounded-full border border-green-300/20">
+              <i class="fas fa-star mr-1"></i>RECIENTE
+            </div>
+            
+            <!-- Icono de trofeo -->
+            <div class="absolute bottom-4 right-4 z-20 w-10 h-10 bg-gradient-to-r from-amber-500 to-yellow-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transform group-hover:rotate-12 transition-all duration-500 shadow-lg shadow-amber-500/50">
+              <i class="fas fa-trophy text-white text-sm"></i>
+            </div>
+
+            <!-- Efecto de brillo dorado -->
+            <div class="absolute inset-0 bg-gradient-to-r from-amber-400/0 via-yellow-400/10 to-amber-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          </div>
+          
+          <!-- Contenido de la card -->
+          <div class="p-6 flex flex-col gap-4 flex-grow relative z-20">
+            
+            <!-- Título con subrayado decorativo -->
+            <div class="relative">
+              <h3 class="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-300 to-yellow-300 leading-tight pr-8">
+                {{ premio.titulo }}
+              </h3>
+              <div class="w-12 h-0.5 bg-gradient-to-r from-amber-500 to-yellow-500 mt-2 rounded-full"></div>
+            </div>
+            
+            <!-- Descripción -->
+            <p class="text-gray-300 text-sm leading-relaxed font-light flex-grow">
+              {{ premio.descripcion }}
+            </p>
+            
+            <!-- Información adicional -->
+            <div class="grid grid-cols-1 gap-3 text-xs">
+              <div class="flex items-center gap-2 text-gray-400">
+                <i class="fas fa-calendar text-amber-400"></i>
+                <span>{{ formatearFecha(premio.fecha) }}</span>
+              </div>
+              <div class="flex items-center gap-2 text-gray-400">
+                <i class="fas fa-award text-yellow-400"></i>
+                <span>Premio {{ obtenerAnyoPremio(premio.fecha) }}</span>
+              </div>
+              <div class="flex items-center gap-2 text-gray-400">
+                <i class="fas fa-clock text-amber-400"></i>
+                <span>{{ obtenerTiempoTranscurrido(premio.fecha) }}</span>
+              </div>
+            </div>
+            
+            <!-- Pie de card -->
+            <div class="flex justify-between items-center pt-2 border-t border-white/10">
+              <!-- Fecha destacada -->
+              <div class="text-white text-sm">
+                <span class="text-yellow-300 font-semibold">{{ obtenerAnyoPremio(premio.fecha) }}</span>
+              </div>
+              
+              <!-- Indicador de importancia -->
+              <div class="flex items-center gap-1" [ngClass]="{
+                'text-amber-400': i === 0,
+                'text-yellow-400': i === 1,
+                'text-orange-400': i === 2,
+                'text-gray-400': i > 2
+              }">
+                <i class="fas fa-star text-xs"></i>
+                <i class="fas fa-star text-xs" *ngIf="i < 3"></i>
+                <i class="fas fa-star text-xs" *ngIf="i === 0"></i>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Efecto de esquina decorativa -->
+          <div class="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-yellow-500/40 rounded-bl-2xl"></div>
+          <div class="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-amber-500/40 rounded-tr-2xl"></div>
+
+          <!-- Efecto de resplandor dorado en hover -->
+          <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-amber-400/0 via-yellow-400/5 to-amber-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+        </div>
+      </div>
+      
+    </div>
+    
+    <!-- Sección de logros destacados -->
+    <div *ngIf="premios.length > 0" class="mt-16 md:mt-20">
+      <div class="text-center mb-12 relative">
+        <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-orange-500 to-transparent"></div>
+        <h3 class="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-amber-500">
+          Logros Destacados
+        </h3>
+        <p class="text-gray-400 max-w-2xl mx-auto">
+          Reconocimientos que reflejan nuestro compromiso con la excelencia
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-gradient-to-br from-amber-500/10 to-yellow-500/10 backdrop-blur-xl rounded-2xl border border-amber-500/20 p-6 text-center group hover:scale-105 transition-transform duration-300">
+          <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-amber-500 to-yellow-500 rounded-full flex items-center justify-center">
+            <i class="fas fa-crown text-white text-xl"></i>
+          </div>
+          <h4 class="text-lg font-bold text-white mb-2">Premio Más Reciente</h4>
+          <p class="text-amber-300 font-semibold">{{ premiosRecientes[0]?.titulo }}</p>
+          <p class="text-gray-400 text-sm mt-2">{{ obtenerAnyoPremio(premiosRecientes[0]?.fecha || '') }}</p>
+        </div>
+
+        <div class="bg-gradient-to-br from-yellow-500/10 to-orange-500/10 backdrop-blur-xl rounded-2xl border border-yellow-500/20 p-6 text-center group hover:scale-105 transition-transform duration-300">
+          <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center">
+            <i class="fas fa-history text-white text-xl"></i>
+          </div>
+          <h4 class="text-lg font-bold text-white mb-2">Trayectoria</h4>
+          <p class="text-yellow-300 font-semibold">{{ anyosConPremios.length }} Años</p>
+          <p class="text-gray-400 text-sm mt-2">De reconocimientos continuos</p>
+        </div>
+
+        <div class="bg-gradient-to-br from-orange-500/10 to-amber-500/10 backdrop-blur-xl rounded-2xl border border-orange-500/20 p-6 text-center group hover:scale-105 transition-transform duration-300">
+          <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-orange-500 to-amber-500 rounded-full flex items-center justify-center">
+            <i class="fas fa-trophy text-white text-xl"></i>
+          </div>
+          <h4 class="text-lg font-bold text-white mb-2">Total de Premios</h4>
+          <p class="text-orange-300 font-semibold text-2xl">{{ premios.length }}</p>
+          <p class="text-gray-400 text-sm mt-2">Y seguimos creciendo</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mensaje cuando no hay premios -->
+  <div *ngIf="!cargando && !error && premios.length === 0" class="text-center text-gray-400 mt-12 z-10">
+    <div class="bg-black/40 backdrop-blur-lg px-8 py-16 rounded-2xl border border-white/10 shadow-2xl max-w-md mx-auto">
+      <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-amber-500/20 to-yellow-500/20 rounded-full flex items-center justify-center border border-white/10">
+        <i class="fas fa-trophy text-2xl text-gray-500"></i>
+      </div>
+      <h3 class="text-xl font-bold mb-2 text-gray-300">No hay premios registrados</h3>
+      <p class="text-sm text-gray-400">Nuestros logros y reconocimientos aparecerán aquí</p>
+    </div>
+  </div>
+</div>
+
+<!-- Estilos CSS personalizados -->
+<style>
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(1deg); }
+  }
+  
+  @keyframes tilt {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(1deg) scale(1.02); }
+  }
+  
+  .animate-float {
+    animation: float 8s ease-in-out infinite;
+  }
+  
+  .animate-tilt {
+    animation: tilt 10s ease-in-out infinite;
+  }
+  
+  /* Animación de entrada escalonada para las cards */
+  .group {
+    animation: slideUp 0.6s ease-out both;
+  }
+  
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Efecto de resplandor dorado */
+  @keyframes goldenGlow {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+  }
+
+  .golden-glow {
+    animation: goldenGlow 3s ease-in-out infinite;
+  }
+</style>

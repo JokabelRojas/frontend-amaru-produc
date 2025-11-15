@@ -7,10 +7,11 @@ import { Vision } from "../../cliente/components/vision/vision";
 import { Servicios } from "../../cliente/components/servicios/servicios";
 import { Convenios } from "../../cliente/components/convenios/convenios";
 import { Servicios2 } from '../../cliente/components/servicios2/servicios2';
+import { FooterCliente } from '../../../shared/components/footer-cliente/footer-cliente';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [HeaderCliente, Carrusel, Mision, Vision, Servicios2 , Convenios],
+  imports: [HeaderCliente, Carrusel, Mision, Vision, Servicios2 , Convenios, FooterCliente],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })

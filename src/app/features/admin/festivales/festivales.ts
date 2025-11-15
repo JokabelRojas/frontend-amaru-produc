@@ -1,51 +1,88 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { CommonModule, DatePipe, NgFor, NgClass } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { MatDialogModule, MatDialog } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
+import { AdminDataService } from '../../../core/services/admin.data.service';
 import { ModalFestival } from './modal-festival/modal-festival';
-import { ModalPremio } from './modal-premio/modal-premio';
-import { FestivalesService } from '../../cliente/services/festivales.service';
-import { Festival } from '../../cliente/models/festival.model';
-import { Premio } from '../../cliente/models/premio.model';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
-  selector: 'app-festivales',
+  selector: 'app-festival',
   standalone: true,
-  imports: [CommonModule, FormsModule, NgFor, NgClass, MatDialogModule],
+  imports: [MatIconModule, CommonModule, MatTooltipModule],
   templateUrl: './festivales.html',
-  styleUrls: ['./festivales.css'],
-  providers: [DatePipe]
+  styleUrl: './festivales.css'
 })
-export class Festivales {
-  festivales: Festival[] = [];
-  premios: Premio[] = [];
+export class Festival {
+  festivales: any[] = [];
 
-  constructor(private dialog: MatDialog, private festivalesService: FestivalesService) {
+  constructor(private adminDataService: AdminDataService, private dialog: MatDialog) {}
+
+  ngOnInit(): void {
     this.cargarFestivales();
-    this.cargarPremios();
   }
 
-  abrirModalFestival(festival?: Festival) {
-    const dialogRef = this.dialog.open(ModalFestival, { data: festival });
-    dialogRef.afterClosed().subscribe(() => this.cargarFestivales());
+  cargarFestivales(): void {
+    this.adminDataService.getFestivales().subscribe({
+      next: (festivales) => {
+        this.festivales = festivales;
+      },
+      error: (err) => console.error('Error al cargar festivales:', err)
+    });
   }
 
-  abrirModalPremio(premio?: Premio) {
-    const dialogRef = this.dialog.open(ModalPremio, { data: { premio, festivales: this.festivales } });
-    dialogRef.afterClosed().subscribe(() => this.cargarPremios());
+  abrirModalFestival(): void {
+    const dialogRef = this.dialog.open(ModalFestival, {
+      width: '600px',
+    });
+
+    dialogRef.afterClosed().subscribe((resultado) => {
+      if (resultado === true) {
+        this.cargarFestivales();
+      }
+    });
   }
 
-  cargarFestivales() {
-    this.festivalesService.getFestivales().subscribe(f => this.festivales = f);
+  eliminarFestival(id: string): void {
+    if (confirm('¿Seguro que deseas eliminar este festival?')) {
+      this.adminDataService.deleteFestival(id).subscribe({
+        next: (res) => {
+          console.log('Festival eliminado correctamente:', res);
+          this.cargarFestivales();
+        },
+        error: (err) => {
+          console.error('Error al eliminar el festival:', err);
+        }
+      });
+    }
   }
 
-  cargarPremios() {
-    this.festivalesService.getPremios().subscribe(p => this.premios = p);
-  }
+  editarFestival(festival: any): void {
+    const dialogRef = this.dialog.open(ModalFestival, {
+      width: '600px',
+      data: { festival }
+    });
 
- getPremiosPorFestival(festivalId?: string) {
-  if (!festivalId) return [];  // evita undefined
-  return this.premios.filter(p => p.festival === festivalId);
+    dialogRef.afterClosed().subscribe((resultado) => {
+      if (resultado === true) {
+        this.cargarFestivales();
+      }
+    });
+  }
+  cambiarEstadoFestival(id: string, estadoActual: string): void {
+  const nuevoEstado = estadoActual === 'activo' ? 'inactivo' : 'activo';
+  const accion = estadoActual === 'activo' ? 'desactivar' : 'activar';
+  
+  if (confirm(`¿Seguro que deseas ${accion} este festival?`)) {
+    this.adminDataService.cambiarEstadoFestival(id, nuevoEstado).subscribe({
+      next: (res) => {
+        console.log(`Festival ${accion}do correctamente:`, res);
+        this.cargarFestivales(); 
+      },
+      error: (err) => {
+        console.error(`Error al ${accion} el festival:`, err);
+      }
+    });
+  }
 }
-
 }

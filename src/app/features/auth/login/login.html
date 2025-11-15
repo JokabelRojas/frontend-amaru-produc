@@ -1,32 +1,149 @@
-    <div class="relative min-h-screen w-full">
-      <img src="img_login.jpg" alt="" class="absolute inset-0 w-full h-full object-cover">
+<div class="relative min-h-screen w-full">
+  <img src="img_login.jpg" alt="" class="absolute inset-0 w-full h-full object-cover">
 
-      <div class="relative z-10 flex items-center justify-center min-h-screen">
-        <div class="bg-black/65 p-8 border border-white rounded-lg shadow-lg w-full max-w-sm">
-          <h2 class="text-white text-2xl font-semibold text-center mb-8">Iniciar Sesión</h2>
+  <div class="relative z-10 flex items-center justify-center min-h-screen">
+    <div class="bg-black/65 p-8 border border-white rounded-lg shadow-lg w-full max-w-sm">
+      <h2 class="text-white text-2xl font-semibold text-center mb-8">Iniciar Sesión</h2>
 
-          <form class="space-y-8" (ngSubmit)="login()" #loginForm="ngForm">
-            <input 
-              name="email"
-              type="text" 
-              placeholder="Correo" 
-              [(ngModel)]="email"
-              class="w-full py-4 px-3 rounded-md bg-[#2e3132] placeholder-[#6e6c6e] text-white focus:outline-none"
-            >
-            <input 
-              name="password"
-              type="password" 
-              placeholder="Contraseña" 
-              [(ngModel)]="password"
-              class="w-full py-4 px-3 rounded-md bg-[#2e3132] placeholder-[#6e6c6e] text-white focus:outline-none"
-            >
-            <button 
-              type="submit" 
-              class="w-full py-4 px-3 rounded-md bg-[#f24e1e] text-white font-semibold hover:bg-[#d9441a] transition">
-              Iniciar Sesión
-            </button>
-          </form>
+      <form class="space-y-8" (ngSubmit)="login()" #loginForm="ngForm">
+        <input 
+          name="email"
+          type="text" 
+          placeholder="Correo" 
+          [(ngModel)]="email"
+          class="w-full py-4 px-3 rounded-md bg-[#2e3132] placeholder-[#6e6c6e] text-white focus:outline-none"
+        >
+        <input 
+          name="password"
+          type="password" 
+          placeholder="Contraseña" 
+          [(ngModel)]="password"
+          class="w-full py-4 px-3 rounded-md bg-[#2e3132] placeholder-[#6e6c6e] text-white focus:outline-none"
+        >
+        <button 
+          type="submit" 
+          class="w-full py-4 px-3 rounded-md bg-[#f24e1e] text-white font-semibold hover:bg-[#d9441a] transition">
+          Iniciar Sesión
+        </button>
+      </form>
 
-        </div>
+      <!-- Botones adicionales para cliente -->
+      <div class="mt-6 space-y-4">
+        <button 
+          (click)="openRegisterModal()"
+          class="w-full py-3 px-3 rounded-md bg-[#3b82f6] text-white font-semibold hover:bg-[#2563eb] transition">
+          Registrar Cliente
+        </button>
+        <button 
+          (click)="openLoginClienteModal()"
+          class="w-full py-3 px-3 rounded-md bg-[#10b981] text-white font-semibold hover:bg-[#059669] transition">
+          Ingresar como Cliente
+        </button>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- Modal para Registrar Cliente -->
+<div *ngIf="showRegisterModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-[#1f2937] p-6 rounded-lg w-full max-w-md mx-4">
+    <h3 class="text-white text-xl font-semibold mb-4">Registrar Cliente</h3>
+    
+    <form class="space-y-4" (ngSubmit)="registrarCliente()" #registerForm="ngForm">
+      <input 
+        name="nombre"
+        type="text" 
+        placeholder="Nombre" 
+        [(ngModel)]="clienteData.nombre"
+        required
+        class="w-full py-3 px-3 rounded-md bg-[#2e3132] placeholder-[#6e6c6e] text-white focus:outline-none"
+      >
+      <input 
+        name="apellido"
+        type="text" 
+        placeholder="Apellido" 
+        [(ngModel)]="clienteData.apellido"
+        required
+        class="w-full py-3 px-3 rounded-md bg-[#2e3132] placeholder-[#6e6c6e] text-white focus:outline-none"
+      >
+      <input 
+        name="dni"
+        type="text" 
+        placeholder="DNI" 
+        [(ngModel)]="clienteData.dni"
+        required
+        class="w-full py-3 px-3 rounded-md bg-[#2e3132] placeholder-[#6e6c6e] text-white focus:outline-none"
+      >
+      <input 
+        name="email"
+        type="email" 
+        placeholder="Correo" 
+        [(ngModel)]="clienteData.email"
+        required
+        class="w-full py-3 px-3 rounded-md bg-[#2e3132] placeholder-[#6e6c6e] text-white focus:outline-none"
+      >
+      <input 
+        name="telefono"
+        type="text" 
+        placeholder="Teléfono" 
+        [(ngModel)]="clienteData.telefono"
+        required
+        class="w-full py-3 px-3 rounded-md bg-[#2e3132] placeholder-[#6e6c6e] text-white focus:outline-none"
+      >
+      <input 
+        name="direccion"
+        type="text" 
+        placeholder="Dirección" 
+        [(ngModel)]="clienteData.direccion"
+        required
+        class="w-full py-3 px-3 rounded-md bg-[#2e3132] placeholder-[#6e6c6e] text-white focus:outline-none"
+      >
+      
+      <div class="flex space-x-3">
+        <button 
+          type="button"
+          (click)="closeModals()"
+          class="flex-1 py-3 px-3 rounded-md bg-gray-600 text-white font-semibold hover:bg-gray-700 transition">
+          Cancelar
+        </button>
+        <button 
+          type="submit" 
+          class="flex-1 py-3 px-3 rounded-md bg-[#3b82f6] text-white font-semibold hover:bg-[#2563eb] transition">
+          Registrar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal para Login Cliente -->
+<div *ngIf="showLoginClienteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-[#1f2937] p-6 rounded-lg w-full max-w-md mx-4">
+    <h3 class="text-white text-xl font-semibold mb-4">Ingresar como Cliente</h3>
+    
+    <form class="space-y-4" (ngSubmit)="loginCliente()" #loginClienteForm="ngForm">
+      <input 
+        name="emailCliente"
+        type="email" 
+        placeholder="Correo" 
+        [(ngModel)]="emailCliente"
+        required
+        class="w-full py-3 px-3 rounded-md bg-[#2e3132] placeholder-[#6e6c6e] text-white focus:outline-none"
+      >
+      
+      <div class="flex space-x-3">
+        <button 
+          type="button"
+          (click)="closeModals()"
+          class="flex-1 py-3 px-3 rounded-md bg-gray-600 text-white font-semibold hover:bg-gray-700 transition">
+          Cancelar
+        </button>
+        <button 
+          type="submit" 
+          class="flex-1 py-3 px-3 rounded-md bg-[#10b981] text-white font-semibold hover:bg-[#059669] transition">
+          Ingresar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

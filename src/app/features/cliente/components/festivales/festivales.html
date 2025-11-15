@@ -1,1 +1,309 @@
 <app-header-cliente ngSkipHydration></app-header-cliente>       
+<div class="w-screen min-h-screen flex flex-col bg-gradient-to-br from-gray-900 to-black overflow-hidden relative p-4 md:p-8" ngSkipHydration>
+
+  <!-- Fondos decorativos mejorados -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-10 left-10 w-60 h-60 bg-emerald-500/10 rounded-full blur-3xl animate-float"></div>
+    <div class="absolute bottom-10 right-10 w-72 h-72 bg-teal-500/10 rounded-full blur-3xl animate-float" style="animation-delay: 2s;"></div>
+    <div class="absolute top-1/2 right-1/4 w-52 h-52 bg-green-500/10 rounded-full blur-3xl animate-float" style="animation-delay: 4s;"></div>
+    
+    <!-- Líneas de conexión artísticas -->
+    <div class="absolute inset-0 opacity-[0.03]">
+      <div class="absolute top-1/4 left-1/4 w-px h-40 bg-white rotate-45"></div>
+      <div class="absolute bottom-1/3 right-1/3 w-px h-32 bg-white -rotate-12"></div>
+      <div class="absolute top-1/3 right-1/4 w-24 h-px bg-white rotate-45"></div>
+    </div>
+  </div>
+
+  <!-- Header artístico -->
+  <div class="text-center mb-12 md:mb-16 z-10 px-2 relative">
+    <!-- Elemento decorativo superior -->
+    <div class="absolute -top-6 left-1/2 transform -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-emerald-500 to-transparent"></div>
+    <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-teal-500 to-transparent opacity-60"></div>
+    
+    <h2 class="text-4xl md:text-6xl font-black mb-4 md:mb-6 bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-teal-500 to-green-600 tracking-tight">
+      Festivales Culturales
+    </h2>
+    
+    <div class="relative inline-block">
+      <p class="text-gray-300 text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-light">
+        Explora nuestras <span class="text-emerald-400 font-semibold">experiencias únicas</span> organizadas por categorías
+      </p>
+      <!-- Decoración de puntas -->
+      <div class="absolute -bottom-3 left-4 w-2 h-2 bg-emerald-500 rotate-45"></div>
+      <div class="absolute -bottom-3 right-4 w-2 h-2 bg-teal-500 rotate-45"></div>
+    </div>
+  </div>
+
+  <!-- Mensaje de carga / error -->
+  <div *ngIf="cargando" class="text-center text-white mt-6 text-lg z-10">
+    <div class="inline-flex items-center gap-3 bg-black/40 backdrop-blur-lg px-6 py-4 rounded-2xl border border-white/10 shadow-2xl">
+      <div class="w-6 h-6 border-2 border-white/40 border-t-emerald-500 rounded-full animate-spin"></div>
+      <span class="text-gray-200">Cargando festivales...</span>
+    </div>
+  </div>
+  
+  <div *ngIf="error" class="text-center text-red-300 mt-6 text-lg z-10 bg-red-900/30 backdrop-blur-lg inline-block px-6 py-3 rounded-xl border border-red-500/30 shadow-lg max-w-md mx-auto">
+    <i class="fas fa-exclamation-triangle mr-2"></i>{{ error }}
+  </div>
+
+  <!-- Secciones por Actividad -->
+  <div *ngIf="!cargando && !error && festivales.length" class="z-10 px-2 lg:px-0 max-w-7xl mx-auto w-full space-y-16 md:space-y-20">
+    
+    <!-- Sección para cada actividad -->
+    <div *ngFor="let actividad of actividadesUnicas" class="relative">
+      
+      <!-- Header de la sección -->
+      <div class="relative mb-8 md:mb-12">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h3 class="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-300 to-teal-300">
+              {{ actividad.nombre }}
+            </h3>
+            <p class="text-gray-400 text-sm mt-1">{{ actividad.descripcion }}</p>
+          </div>
+          <div class="text-emerald-400 text-sm font-semibold bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
+            {{ actividad.cantidad }} Festival{{ actividad.cantidad !== 1 ? 'es' : '' }}
+          </div>
+        </div>
+        <div class="w-20 h-0.5 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full"></div>
+      </div>
+
+      <!-- Grid de imágenes de festivales -->
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+        
+        <!-- Card de imagen para cada festival -->
+        <div *ngFor="let festival of obtenerFestivalesPorActividad(actividad._id)"
+             class="group relative cursor-pointer"
+             (click)="abrirModal(festival)">
+          
+          <!-- Efecto de borde gradiente -->
+          <div class="absolute -inset-0.5 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-xl blur opacity-0 group-hover:opacity-70 transition duration-300"></div>
+          
+          <!-- Card de imagen -->
+          <div class="relative bg-gradient-to-br from-gray-900/90 to-black/95 backdrop-blur-xl rounded-xl border border-white/10 overflow-hidden transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-emerald-500/20">
+            
+            <!-- Imagen -->
+            <div class="relative h-48 md:h-56 overflow-hidden">
+              <!-- Overlay gradiente -->
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent z-10"></div>
+              <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-5"></div>
+              
+              <img 
+                [src]="festival.imagen_url" 
+                [alt]="festival.titulo"
+                class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
+              />
+              
+              <!-- Badge de fecha próxima -->
+              <div *ngIf="esFestivalProximo(festival)" class="absolute top-3 left-3 z-20 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full border border-amber-300/20">
+                <i class="fas fa-clock mr-1"></i>PRÓXIMO
+              </div>
+              
+              <!-- Overlay de información al hover -->
+              <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex items-center justify-center">
+                <div class="text-center text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                  <i class="fas fa-expand text-2xl mb-2"></i>
+                  <p class="text-sm font-semibold">Ver detalles</p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Título pequeño en la parte inferior -->
+            <div class="p-3">
+              <h4 class="text-white text-sm font-semibold truncate">{{ festival.titulo }}</h4>
+              <p class="text-gray-400 text-xs truncate">{{ formatearFechaCorta(festival.fecha_inicio) }}</p>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    
+  </div>
+
+  <!-- Mensaje cuando no hay festivales -->
+  <div *ngIf="!cargando && !error && festivales.length === 0" class="text-center text-gray-400 mt-12 z-10">
+    <div class="bg-black/40 backdrop-blur-lg px-8 py-16 rounded-2xl border border-white/10 shadow-2xl max-w-md mx-auto">
+      <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 rounded-full flex items-center justify-center border border-white/10">
+        <i class="fas fa-calendar-times text-2xl text-gray-500"></i>
+      </div>
+      <h3 class="text-xl font-bold mb-2 text-gray-300">No hay festivales activos</h3>
+      <p class="text-sm text-gray-400">Próximamente anunciaremos nuevos eventos culturales</p>
+    </div>
+  </div>
+
+  <!-- Modal para detalles del festival -->
+  <div *ngIf="festivalSeleccionado" 
+       class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm transition-opacity duration-300"
+       (click)="cerrarModal($event)">
+    
+    <div class="relative w-full max-w-4xl max-h-[90vh] overflow-hidden rounded-2xl bg-gradient-to-br from-gray-900 to-black border border-white/10 shadow-2xl"
+         (click)="$event.stopPropagation()">
+      
+      <!-- Efecto de borde gradiente -->
+      <div class="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl blur opacity-30"></div>
+      
+      <!-- Contenido del modal -->
+      <div class="relative bg-gradient-to-br from-gray-900 to-black rounded-2xl overflow-hidden">
+        
+        <!-- Header del modal -->
+        <div class="relative h-64 md:h-80 overflow-hidden">
+          <!-- Imagen de fondo -->
+          <img 
+            [src]="festivalSeleccionado.imagen_url" 
+            [alt]="festivalSeleccionado.titulo"
+            class="w-full h-full object-cover"
+          />
+          
+          <!-- Overlay gradiente -->
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"></div>
+          
+          <!-- Botón cerrar -->
+          <button 
+            (click)="cerrarModal($event)"
+            class="absolute top-4 right-4 w-10 h-10 bg-black/60 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-red-500/60 transition-colors duration-200 border border-white/20">
+            <i class="fas fa-times"></i>
+          </button>
+          
+          <!-- Badges -->
+          <div class="absolute top-4 left-4 flex flex-wrap gap-2">
+            <div class="bg-black/60 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-full border border-white/20">
+              <span class="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
+                {{ festivalSeleccionado.tipo | uppercase }}
+              </span>
+            </div>
+            <div *ngIf="esFestivalProximo(festivalSeleccionado)" 
+                 class="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-full border border-amber-300/20">
+              <i class="fas fa-clock mr-1"></i>PRÓXIMO
+            </div>
+          </div>
+          
+          <!-- Título -->
+          <div class="absolute bottom-6 left-6 right-6">
+            <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">{{ festivalSeleccionado.titulo }}</h2>
+            <p class="text-gray-300 text-sm md:text-base">{{ festivalSeleccionado.descripcion }}</p>
+          </div>
+        </div>
+        
+        <!-- Contenido del modal -->
+        <div class="p-6 md:p-8">
+          <!-- Información principal -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            
+            <!-- Columna izquierda -->
+            <div class="space-y-4">
+              <div class="flex items-center gap-3 text-white">
+                <div class="w-10 h-10 bg-emerald-500/20 rounded-lg flex items-center justify-center">
+                  <i class="fas fa-calendar-alt text-emerald-400"></i>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-400">Fecha</p>
+                  <p class="font-semibold">{{ formatearFechaLarga(festivalSeleccionado.fecha_inicio) }}</p>
+                </div>
+              </div>
+              
+              <div class="flex items-center gap-3 text-white">
+                <div class="w-10 h-10 bg-teal-500/20 rounded-lg flex items-center justify-center">
+                  <i class="fas fa-map-marker-alt text-teal-400"></i>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-400">Lugar</p>
+                  <p class="font-semibold">{{ festivalSeleccionado.lugar }}</p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Columna derecha -->
+            <div class="space-y-4">
+              <div class="flex items-center gap-3 text-white">
+                <div class="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center">
+                  <i class="fas fa-users text-green-400"></i>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-400">Organizador</p>
+                  <p class="font-semibold">{{ festivalSeleccionado.organizador }}</p>
+                </div>
+              </div>
+              
+              <div class="flex items-center gap-3 text-white">
+                <div class="w-10 h-10 bg-emerald-500/20 rounded-lg flex items-center justify-center">
+                  <i class="fas fa-tag text-emerald-400"></i>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-400">Actividad</p>
+                  <p class="font-semibold">{{ festivalSeleccionado.id_actividad.nombre }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          
+          <!-- Botones de acción -->
+          <div class="flex flex-col sm:flex-row gap-3 justify-end">
+            <button 
+              (click)="cerrarModal($event)"
+              class="px-6 py-3 border border-gray-600 text-gray-300 rounded-xl hover:bg-gray-800 transition-colors duration-200">
+              Cerrar
+            </button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer-cliente></app-footer-cliente>
+
+
+
+<style>
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(1deg); }
+  }
+  
+  @keyframes tilt {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(1deg) scale(1.02); }
+  }
+  
+  .animate-float {
+    animation: float 8s ease-in-out infinite;
+  }
+  
+  .animate-tilt {
+    animation: tilt 10s ease-in-out infinite;
+  }
+  
+  /* Animación de entrada para el modal */
+  .modal-enter {
+    animation: modalEnter 0.3s ease-out;
+  }
+  
+  @keyframes modalEnter {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  /* Scroll personalizado */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #1f2937;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #10b981;
+    border-radius: 3px;
+  }
+</style>

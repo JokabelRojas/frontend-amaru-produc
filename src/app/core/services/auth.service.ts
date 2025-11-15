@@ -20,27 +20,71 @@ export class AuthService {
     return isPlatformBrowser(this.platformId);
   }
 
-  login(email: string, password: string): Observable<any> {
-    return this.http.post(`${environment.apiUrl}auth/login`, { email, password }).pipe(
-      tap((res: any) => {
-        if (res.access_token && this.isBrowser()) {
-          localStorage.setItem(this.tokenKey, res.access_token);
+login(email: string, password: string): Observable<any> {
+  return this.http.post(`${environment.apiUrl}/auth/login`, { email, password }).pipe(
+    tap((res: any) => {
+      if (res.access_token && this.isBrowser()) {
+        localStorage.setItem(this.tokenKey, res.access_token);
+        // Guardar datos completos del usuario
+        if (res.user) {
+          localStorage.setItem('user_data', JSON.stringify(res.user));
         }
-      })
-    );
-  }
+      }
+    })
+  );
+}
 
   getToken(): string | null {
     return this.isBrowser() ? localStorage.getItem(this.tokenKey) : null;
   }
 
-  logout(): void {
-    if (this.isBrowser()) {
-      localStorage.removeItem(this.tokenKey);
-    }
+logout(): void {
+  if (this.isBrowser()) {
+    localStorage.removeItem(this.tokenKey);
+    localStorage.removeItem('user_data');
   }
+}
 
   isAuthenticated(): boolean {
     return !!this.getToken();
   }
+
+  registrarUsuarioSinContraseña(usuarioData: {
+    nombre: string;
+    apellido: string;
+    dni: string;
+    email: string;
+    telefono: string;
+    direccion: string;
+  }): Observable<any> {
+    return this.http.post(`${environment.apiUrl}auth/register-sin-password`, usuarioData);
+  }
+
+loginSinContraseña(email: string): Observable<any> {
+  const url = `${environment.apiUrl}/auth/login-sin-password`.replace(/([^:]\/)\/+/g, '$1');
+  return this.http.post(url, { email }).pipe(
+    tap((res: any) => {
+      if (res.access_token && this.isBrowser()) {
+        localStorage.setItem(this.tokenKey, res.access_token);
+        // Guardar datos completos del usuario
+        if (res.user) {
+          localStorage.setItem('user_data', JSON.stringify(res.user));
+        }
+      }
+    })
+  );
+}
+
+getUserData(): any {
+  if (this.isBrowser()) {
+    try {
+      const userData = localStorage.getItem('user_data');
+      return userData ? JSON.parse(userData) : null;
+    } catch (error) {
+      console.error('Error al obtener datos del usuario:', error);
+      return null;
+    }
+  }
+  return null;
+}
 }

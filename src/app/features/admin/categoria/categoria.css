@@ -1,0 +1,8 @@
+/* Estilos para los botones de toggle */
+.hover\:text-red-600:hover {
+  color: #dc2626 !important;
+}
+
+.hover\:text-green-600:hover {
+  color: #16a34a !important;
+}

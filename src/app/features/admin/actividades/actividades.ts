@@ -4,11 +4,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { AdminDataService } from '../../../core/services/admin.data.service';
 import { ModalActividades } from './modal-actividades/modal-actividades';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-actividad',
   standalone: true,
-  imports: [MatIconModule, CommonModule],
+  imports: [MatIconModule, CommonModule, MatTooltipModule],
   templateUrl: './actividades.html',
   styleUrl: './actividades.css'
 })

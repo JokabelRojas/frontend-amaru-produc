@@ -1,1 +1,299 @@
 <app-header-cliente ngSkipHydration></app-header-cliente>       
+<div class="w-screen min-h-screen flex flex-col bg-gradient-to-br from-gray-900 to-black overflow-hidden relative p-4 md:p-8" ngSkipHydration>
+
+  <!-- Fondos decorativos mejorados -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-10 left-10 w-60 h-60 bg-blue-500/10 rounded-full blur-3xl animate-float"></div>
+    <div class="absolute bottom-10 right-10 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl animate-float" style="animation-delay: 2s;"></div>
+    <div class="absolute top-1/2 right-1/4 w-52 h-52 bg-cyan-500/10 rounded-full blur-3xl animate-float" style="animation-delay: 4s;"></div>
+    
+    <!-- Líneas de conexión artísticas -->
+    <div class="absolute inset-0 opacity-[0.03]">
+      <div class="absolute top-1/4 left-1/4 w-px h-40 bg-white rotate-45"></div>
+      <div class="absolute bottom-1/3 right-1/3 w-px h-32 bg-white -rotate-12"></div>
+      <div class="absolute top-1/3 right-1/4 w-24 h-px bg-white rotate-45"></div>
+    </div>
+  </div>
+
+  <!-- Header artístico -->
+  <div class="text-center mb-12 md:mb-16 z-10 px-2 relative">
+    <!-- Elemento decorativo superior -->
+    <div class="absolute -top-6 left-1/2 transform -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent"></div>
+    <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-60"></div>
+    
+    <h2 class="text-4xl md:text-6xl font-black mb-4 md:mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-cyan-500 to-indigo-600 tracking-tight">
+      Nuestros Talleres
+    </h2>
+    
+    <div class="relative inline-block">
+      <p class="text-gray-300 text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-light">
+        Aprende y desarrolla tus habilidades con nuestros <span class="text-blue-400 font-semibold">expertos</span> en <span class="text-cyan-400 font-semibold">fotografía</span>
+      </p>
+      <!-- Decoración de puntas -->
+      <div class="absolute -bottom-3 left-4 w-2 h-2 bg-blue-500 rotate-45"></div>
+      <div class="absolute -bottom-3 right-4 w-2 h-2 bg-cyan-500 rotate-45"></div>
+    </div>
+  </div>
+
+  <!-- Mensaje de carga / error -->
+  <div *ngIf="cargando" class="text-center text-white mt-6 text-lg z-10">
+    <div class="inline-flex items-center gap-3 bg-black/40 backdrop-blur-lg px-6 py-4 rounded-2xl border border-white/10 shadow-2xl">
+      <div class="w-6 h-6 border-2 border-white/40 border-t-blue-500 rounded-full animate-spin"></div>
+      <span class="text-gray-200">Cargando talleres...</span>
+    </div>
+  </div>
+  
+  <div *ngIf="error" class="text-center text-red-300 mt-6 text-lg z-10 bg-red-900/30 backdrop-blur-lg inline-block px-6 py-3 rounded-xl border border-red-500/30 shadow-lg max-w-md mx-auto">
+    <i class="fas fa-exclamation-triangle mr-2"></i>{{ error }}
+  </div>
+
+  <!-- Grid de talleres -->
+  <div *ngIf="!cargando && !error && talleres.length" class="z-10 px-2 lg:px-0 max-w-7xl mx-auto w-full">
+    
+    <!-- Contenedor grid responsivo -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8 auto-rows-fr">
+      
+      <!-- Card artística para cada taller -->
+      <div *ngFor="let taller of talleres; let i = index" 
+           class="group relative"
+           [style.animation-delay]="(i * 0.1) + 's'">
+        
+        <!-- Efecto de borde gradiente -->
+        <div class="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur opacity-30 group-hover:opacity-70 transition duration-300 animate-tilt"></div>
+        
+        <!-- Card principal -->
+        <div class="relative bg-gradient-to-br from-gray-900/90 to-black/95 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden h-full flex flex-col transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-blue-500/20">
+          
+          <!-- Encabezado de la card con número artístico -->
+          <div class="relative h-48 md:h-56 overflow-hidden">
+            <!-- Número decorativo -->
+            <div class="absolute -top-4 -right-4 text-8xl font-black text-white/5 z-0 select-none">
+              {{ i + 1 }}
+            </div>
+            
+            <!-- Imagen con overlay gradiente -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-10"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-5"></div>
+            
+            <img 
+              [src]="taller.imagen_url" 
+              [alt]="taller.nombre"
+              class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 z-0"
+            />
+            
+            <!-- Etiqueta de modalidad -->
+            <div class="absolute top-4 left-4 z-20 bg-black/60 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-full border border-white/20">
+              <span class="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+                {{ taller.modalidad | uppercase }}
+              </span>
+            </div>
+            
+            <!-- Cupos disponibles -->
+            <div class="absolute top-4 right-4 z-20 bg-black/60 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-full border border-white/20">
+              <span class="text-cyan-300">{{ taller.cupo_disponible }}/{{ taller.cupo_total }} CUPOS</span>
+            </div>
+            
+            <!-- Icono flotante -->
+            <div class="absolute bottom-4 right-4 z-20 w-8 h-8 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transform group-hover:rotate-12 transition-all duration-500">
+              <i class="fas fa-graduation-cap text-white text-xs"></i>
+            </div>
+          </div>
+          
+          <!-- Contenido de la card -->
+          <div class="p-6 flex flex-col gap-4 flex-grow relative z-20">
+            
+            <!-- Título con subrayado decorativo -->
+            <div class="relative">
+              <h3 class="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-300 to-cyan-300 leading-tight pr-8">
+                {{ taller.nombre }}
+              </h3>
+              <div class="w-12 h-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 mt-2 rounded-full"></div>
+            </div>
+            
+            <!-- Descripción -->
+            <p class="text-gray-300 text-sm leading-relaxed font-light flex-grow">
+              {{ taller.descripcion }}
+            </p>
+            
+            <!-- Información adicional -->
+            <div class="grid grid-cols-2 gap-3 text-xs">
+              <div class="flex items-center gap-2 text-gray-400">
+                <i class="fas fa-calendar text-blue-400"></i>
+                <span>{{ taller.fecha_inicio | date:'dd/MM/yyyy' }}</span>
+              </div>
+              <div class="flex items-center gap-2 text-gray-400">
+                <i class="fas fa-clock text-cyan-400"></i>
+                <span>{{ taller.horario }}</span>
+              </div>
+              <div class="flex items-center gap-2 text-gray-400">
+                <i class="fas fa-tag text-blue-400"></i>
+                <span>{{ taller.id_categoria.nombre }}</span>
+              </div>
+              <div class="flex items-center gap-2 text-gray-400">
+                <i class="fas fa-layer-group text-cyan-400"></i>
+                <span>{{ taller.id_subcategoria.nombre }}</span>
+              </div>
+            </div>
+            
+            <!-- Pie de card con precio y botón -->
+            <div class="flex justify-between items-center pt-2 border-t border-white/10">
+              <!-- Precio -->
+              <div class="text-white font-bold text-lg">
+                <span class="text-cyan-300">S/ {{ taller.precio }}</span>
+              </div>
+              
+              <!-- Botón de inscribirse -->
+              <button class="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl text-white font-semibold hover:scale-105 transform transition-all shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 flex items-center gap-2 group/btn text-sm">
+                <i class="fas fa-user-plus text-xs transition-transform group-hover/btn:rotate-12"></i> 
+                <span>INSCRIBIRSE</span>
+                <i class="fas fa-arrow-right text-xs transition-transform group-hover/btn:translate-x-1"></i>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Efecto de esquina decorativa -->
+          <div class="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-cyan-500/40 rounded-bl-2xl"></div>
+          <div class="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-blue-500/40 rounded-tr-2xl"></div>
+        </div>
+      </div>
+      
+    </div>
+    
+    <!-- Mensaje decorativo al final -->
+    <div *ngIf="talleres.length > 0" class="text-center mt-12 md:mt-16">
+      <div class="inline-flex items-center gap-4 text-gray-400 text-sm">
+        <div class="w-8 h-px bg-gradient-to-r from-transparent to-blue-500"></div>
+        <span class="font-light italic">Amplía tus conocimientos con nuestros talleres especializados</span>
+        <div class="w-8 h-px bg-gradient-to-r from-cyan-500 to-transparent"></div>
+      </div>
+    </div>
+    
+  </div>
+
+  <!-- Sección de Profesores -->
+  <div *ngIf="!cargando && !error && talleres.length" class="mt-16 md:mt-24 z-10 px-2 lg:px-0 max-w-7xl mx-auto w-full">
+    
+    <!-- Header de profesores -->
+    <div class="text-center mb-12 relative">
+      <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-indigo-500 to-transparent"></div>
+      <h3 class="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-500">
+        Nuestros Profesores
+      </h3>
+      <p class="text-gray-400 max-w-2xl mx-auto">
+        Conoce a los expertos que te guiarán en tu aprendizaje
+      </p>
+    </div>
+    
+    <!-- Grid de profesores -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+      
+      <!-- Card de profesor -->
+      <div *ngFor="let taller of talleres" class="group relative">
+        
+        <!-- Efecto de borde gradiente -->
+        <div class="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl blur opacity-30 group-hover:opacity-70 transition duration-300"></div>
+        
+        <!-- Card principal -->
+        <div class="relative bg-gradient-to-br from-gray-900/90 to-black/95 backdrop-blur-xl rounded-xl border border-white/10 overflow-hidden transition-all duration-500 group-hover:scale-105 group-hover:shadow-xl group-hover:shadow-indigo-500/20">
+          
+          <!-- Imagen del profesor -->
+          <div class="relative h-48 overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-10"></div>
+            <img 
+              [src]="taller.id_profesor.imagen_url" 
+              [alt]="taller.id_profesor.nombre"
+              class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
+            />
+          </div>
+          
+          <!-- Contenido de la card -->
+          <div class="p-6">
+            <!-- Nombre del profesor -->
+            <h4 class="text-xl font-bold text-white mb-2">{{ taller.id_profesor.nombre }}</h4>
+            
+            <!-- Especialidad -->
+            <div class="flex items-center gap-2 mb-3">
+              <i class="fas fa-star text-yellow-400 text-sm"></i>
+              <span class="text-cyan-300 text-sm font-medium">{{ taller.id_profesor.especialidad }}</span>
+            </div>
+            
+            <!-- Descripción -->
+            <p class="text-gray-300 text-sm mb-4 line-clamp-3">
+              {{ taller.id_profesor.descripcion }}
+            </p>
+            
+            <!-- Taller que imparte -->
+            <div class="flex items-center gap-2 text-xs text-gray-400">
+              <i class="fas fa-book-open text-indigo-400"></i>
+              <span>Imparte: {{ taller.nombre }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- Mensaje cuando no hay talleres -->
+  <div *ngIf="!cargando && !error && talleres.length === 0" class="text-center text-gray-400 mt-12 z-10">
+    <div class="bg-black/40 backdrop-blur-lg px-8 py-16 rounded-2xl border border-white/10 shadow-2xl max-w-md mx-auto">
+      <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-full flex items-center justify-center border border-white/10">
+        <i class="fas fa-graduation-cap text-2xl text-gray-500"></i>
+      </div>
+      <h3 class="text-xl font-bold mb-2 text-gray-300">No hay talleres disponibles</h3>
+      <p class="text-sm text-gray-400">Próximamente agregaremos nuevos talleres educativos</p>
+    </div>
+  </div>
+</div>
+<app-footer-cliente></app-footer-cliente>
+
+
+<!-- Estilos CSS personalizados -->
+<style>
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(1deg); }
+  }
+  
+  @keyframes tilt {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(1deg) scale(1.02); }
+  }
+  
+  .animate-float {
+    animation: float 8s ease-in-out infinite;
+  }
+  
+  .animate-tilt {
+    animation: tilt 10s ease-in-out infinite;
+  }
+  
+  /* Animación de entrada escalonada para las cards */
+  .group {
+    animation: slideUp 0.6s ease-out both;
+  }
+  
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Efecto de brillo en hover */
+  .group:hover .animate-tilt {
+    animation-duration: 2s;
+  }
+  
+  /* Limitar líneas de texto */
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

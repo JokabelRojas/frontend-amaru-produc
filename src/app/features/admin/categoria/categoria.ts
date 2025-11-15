@@ -5,10 +5,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { AdminDataService } from '../../../core/services/admin.data.service';
 import { AgregarCategoria } from './modales/agregar-categoria/agregar-categoria';
 import { AgregarSubcategoria } from './modales/agregar-subcategoria/agregar-subcategoria';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-categoria',
-  imports: [MatIconModule, CommonModule ],
+  imports: [MatIconModule, CommonModule,MatTooltipModule],
   templateUrl: './categoria.html',
   styleUrl: './categoria.css'
 })
@@ -18,7 +19,7 @@ export class Categoria {
   categorias: any[] = [];
   subcategorias: any[] = [];
 
-  constructor(private adminDataService: AdminDataService, private dialog: MatDialog) {}
+  constructor(private adminDataService: AdminDataService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.cargarCategoriasYSubcategorias();
@@ -103,7 +104,7 @@ export class Categoria {
   abrirModalSubcategoria(): void {
     const dialogRef = this.dialog.open(AgregarSubcategoria, {
       width: '500px',
-      data: { categorias: this.categorias } 
+      data: { categorias: this.categorias }
     });
 
     dialogRef.afterClosed().subscribe((resultado) => {
@@ -138,5 +139,50 @@ export class Categoria {
         this.cargarCategoriasYSubcategorias();
       }
     });
+  }
+  cambiarEstadoCategoria(id: string, estadoActual: string): void {
+    const nuevoEstado = estadoActual === 'activo' ? 'inactivo' : 'activo';
+    const accion = estadoActual === 'activo' ? 'desactivar' : 'activar';
+
+    if (confirm(`¿Seguro que deseas ${accion} esta categoría?`)) {
+      if (estadoActual === 'activo') {
+        this.adminDataService.desactivarCategoria(id).subscribe({
+          next: (res) => {
+            console.log('Categoría desactivada correctamente:', res);
+            this.cargarCategoriasYSubcategorias();
+          },
+          error: (err) => {
+            console.error('Error al desactivar la categoría:', err);
+          }
+        });
+      } else {
+        this.adminDataService.activarCategoria(id).subscribe({
+          next: (res) => {
+            console.log('Categoría activada correctamente:', res);
+            this.cargarCategoriasYSubcategorias();
+          },
+          error: (err) => {
+            console.error('Error al activar la categoría:', err);
+          }
+        });
+      }
+    }
+  }
+
+  cambiarEstadoSubcategoria(id: string, estadoActual: string): void {
+    const nuevoEstado = estadoActual === 'activo' ? 'inactivo' : 'activo';
+    const accion = estadoActual === 'activo' ? 'desactivar' : 'activar';
+
+    if (confirm(`¿Seguro que deseas ${accion} esta subcategoría?`)) {
+      this.adminDataService.cambiarEstadoSubcategoria(id, nuevoEstado).subscribe({
+        next: (res) => {
+          console.log(`Subcategoría ${accion}da correctamente:`, res);
+          this.cargarCategoriasYSubcategorias();
+        },
+        error: (err) => {
+          console.error(`Error al ${accion} la subcategoría:`, err);
+        }
+      });
+    }
   }
 }

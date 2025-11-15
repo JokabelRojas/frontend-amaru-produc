@@ -44,6 +44,17 @@ export class AdminDataService {
     return this.http.delete<any>(`${environment.apiUrl}subcategorias/${id}`);
   }
 
+  desactivarCategoria(id: string): Observable<any> {
+    return this.http.put<any>(`${environment.apiUrl}categorias/${id}/desactivar`, {});
+  }
+  activarCategoria(id: string): Observable<any> {
+    return this.http.put<any>(`${environment.apiUrl}categorias/${id}/activar`, {});
+  }
+
+  cambiarEstadoSubcategoria(id: string, estado: string): Observable<any> {
+    return this.http.patch<any>(`${environment.apiUrl}subcategorias/${id}/estado`, { estado });
+  }
+
 getTalleresFiltrados(filtros: {
   id_categoria?: string;
   id_subcategoria?: string;
@@ -74,41 +85,20 @@ getTalleresFiltrados(filtros: {
     return this.http.delete(`${environment.apiUrl}talleres/${idTaller}`);
   }
 
-  getServiciosFiltrados(filtros: {
-  id_categoria?: string;
-  id_subcategoria?: string;
+    getInscripciones(): Observable<any[]> {
+      return this.http.get<any[]>(`${environment.apiUrl}inscripciones`);
+    }
 
-}): Observable<any[]> {
-  const params: any = {};
-
-  if (filtros.id_categoria) params.id_categoria = filtros.id_categoria;
-  if (filtros.id_subcategoria) params.id_subcategoria = filtros.id_subcategoria;
-
-
-  return this.http.get<any[]>(`${environment.apiUrl}servicios/filtrar/servicios`, { params });
-}
-
-addServicio(servicioData: any): Observable<any> {
-    return this.http.post(`${environment.apiUrl}servicios`, servicioData);  
-  }
-  updateServicio(idServicio: string, servicioData: any): Observable<any> {
-    return this.http.patch(`${environment.apiUrl}servicios/${idServicio}`, servicioData);
-  }
-  deleteServicio(idServicio: string): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}servicios/${idServicio}`);
-  }
-
-  getInscripciones(): Observable<any[]> {
-    return this.http.get<any[]>(`${environment.apiUrl}inscripciones`);
-  }
-
-  getDetalleInscripciones(): Observable<any[]> {
-    return this.http.get<any[]>(`${environment.apiUrl}detalle-inscripciones`);
-  }
+    getDetalleInscripciones(): Observable<any[]> {
+      return this.http.get<any[]>(`${environment.apiUrl}detalle-inscripciones`);
+    }
 
   cambiarEstadoInscripcion(id: string, estado: string): Observable<any> {
   return this.http.patch<any>(`${environment.apiUrl}inscripciones/${id}/estado`, { estado });
 }
+getTalleres(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}talleres`);
+  }
 
 createProfesor(profesorData: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}profesor`, profesorData);
@@ -124,6 +114,7 @@ getProfesores(): Observable<any[]> {
     return this.http.delete<any>(`${environment.apiUrl}profesor/${idProfesor}`);
   }
 
+
   createActividad(actividadData: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}actividades`, actividadData);
   }
@@ -137,6 +128,7 @@ getProfesores(): Observable<any[]> {
     return this.http.delete<any>(`${environment.apiUrl}actividades/${idActividad}`);
   }
 
+
   createPremios(premioData: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}premios`, premioData);
   }
@@ -148,6 +140,50 @@ getProfesores(): Observable<any[]> {
   }
   deletePremio(idPremio: string): Observable<any> {
     return this.http.delete<any>(`${environment.apiUrl}premios/${idPremio}`);
+  }
+  
+
+  createFestival(festivalData: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}festivales`, festivalData);
+  }
+  getFestivales(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}festivales`);
+  }
+  getFstivalesActivos(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}festivales/estado/activos`);
+  }
+  updateFestival(idFestival: string, festivalData: any): Observable<any> {
+    return this.http.patch<any>(`${environment.apiUrl}festivales/${idFestival}`, festivalData);
+  }
+  deleteFestival(idFestival: string): Observable<any> {
+    return this.http.delete<any>(`${environment.apiUrl}festivales/${idFestival}`);
+  }
+  cambiarEstadoFestival(id: string, estado: string): Observable<any> {
+    return this.http.patch<any>(`${environment.apiUrl}festivales/${id}/estado`, { estado });
+  }
+
+
+  createServicio(servicioData: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}servicios`, servicioData);
+  }
+  getServicios(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}servicios`);
+  }
+  updateServicio(idServicio: string, servicioData: any): Observable<any> {
+    return this.http.patch<any>(`${environment.apiUrl}servicios/${idServicio}`, servicioData);
+  }
+  deleteServicio(idServicio: string): Observable<any> {
+    return this.http.delete<any>(`${environment.apiUrl}servicios/${idServicio}`);
+  }
+
+  inscribirseTaller(inscripcionData: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}inscripciones`, inscripcionData);
+  }
+  crearDetalleInscripcion(detalleData: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}detalle-inscripciones`, detalleData);
+  }
+  getUserSinContrasena(): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}auth/usuarios-sin-password`);
   }
 
 }

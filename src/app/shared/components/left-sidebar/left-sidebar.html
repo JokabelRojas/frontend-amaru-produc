@@ -1,33 +1,67 @@
-    <div
+<div
     class="sidenav"
     [ngClass]="isLeftSidebarCollapsed() ? 'sidenav-collapsed' : ''"
     >
+    <!-- Efecto de fondo gradiente -->
+    <div class="sidenav-bg-overlay"></div>
+    
     <div class="logo-container">
         <button class="logo" (click)="toggleCollapse()">
-        <mat-icon>menu</mat-icon>
+            <mat-icon class="logo-icon">menu</mat-icon>
         </button>
         @if (!isLeftSidebarCollapsed()) {
-            <img src="" alt="LOGO" class="logo-img" />
+            <div class="logo-content">
+                <div class="logo-img-container">
+                    <img src="" alt="LOGO" class="logo-img" />
+                </div>
+                <span class="logo-text">AMARU PRODUCTIONS</span>
+            </div>
         }
-
     </div>
-    <div class="sidenav-nav">
-        @for (item of items; track $index) {
-        <li class="sidenav-nav-item">
-            <a
-            class="sidenav-nav-link"
-            [matTooltip]="isLeftSidebarCollapsed() ? item.label : ''"            
-            matTooltipPosition="right"
-            [routerLink]="item.routeLink"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-            >
-            <mat-icon class="sidenav-link-icon">{{ item.icon }}</mat-icon>
-            @if (!isLeftSidebarCollapsed()) {
-                <span class="sidenav-link-text">{{ item.label }}</span>
+    
+    <!-- Contenedor con scroll para los elementos de navegación -->
+    <div class="sidenav-nav-container">
+        <div class="sidenav-nav">
+            @for (item of items; track $index) {
+            <li class="sidenav-nav-item">
+                <a
+                class="sidenav-nav-link"
+                [matTooltip]="isLeftSidebarCollapsed() ? item.label : ''"            
+                matTooltipPosition="right"
+                [routerLink]="item.routeLink"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                >
+                <!-- Efecto de borde gradiente para active -->
+                <div class="nav-link-bg"></div>
+                
+                <div class="nav-icon-container">
+                    <mat-icon class="sidenav-link-icon">{{ item.icon }}</mat-icon>
+                    <!-- Indicador de estado -->
+                    <div class="nav-indicator"></div>
+                </div>
+                
+                @if (!isLeftSidebarCollapsed()) {
+                    <span class="sidenav-link-text">{{ item.label }}</span>
+                    
+                    <!-- Flecha decorativa -->
+                    <div class="nav-arrow">
+                        <mat-icon>chevron_right</mat-icon>
+                    </div>
+                }
+                </a>
+            </li>
             }
-            </a>
-        </li>
-        }
+        </div>
     </div>
+    
+    <!-- Elemento decorativo inferior -->
+    <div class="sidenav-decoration">
+        <div class="decoration-line"></div>
+        <div class="decoration-dots">
+            <div class="dot dot-orange"></div>
+            <div class="dot dot-pink"></div>
+            <div class="dot dot-purple"></div>
+        </div>
     </div>
+</div>

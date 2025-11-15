@@ -1,96 +1,298 @@
-<div class="p-6 bg-white rounded-2xl shadow-2xl border border-gray-200 relative">
-  <!-- Botón de cerrar -->
-  <button (click)="cerrarModal()" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 transition-all">
-    <mat-icon>close</mat-icon>
-  </button>
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+  <div class="relative w-full max-w-2xl max-h-[90vh] overflow-hidden">
+    
+    <!-- Efecto de borde gradiente exterior -->
+    <div class="absolute -inset-4 bg-gradient-to-r from-green-500 to-emerald-500 rounded-3xl blur-xl opacity-30 animate-pulse-slow"></div>
+    
+    <!-- Contenedor principal del modal -->
+    <div class="relative bg-gradient-to-br from-gray-900/95 to-black/95 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
+      
+      <!-- Header del modal -->
+      <div class="relative p-6 border-b border-white/10 bg-gradient-to-r from-green-500/5 to-emerald-500/5">
+        <!-- Efecto de brillo en el header -->
+        <div class="absolute inset-0 bg-gradient-to-r from-green-500/10 to-emerald-500/10 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+        
+        <div class="relative flex items-center justify-between">
+          <!-- Título -->
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-xl border border-white/10 flex items-center justify-center">
+              <mat-icon class="text-xl bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-emerald-400">school</mat-icon>
+            </div>
+            <div>
+              <h2 class="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-green-300 to-emerald-300">
+                {{ modoEdicion ? 'Editar Profesor' : 'Nuevo Profesor' }}
+              </h2>
+              <p class="text-sm text-gray-400 mt-1">
+                {{ modoEdicion ? 'Actualiza la información del profesor' : 'Completa los datos para agregar un nuevo profesor' }}
+              </p>
+            </div>
+          </div>
+          
+          <!-- Botón de cerrar -->
+          <button 
+            (click)="cerrarModal()" 
+            class="w-10 h-10 bg-gradient-to-br from-gray-800/60 to-black/80 rounded-xl border border-white/10 text-gray-400 hover:text-white hover:border-red-500/30 transition-all duration-300 flex items-center justify-center group">
+            <mat-icon class="text-lg group-hover:scale-110 transition-transform">close</mat-icon>
+          </button>
+        </div>
+      </div>
 
-  <!-- Título del modal -->
-  <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-    <mat-icon class="text-[#F7A428]">school</mat-icon>
-    {{ modoEdicion ? 'Editar Profesor' : 'Nuevo Profesor' }}
-  </h2>
+      <!-- Contenido del formulario con scroll -->
+      <div class="overflow-y-auto custom-scrollbar max-h-[60vh]">
+        <div class="p-6">
+          <form (ngSubmit)="guardarProfesor()" #profesorForm="ngForm" class="space-y-6">
+            
+            <!-- Campo Nombre -->
+            <div class="relative group">
+              <div class="absolute -inset-2 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
+              
+              <div class="relative">
+                <label for="nombre" class="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                  <mat-icon class="text-green-400 text-lg">person</mat-icon>
+                  Nombre del Profesor
+                </label>
+                <input
+                  type="text"
+                  id="nombre"
+                  name="nombre"
+                  [(ngModel)]="nuevoProfesor.nombre"
+                  required
+                  class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400
+                         focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500/30
+                         transition-all duration-300 group-focus-within:border-green-500/30"
+                  placeholder="Ingresa el nombre completo del profesor"
+                />
+                <!-- Indicador de validación -->
+                <div class="absolute right-3 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
+              </div>
+            </div>
 
-  <form (ngSubmit)="guardarProfesor()" #profesorForm="ngForm" class="space-y-4">
-    <!-- Nombre -->
-    <div>
-      <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
-      <input
-        type="text"
-        id="nombre"
-        name="nombre"
-        [(ngModel)]="nuevoProfesor.nombre"
-        required
-        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-[#F7A428] focus:ring focus:ring-[#F7A428]/50 p-2"
-      />
+            <!-- Campo Especialidad -->
+            <div class="relative group">
+              <div class="absolute -inset-2 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
+              
+              <div class="relative">
+                <label for="especialidad" class="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                  <mat-icon class="text-emerald-400 text-lg">workspace_premium</mat-icon>
+                  Especialidad
+                </label>
+                <input
+                  type="text"
+                  id="especialidad"
+                  name="especialidad"
+                  [(ngModel)]="nuevoProfesor.especialidad"
+                  required
+                  class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400
+                         focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500/30
+                         transition-all duration-300 group-focus-within:border-green-500/30"
+                  placeholder="Ej: Fotografía, Pintura, Danza, etc."
+                />
+                <!-- Indicador de validación -->
+                <div class="absolute right-3 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
+              </div>
+            </div>
+
+            <!-- Campo Descripción -->
+            <div class="relative group">
+              <div class="absolute -inset-2 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
+              
+              <div class="relative">
+                <label for="descripcion" class="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                  <mat-icon class="text-teal-400 text-lg">description</mat-icon>
+                  Descripción
+                </label>
+                <textarea
+                  id="descripcion"
+                  name="descripcion"
+                  [(ngModel)]="nuevoProfesor.descripcion"
+                  rows="4"
+                  class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400
+                         focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500/30
+                         transition-all duration-300 group-focus-within:border-green-500/30 resize-none custom-scrollbar"
+                  placeholder="Describe la experiencia, formación y logros del profesor..."
+                ></textarea>
+                <!-- Contador de caracteres -->
+                <div class="absolute bottom-2 right-2 text-xs text-gray-400">
+                  {{ nuevoProfesor.descripcion?.length || 0 }}/500
+                </div>
+              </div>
+            </div>
+
+            <!-- Campo URL de Imagen -->
+            <div class="relative group">
+              <div class="absolute -inset-2 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
+              
+              <div class="relative">
+                <label for="imagen_url" class="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                  <mat-icon class="text-cyan-400 text-lg">image</mat-icon>
+                  URL de Imagen de Perfil
+                </label>
+                <input
+                  type="url"
+                  id="imagen_url"
+                  name="imagen_url"
+                  [(ngModel)]="nuevoProfesor.imagen_url"
+                  placeholder="https://ejemplo.com/foto-profesor.jpg"
+                  class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400
+                         focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500/30
+                         transition-all duration-300 group-focus-within:border-green-500/30"
+                />
+                <!-- Indicador de URL válida -->
+                <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                  <mat-icon 
+                    class="text-lg transition-colors duration-300"
+                    [class.text-green-400]="nuevoProfesor.imagen_url && nuevoProfesor.imagen_url.startsWith('http')"
+                    [class.text-gray-400]="!nuevoProfesor.imagen_url"
+                    [class.text-yellow-400]="nuevoProfesor.imagen_url && !nuevoProfesor.imagen_url.startsWith('http')"
+                  >
+                    {{ nuevoProfesor.imagen_url && nuevoProfesor.imagen_url.startsWith('http') ? 'link' : 'link_off' }}
+                  </mat-icon>
+                </div>
+                
+                <!-- Helper text -->
+                <p class="text-xs text-gray-400 mt-2">
+                  Ingresa una URL válida que comience con http:// o https://
+                </p>
+              </div>
+            </div>
+
+            <!-- Vista previa de imagen -->
+            <div *ngIf="nuevoProfesor.imagen_url && nuevoProfesor.imagen_url.startsWith('http')" 
+                 class="relative group/preview">
+              <div class="absolute -inset-2 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-2xl blur opacity-0 group-hover/preview:opacity-100 transition-opacity duration-300"></div>
+              
+              <div class="relative bg-gradient-to-br from-gray-800/40 to-black/60 backdrop-blur-sm rounded-xl border border-white/10 p-4">
+                <label class="block text-sm font-medium text-gray-300 mb-3 flex items-center gap-2">
+                  <mat-icon class="text-green-400 text-lg">visibility</mat-icon>
+                  Vista Previa de la Imagen
+                </label>
+                <div class="flex items-center gap-4">
+                  <div class="relative">
+                    <img 
+                      [src]="nuevoProfesor.imagen_url" 
+                      alt="Vista previa" 
+                      class="w-20 h-20 rounded-xl object-cover border-2 border-white/10 group-hover/preview:border-green-500/30 transition-all duration-300"
+                    />
+
+                  </div>
+                  <div class="flex-1">
+                    <p class="text-sm text-gray-300">La imagen se mostrará así en el perfil del profesor.</p>
+                    <p class="text-xs text-gray-400 mt-1">Recomendado: Imagen cuadrada de al menos 200x200px</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+      <!-- Footer del modal -->
+      <div class="relative p-6 border-t border-white/10 bg-gradient-to-r from-green-500/5 to-emerald-500/5">
+        <div class="flex justify-end gap-3">
+          <!-- Botón Cancelar -->
+          <div class="relative group">
+            <div class="absolute -inset-1 bg-gradient-to-r from-gray-500/10 to-gray-600/10 rounded-2xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <button
+              type="button"
+              (click)="cerrarModal()"
+              class="relative px-6 py-3 bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm rounded-2xl border border-white/10 
+                     text-gray-300 hover:text-white hover:border-gray-500/30 transition-all duration-300 font-semibold flex items-center gap-2"
+            >
+              <mat-icon class="text-lg">cancel</mat-icon>
+              Cancelar
+            </button>
+          </div>
+
+          <!-- Botón Guardar -->
+          <div class="relative group">
+            <div class="absolute -inset-1 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl blur opacity-30 group-hover:opacity-50 transition-opacity duration-300"></div>
+            <button
+              type="submit"
+              [disabled]="!profesorForm.valid"
+              (click)="guardarProfesor()"
+              class="relative px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-2xl border border-green-500/30
+                     hover:shadow-lg hover:shadow-green-500/25 transform hover:scale-105 transition-all duration-300 font-semibold
+                     disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none flex items-center gap-2"
+            >
+              <mat-icon class="text-lg">{{ modoEdicion ? 'update' : 'person_add' }}</mat-icon>
+              {{ modoEdicion ? 'Actualizar Profesor' : 'Crear Profesor' }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Elementos decorativos de esquina -->
+      <div class="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-green-500/40 rounded-tl-2xl"></div>
+      <div class="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-emerald-500/40 rounded-tr-2xl"></div>
+      <div class="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-green-500/40 rounded-bl-2xl"></div>
+      <div class="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-emerald-500/40 rounded-br-2xl"></div>
     </div>
-
-    <!-- Especialidad -->
-    <div>
-      <label for="especialidad" class="block text-sm font-medium text-gray-700">Especialidad</label>
-      <input
-        type="text"
-        id="especialidad"
-        name="especialidad"
-        [(ngModel)]="nuevoProfesor.especialidad"
-        required
-        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-[#F7A428] focus:ring focus:ring-[#F7A428]/50 p-2"
-      />
-    </div>
-
-    <!-- Descripción -->
-    <div>
-      <label for="descripcion" class="block text-sm font-medium text-gray-700">Descripción</label>
-      <textarea
-        id="descripcion"
-        name="descripcion"
-        [(ngModel)]="nuevoProfesor.descripcion"
-        rows="3"
-        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-[#F7A428] focus:ring focus:ring-[#F7A428]/50 p-2 resize-none"
-      ></textarea>
-    </div>
-
-    <!-- URL de Imagen -->
-    <div>
-      <label for="imagen_url" class="block text-sm font-medium text-gray-700">URL de Imagen</label>
-      <input
-        type="url"
-        id="imagen_url"
-        name="imagen_url"
-        [(ngModel)]="nuevoProfesor.imagen_url"
-        placeholder="https://example.com/foto.jpg"
-        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-[#F7A428] focus:ring focus:ring-[#F7A428]/50 p-2"
-      />
-    </div>
-
-    <!-- Vista previa de imagen -->
-    <div *ngIf="nuevoProfesor.imagen_url" class="mt-2">
-      <label class="block text-sm font-medium text-gray-700 mb-2">Vista previa:</label>
-      <img 
-        [src]="nuevoProfesor.imagen_url" 
-        alt="Vista previa" 
-        class="w-20 h-20 rounded-full object-cover border border-gray-300"
-        onerror="this.style.display='none'"
-      >
-    </div>
-
-    <!-- Botones -->
-    <div class="flex justify-end gap-3 pt-4">
-      <button
-        type="button"
-        (click)="cerrarModal()"
-        class="px-5 py-2 rounded-xl font-semibold border border-gray-300 text-gray-700 hover:bg-gray-100 transition-all"
-      >
-        Cancelar
-      </button>
-
-      <button
-        type="submit"
-        [disabled]="!profesorForm.valid"
-        class="px-5 py-2 rounded-xl font-semibold bg-[#F7A428] text-white hover:bg-[#e69320] shadow-md transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center"
-      >
-        <mat-icon class="text-white mr-1">save</mat-icon>
-        {{ modoEdicion ? 'Guardar Cambios' : 'Guardar' }}
-      </button>
-    </div>
-  </form>
+  </div>
 </div>
+
+<!-- Estilos personalizados -->
+<style>
+  /* Animación para el fondo del modal */
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse-slow 4s ease-in-out infinite;
+  }
+
+  /* Scrollbar personalizado para el contenido del modal */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+    margin: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #10b981, #059669);
+    border-radius: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #059669, #047857);
+  }
+
+  /* Para Firefox */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #10b981 rgba(255, 255, 255, 0.05);
+  }
+
+  /* Estilos para el textarea */
+  textarea {
+    min-height: 120px;
+  }
+
+  /* Efecto de focus mejorado */
+  input:focus, textarea:focus {
+    transform: translateY(-1px);
+  }
+
+  /* Animación de spin para carga de imagen */
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .animate-spin {
+    animation: spin 1s linear infinite;
+  }
+
+  /* Transición suave para todos los elementos */
+  * {
+    transition-property: color, background-color, border-color, transform, box-shadow;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+</style>

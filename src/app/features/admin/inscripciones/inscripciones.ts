@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { AdminDataService } from '../../../core/services/admin.data.service';
+import { forkJoin } from 'rxjs';
 import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-inscripciones',
@@ -40,49 +41,72 @@ export class Inscripciones {
     this.cargarInscripcionesCombinadas();
   }
 
-  cargarInscripcionesCombinadas(): void {
-    this.cargando = true;
+
+
+cargarInscripcionesCombinadas(): void {
+  this.cargando = true;
+  
+  forkJoin({
+    inscripciones: this.adminDataService.getInscripciones(),
+    detalles: this.adminDataService.getDetalleInscripciones(),
+    usuarios: this.adminDataService.getUserSinContrasena() // Usamos la nueva API
+  }).subscribe({
+    next: ({ inscripciones, detalles, usuarios }) => {
+      this.combinarDatos(inscripciones, detalles, usuarios);
+      this.cargando = false;
+    },
+    error: (err) => {
+      console.error('Error al cargar datos:', err);
+      this.mostrarError('Error al cargar los datos');
+      this.cargando = false;
+    }
+  });
+}
+
+combinarDatos(inscripciones: any[], detalles: any[], usuarios: any[]): void {
+  this.inscripcionesCombinadas = detalles.map(detalle => {
+    // Buscar el usuario por ID en el array de usuarios
+    const usuarioId = detalle.id_inscripcion.id_usuario;
+    const usuarioEncontrado = usuarios.find(usuario => usuario.id === usuarioId);
     
-    // Realizar ambas llamadas API simultáneamente
-    this.adminDataService.getInscripciones().subscribe({
-      next: (inscripciones) => {
-        this.adminDataService.getDetalleInscripciones().subscribe({
-          next: (detalles) => {
-            this.combinarDatos(inscripciones, detalles);
-            this.cargando = false;
-          },
-          error: (err) => {
-            console.error('Error al cargar detalles de inscripciones:', err);
-            this.mostrarError('Error al cargar detalles de inscripciones');
-            this.cargando = false;
-          }
-        });
+    console.log('Buscando usuario:', {
+      usuarioId: usuarioId,
+      usuarioEncontrado: usuarioEncontrado,
+      totalUsuarios: usuarios.length
+    });
+    
+    return {
+      _id: detalle.id_inscripcion._id,
+      fecha_inscripcion: detalle.id_inscripcion.fecha_inscripcion,
+      total: detalle.precio_total, // Precio real del detalle (200)
+      moneda: detalle.id_inscripcion.moneda,
+      estado: detalle.id_inscripcion.estado,
+      
+      // Datos del usuario desde la API de usuarios
+      usuario: {
+        nombre: usuarioEncontrado?.nombre || 'No encontrado',
+        apellido: usuarioEncontrado?.apellido || 'No encontrado',
+        email: usuarioEncontrado?.email || 'No encontrado',
+        dni: usuarioEncontrado?.dni || 'No encontrado',
+        telefono: usuarioEncontrado?.telefono || 'No encontrado'
       },
-      error: (err) => {
-        console.error('Error al cargar inscripciones:', err);
-        this.mostrarError('Error al cargar inscripciones');
-        this.cargando = false;
+      
+      // Datos del taller
+      taller: detalle.id_taller,
+      
+      // Detalles específicos
+      detalle: {
+        cantidad: detalle.cantidad,
+        precio_unitario: detalle.precio_unitario,
+        precio_total: detalle.precio_total,
+        observaciones: detalle.observaciones
       }
-    });
-  }
+    };
+  });
 
-  combinarDatos(inscripciones: any[], detalles: any[]): void {
-    this.inscripcionesCombinadas = inscripciones.map(inscripcion => {
-      // Buscar el detalle que corresponde a esta inscripción
-      const detalleCorrespondiente = detalles.find(
-        detalle => detalle.id_inscripcion._id === inscripcion._id
-      );
-
-      return {
-        ...inscripcion,
-        detalle: detalleCorrespondiente,
-        usuario: inscripcion.id_usuario,
-        taller: detalleCorrespondiente?.id_taller
-      };
-    });
-
-    this.aplicarFiltros();
-  }
+  console.log('Datos finales combinados:', this.inscripcionesCombinadas);
+  this.aplicarFiltros();
+}
 
   aplicarFiltros(): void {
     let filtered = [...this.inscripcionesCombinadas];

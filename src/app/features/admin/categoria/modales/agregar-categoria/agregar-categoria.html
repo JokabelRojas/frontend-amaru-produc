@@ -1,74 +1,244 @@
-<div class="p-6 bg-white rounded-2xl shadow-2xl border border-gray-200 relative">
-  <!-- Botón de cerrar -->
-  <button (click)="cerrarModal()" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 transition-all">
-    <mat-icon>close</mat-icon>
-  </button>
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+  <div class="relative w-full max-w-2xl max-h-[90vh] overflow-hidden">
+    
+    <!-- Efecto de borde gradiente exterior -->
+    <div class="absolute -inset-4 bg-gradient-to-r from-orange-500 to-pink-500 rounded-3xl blur-xl opacity-30 animate-pulse-slow"></div>
+    
+    <!-- Contenedor principal del modal -->
+    <div class="relative bg-gradient-to-br from-gray-900/95 to-black/95 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
+      
+      <!-- Header del modal -->
+      <div class="relative p-6 border-b border-white/10 bg-gradient-to-r from-orange-500/5 to-pink-500/5">
+        <!-- Efecto de brillo en el header -->
+        <div class="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-pink-500/10 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+        
+        <div class="relative flex items-center justify-between">
+          <!-- Título -->
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-gradient-to-r from-orange-500/20 to-pink-500/20 rounded-xl border border-white/10 flex items-center justify-center">
+              <mat-icon class="text-xl bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-pink-400">category</mat-icon>
+            </div>
+            <div>
+              <h2 class="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-orange-300 to-pink-300">
+                {{ modoEdicion ? 'Editar Categoría' : 'Nueva Categoría' }}
+              </h2>
+              <p class="text-sm text-gray-400 mt-1">
+                {{ modoEdicion ? 'Actualiza los datos de la categoría' : 'Completa los datos para crear una nueva categoría' }}
+              </p>
+            </div>
+          </div>
+          
+          <!-- Botón de cerrar -->
+          <button 
+            (click)="cerrarModal()" 
+            class="w-10 h-10 bg-gradient-to-br from-gray-800/60 to-black/80 rounded-xl border border-white/10 text-gray-400 hover:text-white hover:border-red-500/30 transition-all duration-300 flex items-center justify-center group">
+            <mat-icon class="text-lg group-hover:scale-110 transition-transform">close</mat-icon>
+          </button>
+        </div>
+      </div>
 
-  <!-- Título del modal -->
-  <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-    <mat-icon class="text-[#F7A428]">category</mat-icon>
-    {{ modoEdicion ? 'Editar Categoría' : 'Nueva Categoría' }}
-  </h2>
+      <!-- Contenido del formulario con scroll -->
+      <div class="overflow-y-auto custom-scrollbar max-h-[60vh]">
+        <div class="p-6">
+          <form (ngSubmit)="guardarCategoria()" #categoriaForm="ngForm" class="space-y-6">
+            
+            <!-- Campo Nombre -->
+            <div class="relative group">
+              <div class="absolute -inset-2 bg-gradient-to-r from-orange-500/10 to-pink-500/10 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
+              
+              <div class="relative">
+                <label for="nombre" class="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                  <mat-icon class="text-orange-400 text-lg">title</mat-icon>
+                  Nombre de la Categoría
+                </label>
+                <input
+                  type="text"
+                  id="nombre"
+                  name="nombre"
+                  [(ngModel)]="nuevaCategoria.nombre"
+                  required
+                  class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400
+                         focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/30
+                         transition-all duration-300 group-focus-within:border-orange-500/30"
+                  placeholder="Ingresa el nombre de la categoría"
+                />
+                <!-- Indicador de validación -->
+                <div class="absolute right-3 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
+              </div>
+            </div>
 
-  <form (ngSubmit)="guardarCategoria()" #categoriaForm="ngForm" class="space-y-4">
-    <!-- Nombre -->
-    <div>
-      <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
-      <input
-        type="text"
-        id="nombre"
-        name="nombre"
-        [(ngModel)]="nuevaCategoria.nombre"
-        required
-        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-[#F7A428] focus:ring focus:ring-[#F7A428]/50 p-2"
-      />
+            <!-- Campo Tipo -->
+            <div class="relative group">
+              <div class="absolute -inset-2 bg-gradient-to-r from-orange-500/10 to-pink-500/10 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
+              
+              <div class="relative">
+                <label for="tipo" class="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                  <mat-icon class="text-pink-400 text-lg">label</mat-icon>
+                  Tipo de Categoría
+                </label>
+                <select
+                  id="tipo"
+                  name="tipo"
+                  [(ngModel)]="nuevaCategoria.tipo"
+                  required
+                  class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white
+                         focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/30
+                         transition-all duration-300 group-focus-within:border-orange-500/30 appearance-none cursor-pointer"
+                >
+                  <option value="" disabled class="bg-gray-800 text-white">Seleccione un tipo</option>
+                  <option *ngFor="let tipo of tiposCategoria" [value]="tipo" class="bg-gray-800 text-white">
+                    {{ tipo | titlecase }}
+                  </option>
+                </select>
+                <!-- Icono de flecha personalizado -->
+                <div class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                  <mat-icon class="text-gray-400 group-focus-within:text-orange-400 transition-colors">arrow_drop_down</mat-icon>
+                </div>
+              </div>
+            </div>
+
+            <!-- Campo Descripción -->
+            <div class="relative group">
+              <div class="absolute -inset-2 bg-gradient-to-r from-orange-500/10 to-pink-500/10 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
+              
+              <div class="relative">
+                <label for="descripcion" class="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                  <mat-icon class="text-purple-400 text-lg">description</mat-icon>
+                  Descripción
+                </label>
+                <textarea
+                  id="descripcion"
+                  name="descripcion"
+                  [(ngModel)]="nuevaCategoria.descripcion"
+                  rows="4"
+                  class="w-full bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400
+                         focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/30
+                         transition-all duration-300 group-focus-within:border-orange-500/30 resize-none custom-scrollbar"
+                  placeholder="Describe la categoría (opcional)"
+                ></textarea>
+                <!-- Contador de caracteres (opcional) -->
+                <div class="absolute bottom-2 right-2 text-xs text-gray-400">
+                  {{ nuevaCategoria.descripcion?.length || 0 }}/500
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+      <!-- Footer del modal -->
+      <div class="relative p-6 border-t border-white/10 bg-gradient-to-r from-orange-500/5 to-pink-500/5">
+        <div class="flex justify-end gap-3">
+          <!-- Botón Cancelar -->
+          <div class="relative group">
+            <div class="absolute -inset-1 bg-gradient-to-r from-gray-500/10 to-gray-600/10 rounded-2xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <button
+              type="button"
+              (click)="cerrarModal()"
+              class="relative px-6 py-3 bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm rounded-2xl border border-white/10 
+                     text-gray-300 hover:text-white hover:border-gray-500/30 transition-all duration-300 font-semibold flex items-center gap-2"
+            >
+              <mat-icon class="text-lg">cancel</mat-icon>
+              Cancelar
+            </button>
+          </div>
+
+          <!-- Botón Guardar -->
+          <div class="relative group">
+            <div class="absolute -inset-1 bg-gradient-to-r from-orange-500 to-pink-500 rounded-2xl blur opacity-30 group-hover:opacity-50 transition-opacity duration-300"></div>
+            <button
+              type="submit"
+              [disabled]="!categoriaForm.valid"
+              (click)="guardarCategoria()"
+              class="relative px-6 py-3 bg-gradient-to-r from-orange-500 to-pink-500 text-white rounded-2xl border border-orange-500/30
+                     hover:shadow-lg hover:shadow-orange-500/25 transform hover:scale-105 transition-all duration-300 font-semibold
+                     disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none flex items-center gap-2"
+            >
+              <mat-icon class="text-lg">{{ modoEdicion ? 'update' : 'save' }}</mat-icon>
+              {{ modoEdicion ? 'Actualizar' : 'Crear Categoría' }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Elementos decorativos de esquina -->
+      <div class="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-orange-500/40 rounded-tl-2xl"></div>
+      <div class="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-pink-500/40 rounded-tr-2xl"></div>
+      <div class="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-orange-500/40 rounded-bl-2xl"></div>
+      <div class="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-pink-500/40 rounded-br-2xl"></div>
     </div>
-
-    <!-- Tipo (select con Tailwind) -->
-    <div>
-      <label for="tipo" class="block text-sm font-medium text-gray-700">Tipo</label>
-      <select
-        id="tipo"
-        name="tipo"
-        [(ngModel)]="nuevaCategoria.tipo"
-        required
-        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-[#F7A428] focus:ring focus:ring-[#F7A428]/50 p-2 bg-white"
-      >
-        <option value="" disabled>Seleccione un tipo</option>
-        <option *ngFor="let tipo of tiposCategoria" [value]="tipo">{{ tipo | titlecase }}</option>
-      </select>
-    </div>
-
-    <!-- Descripción -->
-    <div>
-      <label for="descripcion" class="block text-sm font-medium text-gray-700">Descripción</label>
-      <textarea
-        id="descripcion"
-        name="descripcion"
-        [(ngModel)]="nuevaCategoria.descripcion"
-        rows="3"
-        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-[#F7A428] focus:ring focus:ring-[#F7A428]/50 p-2 resize-none"
-      ></textarea>
-    </div>
-
-    <!-- Botones -->
-    <div class="flex justify-end gap-3 pt-4">
-      <button
-        type="button"
-        (click)="cerrarModal()"
-        class="px-5 py-2 rounded-xl font-semibold border border-gray-300 text-gray-700 hover:bg-gray-100 transition-all"
-      >
-        Cancelar
-      </button>
-
-      <button
-        type="submit"
-        [disabled]="!categoriaForm.valid"
-        class="px-5 py-2 rounded-xl font-semibold bg-[#F7A428] text-white hover:bg-[#e69320] shadow-md transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center"
-      >
-        <mat-icon class="text-white mr-1">save</mat-icon>
-        {{ modoEdicion ? 'Guardar Cambios' : 'Guardar' }}
-      </button>
-    </div>
-  </form>
+  </div>
 </div>
+
+<!-- Estilos personalizados -->
+<style>
+  /* Animación para el fondo del modal */
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse-slow 4s ease-in-out infinite;
+  }
+
+  /* Scrollbar personalizado para el contenido del modal */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+    margin: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #f97316, #ec4899);
+    border-radius: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #ea580c, #db2777);
+  }
+
+  /* Para Firefox */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #f97316 rgba(255, 255, 255, 0.05);
+  }
+
+  /* Mejora para el select nativo */
+  select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Remover la flecha por defecto en IE */
+  select::-ms-expand {
+    display: none;
+  }
+
+  /* Estilos para el textarea */
+  textarea {
+    min-height: 120px;
+  }
+
+  /* Efecto de focus mejorado */
+  input:focus, select:focus, textarea:focus {
+    transform: translateY(-1px);
+  }
+
+  /* Transición suave para todos los elementos */
+  * {
+    transition-property: color, background-color, border-color, transform, box-shadow;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+</style>

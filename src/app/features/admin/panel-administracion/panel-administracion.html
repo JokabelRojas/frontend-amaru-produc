@@ -1,1 +1,222 @@
-<p>panel-administracion works!</p>
+<div class="panel-container">
+  <!-- Fondos decorativos -->
+  <div class="panel-bg-overlay"></div>
+  
+  <div class="panel-header">
+    <!-- Número decorativo -->
+    <div class="header-decoration">06</div>
+    
+    <h1>Panel de Administración</h1>
+    <p class="panel-subtitle">Estadísticas y métricas del sistema</p>
+    
+    <button class="btn-recargar" (click)="recargarDatos()" [disabled]="loading">
+      <div class="btn-content">
+        <mat-icon class="btn-icon">{{ loading ? 'refresh' : 'autorenew' }}</mat-icon>
+        <span>{{ loading ? 'Cargando...' : 'Actualizar Datos' }}</span>
+      </div>
+      <div class="btn-glow"></div>
+    </button>
+  </div>
+
+  <!-- Mensaje de error -->
+  <div *ngIf="error" class="error-message">
+    <div class="error-content">
+      <mat-icon class="error-icon">error_outline</mat-icon>
+      <div class="error-text">
+        <h4>Error al cargar datos</h4>
+        <p>{{ error }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="loading-content">
+      <div class="spinner-container">
+        <div class="spinner"></div>
+        <div class="spinner-glow"></div>
+      </div>
+      <p>Cargando estadísticas...</p>
+      <div class="loading-dots">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grid de Cards -->
+  <div *ngIf="!loading" class="cards-grid">
+    
+    <!-- Card Talleres -->
+    <div class="card card-talleres">
+      <div class="card-bg-overlay"></div>
+      <div class="card-decoration">01</div>
+      <div class="card-icon">
+        <div class="icon-container">
+          <mat-icon>school</mat-icon>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3>Talleres</h3>
+        <p class="card-number">{{ estadisticas.totalTalleres }}</p>
+        <span class="card-label">Total registrados</span>
+      </div>
+      <div class="card-glow"></div>
+    </div>
+
+    <!-- Card Inscripciones -->
+    <div class="card card-inscripciones">
+      <div class="card-bg-overlay"></div>
+      <div class="card-decoration">02</div>
+      <div class="card-icon">
+        <div class="icon-container">
+          <mat-icon>assignment</mat-icon>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3>Inscripciones</h3>
+        <p class="card-number">{{ estadisticas.totalInscripciones }}</p>
+        <span class="card-label">Total realizadas</span>
+      </div>
+      <div class="card-glow"></div>
+    </div>
+
+    <!-- Card Profesores -->
+    <div class="card card-profesores">
+      <div class="card-bg-overlay"></div>
+      <div class="card-decoration">03</div>
+      <div class="card-icon">
+        <div class="icon-container">
+          <mat-icon>person</mat-icon>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3>Profesores</h3>
+        <p class="card-number">{{ estadisticas.totalProfesores }}</p>
+        <span class="card-label">En el sistema</span>
+      </div>
+      <div class="card-glow"></div>
+    </div>
+
+    <!-- Card Usuarios -->
+    <div class="card card-usuarios">
+      <div class="card-bg-overlay"></div>
+      <div class="card-decoration">04</div>
+      <div class="card-icon">
+        <div class="icon-container">
+          <mat-icon>people</mat-icon>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3>Usuarios</h3>
+        <p class="card-number">{{ estadisticas.totalUsuarios }}</p>
+        <span class="card-label">Registrados</span>
+      </div>
+      <div class="card-glow"></div>
+    </div>
+
+    <!-- Card Actividades -->
+    <div class="card card-actividades">
+      <div class="card-bg-overlay"></div>
+      <div class="card-decoration">05</div>
+      <div class="card-icon">
+        <div class="icon-container">
+          <mat-icon>theater_comedy</mat-icon>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3>Actividades</h3>
+        <p class="card-number">{{ estadisticas.totalActividades }}</p>
+        <span class="card-label">Programadas</span>
+      </div>
+      <div class="card-glow"></div>
+    </div>
+
+    <!-- Card Festivales -->
+    <div class="card card-festivales">
+      <div class="card-bg-overlay"></div>
+      <div class="card-decoration">06</div>
+      <div class="card-icon">
+        <div class="icon-container">
+          <mat-icon>festival</mat-icon>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3>Festivales</h3>
+        <p class="card-number">{{ estadisticas.totalFestivales }}</p>
+        <span class="card-label">Creados</span>
+      </div>
+      <div class="card-glow"></div>
+    </div>
+
+    <!-- Card Premios -->
+    <div class="card card-premios">
+      <div class="card-bg-overlay"></div>
+      <div class="card-decoration">07</div>
+      <div class="card-icon">
+        <div class="icon-container">
+          <mat-icon>military_tech</mat-icon>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3>Premios</h3>
+        <p class="card-number">{{ estadisticas.totalPremios }}</p>
+        <span class="card-label">Disponibles</span>
+      </div>
+      <div class="card-glow"></div>
+    </div>
+
+    <!-- Card Servicios -->
+    <div class="card card-servicios">
+      <div class="card-bg-overlay"></div>
+      <div class="card-decoration">08</div>
+      <div class="card-icon">
+        <div class="icon-container">
+          <mat-icon>build</mat-icon>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3>Servicios</h3>
+        <p class="card-number">{{ estadisticas.totalServicios }}</p>
+        <span class="card-label">Ofrecidos</span>
+      </div>
+      <div class="card-glow"></div>
+    </div>
+
+    <!-- Card Categorías -->
+    <div class="card card-categorias">
+      <div class="card-bg-overlay"></div>
+      <div class="card-decoration">09</div>
+      <div class="card-icon">
+        <div class="icon-container">
+          <mat-icon>category</mat-icon>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3>Categorías</h3>
+        <p class="card-number">{{ estadisticas.totalCategorias }}</p>
+        <span class="card-label">Disponibles</span>
+      </div>
+      <div class="card-glow"></div>
+    </div>
+
+    <!-- Card Subcategorías -->
+    <div class="card card-subcategorias">
+      <div class="card-bg-overlay"></div>
+      <div class="card-decoration">10</div>
+      <div class="card-icon">
+        <div class="icon-container">
+          <mat-icon>folder_open</mat-icon>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3>Subcategorías</h3>
+        <p class="card-number">{{ estadisticas.totalSubcategorias }}</p>
+        <span class="card-label">Disponibles</span>
+      </div>
+      <div class="card-glow"></div>
+    </div>
+
+  </div>
+</div>
