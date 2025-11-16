@@ -5,6 +5,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { environment } from '../../../../../environments/environment';
 import { HeaderCliente } from '../../../../shared/components/header-cliente/header-cliente';
+import { FooterCliente } from '../../../../shared/components/footer-cliente/footer-cliente';
 
 // Interfaces para tipado fuerte
 interface Premio {
@@ -21,7 +22,7 @@ interface Premio {
 @Component({
   selector: 'app-premios',
   standalone: true,
-  imports: [CommonModule, HttpClientModule,HeaderCliente],
+  imports: [CommonModule, HttpClientModule,HeaderCliente, FooterCliente],
   templateUrl: './premios.html',
   styleUrls: ['./premios.css']
 })

@@ -3,7 +3,7 @@ import { CommonModule, NgFor, NgClass, DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { TalleresService } from '../../services/talleres.service';
 import { AuthService } from '../../../../core/services/auth.service';
-import { AdminDataService } from '../../../../core/services/admin.data.service'; // Asegúrate de importar este servicio
+import { AdminDataService } from '../../../../core/services/admin.data.service';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -25,11 +25,12 @@ export class Carrusel implements OnInit {
   // Variables para controlar modales
   showModalNoLogueado = false;
   showModalInscripcion = false;
+  showModalDetalles = false; // Nuevo modal para detalles
   tallerSeleccionado: any = null;
   usuarioData: any = null;
 
-  // QR code (puedes reemplazar con tu QR real)
-  qrCode = 'assets/img/qr-pago.png'; // Ruta a tu imagen QR
+  // QR code
+  qrCode = 'assets/img/qr-pago.png';
 
   ngOnInit(): void {
     this.cargarTalleres();
@@ -37,9 +38,33 @@ export class Carrusel implements OnInit {
 
   cargarTalleres(): void {
     this.talleresService.getTalleresActivos().subscribe({
-      next: (data: any[]) => (this.talleres = data),
+      next: (data: any[]) => {
+        this.talleres = data.map(taller => ({
+          ...taller,
+          categoria: taller.id_subcategoria?.nombre || 'Taller',
+          duracion: this.calcularDuracion(taller.fecha_inicio, taller.fecha_fin),
+          cupos: taller.cupo_disponible,
+          lugar: taller.modalidad === 'presencial' ? 'Sede Principal' : 'Virtual',
+          subtitulo: taller.id_subcategoria?.nombre || 'Taller Especializado',
+          subdescripcion: taller.id_subcategoria?.descripcion || 'Aprende técnicas avanzadas'
+        }));
+      },
       error: (err: any) => console.error('Error cargando talleres activos:', err),
     });
+  }
+
+  public calcularDuracion(fechaInicio: string, fechaFin: string): string {
+    const inicio = new Date(fechaInicio);
+    const fin = new Date(fechaFin);
+    const diffTime = Math.abs(fin.getTime() - inicio.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+    
+    if (diffDays >= 7) {
+      const semanas = Math.ceil(diffDays / 7);
+      return `${semanas} semana${semanas > 1 ? 's' : ''}`;
+    }
+    
+    return `${diffDays} día${diffDays > 1 ? 's' : ''}`;
   }
 
   prevSlide(): void {
@@ -55,47 +80,45 @@ export class Carrusel implements OnInit {
     this.currentIndex = index;
   }
 
-  // Nueva función para abrir modal de inscripción
+  abrirModalDetalles(taller: any): void {
+    this.tallerSeleccionado = taller;
+    this.showModalDetalles = true;
+  }
+
   abrirModalInscripcion(taller: any): void {
     this.tallerSeleccionado = taller;
     
     if (this.authService.isAuthenticated()) {
-      // Usuario logueado - obtener datos y mostrar modal de inscripción
       this.usuarioData = this.authService.getUserData();
       this.showModalInscripcion = true;
       this.showModalNoLogueado = false;
     } else {
-      // Usuario NO logueado - mostrar modal para login/registro
       this.showModalNoLogueado = true;
       this.showModalInscripcion = false;
     }
   }
 
-  // Ir a login
   irALogin(): void {
     this.cerrarModales();
     this.router.navigate(['/login']);
   }
 
-  // Cerrar todos los modales
   cerrarModales(): void {
     this.showModalNoLogueado = false;
     this.showModalInscripcion = false;
+    this.showModalDetalles = false; // Cerrar también el modal de detalles
     this.tallerSeleccionado = null;
     this.usuarioData = null;
   }
 
-  // Función para abrir WhatsApp
   abrirWhatsApp(): void {
     const mensaje = `Hola, acabo de realizar el pago para el taller "${this.tallerSeleccionado?.nombre}". Adjunto comprobante.`;
     const url = `https://wa.me/51959194292?text=${encodeURIComponent(mensaje)}`;
     window.open(url, '_blank');
   }
 
-  // Función para procesar inscripción
   procesarInscripcion(): void {
     if (this.tallerSeleccionado && this.usuarioData) {
-      // Primera API: inscribirseTaller
       const inscripcionData = {
         id_usuario: this.usuarioData.id,
         estado: "pendiente"
@@ -105,7 +128,6 @@ export class Carrusel implements OnInit {
         next: (responseInscripcion: any) => {
           console.log('Inscripción exitosa:', responseInscripcion);
           
-          // Segunda API: crearDetalleInscripcion
           const detalleData = {
             id_inscripcion: responseInscripcion._id,
             id_taller: this.tallerSeleccionado._id,
@@ -135,7 +157,6 @@ export class Carrusel implements OnInit {
     }
   }
 
-  // Método para obtener nombre completo
   getNombreCompleto(): string {
     if (this.usuarioData) {
       return `${this.usuarioData.nombre} ${this.usuarioData.apellido}`;

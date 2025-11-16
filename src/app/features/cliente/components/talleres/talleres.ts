@@ -109,7 +109,7 @@ export class Talleres implements OnInit {
    * Obtiene los talleres desde la API
    */
   getTalleres(): Observable<Taller[]> {
-    return this.http.get<Taller[]>(`${environment.apiUrl}talleres`).pipe(
+    return this.http.get<Taller[]>(`${environment.apiUrl}talleres/activos`).pipe(
       catchError(error => {
         console.error('Error en la petición de talleres:', error);
         return of([]);
