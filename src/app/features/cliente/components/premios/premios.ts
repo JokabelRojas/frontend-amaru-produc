@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { catchError, finalize } from 'rxjs/operators';
+import { catchError, finalize, map } from 'rxjs/operators';
 import { environment } from '../../../../../environments/environment';
 import { HeaderCliente } from '../../../../shared/components/header-cliente/header-cliente';
 import { FooterCliente } from '../../../../shared/components/footer-cliente/footer-cliente';
@@ -19,10 +19,23 @@ interface Premio {
   __v: number;
 }
 
+// Interface para la respuesta de la API
+interface ApiResponse<T> {
+  data: T;
+  message: string;
+  success: boolean;
+  timestamp: string;
+}
+
+// Type guard para verificar si un objeto es un Premio
+function esPremio(obj: any): obj is Premio {
+  return obj && typeof obj === 'object' && 'titulo' in obj && 'fecha' in obj;
+}
+
 @Component({
   selector: 'app-premios',
   standalone: true,
-  imports: [CommonModule, HttpClientModule,HeaderCliente, FooterCliente],
+  imports: [CommonModule, HttpClientModule, HeaderCliente, FooterCliente],
   templateUrl: './premios.html',
   styleUrls: ['./premios.css']
 })
@@ -60,10 +73,12 @@ export class Premios implements OnInit {
       })
     ).subscribe({
       next: (premios) => {
+        console.log('Premios recibidos:', premios);
         // Ordenar premios por fecha (más recientes primero)
         this.premios = (premios || []).sort((a, b) => 
           new Date(b.fecha).getTime() - new Date(a.fecha).getTime()
         );
+        console.log('Premios ordenados:', this.premios);
       },
       error: (error) => {
         console.error('Error al cargar premios:', error);
@@ -77,7 +92,42 @@ export class Premios implements OnInit {
    * Obtiene los premios desde la API
    */
   getPremios(): Observable<Premio[]> {
-    return this.http.get<Premio[]>(`${environment.apiUrl}premios`).pipe(
+    return this.http.get<ApiResponse<any>>(`${environment.apiUrl}premios`).pipe(
+      map(response => {
+        console.log('Respuesta completa de premios:', response);
+        
+        // SOLUCIÓN: Manejar diferentes estructuras posibles
+        let premiosData: Premio[] = [];
+        
+        if (Array.isArray(response.data)) {
+          // Si data es un array directo, filtrar solo los objetos que son premios
+          premiosData = response.data.filter(esPremio);
+        } else if (response.data && typeof response.data === 'object') {
+          // Si data es un objeto, verificar si tiene una propiedad que sea array
+          const posiblesArrays = ['premios', 'result', 'items', 'data'];
+          for (const key of posiblesArrays) {
+            if (Array.isArray(response.data[key])) {
+              premiosData = response.data[key].filter(esPremio);
+              break;
+            }
+          }
+          
+          // Si no encontramos un array en las propiedades comunes, intentar extraer del objeto
+          if (premiosData.length === 0 && response.data) {
+            // Si el objeto mismo tiene propiedades de premio, convertirlo a array
+            if (esPremio(response.data)) {
+              premiosData = [response.data];
+            } else {
+              // Intentar extraer todos los valores que sean premios
+              const valores = Object.values(response.data);
+              premiosData = valores.filter(esPremio);
+            }
+          }
+        }
+        
+        console.log('Premios extraídos:', premiosData);
+        return premiosData;
+      }),
       catchError(error => {
         console.error('Error en la petición de premios:', error);
         return of([]);

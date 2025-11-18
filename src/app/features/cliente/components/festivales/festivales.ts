@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, PLATFORM_ID, HostListener } from '@angular/c
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { catchError, finalize } from 'rxjs/operators';
+import { catchError, finalize, map } from 'rxjs/operators';
 import { environment } from '../../../../../environments/environment';
 import { HeaderCliente } from '../../../../shared/components/header-cliente/header-cliente';
 import { FooterCliente } from '../../../../shared/components/footer-cliente/footer-cliente';
@@ -41,10 +41,18 @@ interface ActividadConCantidad {
   cantidad: number;
 }
 
+// Interface para la respuesta de la API
+interface ApiResponse<T> {
+  data: T;
+  message: string;
+  success: boolean;
+  timestamp: string;
+}
+
 @Component({
   selector: 'app-festivales',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, HeaderCliente,FooterCliente],
+  imports: [CommonModule, HttpClientModule, HeaderCliente, FooterCliente],
   templateUrl: './festivales.html',
   styleUrls: ['./festivales.css']
 })
@@ -85,6 +93,7 @@ export class Festivales implements OnInit {
     ).subscribe({
       next: (festivales) => {
         this.festivales = festivales || [];
+        console.log('Festivales cargados:', this.festivales);
       },
       error: (error) => {
         console.error('Error al cargar festivales:', error);
@@ -98,7 +107,12 @@ export class Festivales implements OnInit {
    * Obtiene los festivales activos desde la API
    */
   getFestivalesActivos(): Observable<Festival[]> {
-    return this.http.get<Festival[]>(`${environment.apiUrl}festivales/estado/activos`).pipe(
+    return this.http.get<ApiResponse<Festival[]>>(`${environment.apiUrl}festivales/estado/activos`).pipe(
+      map(response => {
+        console.log('Respuesta completa de API:', response);
+        // Extrae el array de festivales de response.data
+        return response.data || [];
+      }),
       catchError(error => {
         console.error('Error en la petición de festivales:', error);
         return of([]);
@@ -214,13 +228,15 @@ export class Festivales implements OnInit {
 
     this.festivales.forEach(festival => {
       const actividad = festival.id_actividad;
-      if (actividadesMap.has(actividad._id)) {
-        actividadesMap.get(actividad._id)!.cantidad++;
-      } else {
-        actividadesMap.set(actividad._id, {
-          ...actividad,
-          cantidad: 1
-        });
+      if (actividad && actividad._id) {
+        if (actividadesMap.has(actividad._id)) {
+          actividadesMap.get(actividad._id)!.cantidad++;
+        } else {
+          actividadesMap.set(actividad._id, {
+            ...actividad,
+            cantidad: 1
+          });
+        }
       }
     });
 
@@ -231,7 +247,9 @@ export class Festivales implements OnInit {
    * Obtiene festivales por actividad
    */
   obtenerFestivalesPorActividad(actividadId: string): Festival[] {
-    return this.festivales.filter(festival => festival.id_actividad._id === actividadId);
+    return this.festivales.filter(festival => 
+      festival.id_actividad && festival.id_actividad._id === actividadId
+    );
   }
 
   /**

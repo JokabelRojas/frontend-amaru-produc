@@ -143,7 +143,7 @@
               </div>
               
               <!-- Botón de inscribirse -->
-              <button class="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl text-white font-semibold hover:scale-105 transform transition-all shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 flex items-center gap-2 group/btn text-sm">
+              <button (click)="abrirModalInscripcion(taller)" class="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl text-white font-semibold hover:scale-105 transform transition-all shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 flex items-center gap-2 group/btn text-sm">
                 <i class="fas fa-user-plus text-xs transition-transform group-hover/btn:rotate-12"></i> 
                 <span>INSCRIBIRSE</span>
                 <i class="fas fa-arrow-right text-xs transition-transform group-hover/btn:translate-x-1"></i>
@@ -245,8 +245,212 @@
     </div>
   </div>
 </div>
+
 <app-footer-cliente></app-footer-cliente>
 
+<div *ngIf="showModalNoLogueado"
+  class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+  <div
+    class="bg-gradient-to-br from-gray-900 to-black border border-orange-500/30 rounded-3xl max-w-md w-full p-8 relative overflow-hidden">
+
+    <!-- Fondos decorativos del modal -->
+    <div class="absolute -top-20 -right-20 w-40 h-40 bg-orange-500/10 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-pink-500/10 rounded-full blur-3xl"></div>
+
+    <div class="relative z-10 text-center">
+      <!-- Icono -->
+      <div
+        class="w-20 h-20 mx-auto mb-6 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center">
+        <mat-icon class="text-white text-3xl">lock</mat-icon>
+      </div>
+
+      <!-- Título -->
+      <h3
+        class="text-2xl font-bold text-white mb-4 bg-clip-text text-transparent bg-gradient-to-r from-orange-300 to-pink-300">
+        ¡Estás a un paso!
+      </h3>
+
+      <!-- Descripción -->
+      <p class="text-gray-300 mb-6 leading-relaxed">
+        Para inscribirte en <strong class="text-orange-400">{{tallerSeleccionado?.nombre}}</strong>, primero necesitas
+        iniciar sesión o registrarte en nuestra plataforma.
+      </p>
+
+      <!-- Botones -->
+      <div class="flex flex-col gap-3">
+        <button (click)="irALogin()"
+          class="w-full py-4 bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white font-semibold rounded-2xl transition-all duration-300 shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40">
+          Iniciar Sesión / Registrarse
+        </button>
+
+        <button (click)="cerrarModales()"
+          class="w-full py-4 border border-gray-600 text-gray-300 hover:bg-gray-800/50 rounded-2xl transition-all duration-300 backdrop-blur-sm">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showModalInscripcion"
+  class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+  <div
+    class="bg-gradient-to-br from-gray-900 to-black border border-green-500/30 rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+
+    <!-- Fondos decorativos del modal -->
+    <div class="absolute -top-20 -right-20 w-40 h-40 bg-green-500/10 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl"></div>
+
+    <!-- Contenedor con scroll automático -->
+    <div class="overflow-y-auto p-8 relative z-10">
+      <!-- Icono -->
+      <div
+        class="w-20 h-20 mx-auto mb-6 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center">
+        <mat-icon class="text-white text-3xl">celebration</mat-icon>
+      </div>
+
+      <!-- Título -->
+      <h3
+        class="text-2xl font-bold text-white mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-green-300 to-blue-300">
+        ¡Bienvenido a la inscripción!
+      </h3>
+
+      <!-- Información del usuario -->
+      <div class="bg-black/40 backdrop-blur-sm rounded-2xl p-4 mb-4 border border-white/10">
+        <h4 class="text-green-400 font-semibold mb-3 text-center">Tus datos</h4>
+
+        <div class="grid grid-cols-2 gap-3 text-sm">
+          <div class="text-gray-400">Nombre:</div>
+          <div class="text-white font-medium">{{usuarioData?.nombre}}</div>
+
+          <div class="text-gray-400">Apellido:</div>
+          <div class="text-white font-medium">{{usuarioData?.apellido}}</div>
+
+          <div class="text-gray-400">DNI:</div>
+          <div class="text-white font-medium">{{usuarioData?.dni}}</div>
+
+          <div class="text-gray-400">Email:</div>
+          <div class="text-white font-medium">{{usuarioData?.email}}</div>
+        </div>
+      </div>
+
+      <!-- Información del taller -->
+      <div class="bg-black/30 backdrop-blur-sm rounded-2xl p-4 mb-4 border border-orange-500/20">
+        <h4 class="text-orange-400 font-semibold mb-3 text-center">{{tallerSeleccionado?.nombre}}</h4>
+
+        <!-- Grid de información del taller -->
+        <div class="grid grid-cols-2 gap-4 text-sm">
+          <!-- Fecha -->
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-orange-500/20 rounded-full flex items-center justify-center">
+              <mat-icon class="text-orange-400 text-sm">calendar_today</mat-icon>
+            </div>
+            <div>
+              <div class="text-gray-400 text-xs">FECHA</div>
+              <div class="text-white font-medium text-xs">
+                {{tallerSeleccionado?.fecha_inicio | date:'dd/MM/yy'}} - {{tallerSeleccionado?.fecha_fin |
+                date:'dd/MM/yy'}}
+              </div>
+            </div>
+          </div>
+
+          <!-- Horario -->
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
+              <mat-icon class="text-blue-400 text-sm">schedule</mat-icon>
+            </div>
+            <div>
+              <div class="text-gray-400 text-xs">HORARIO</div>
+              <div class="text-white font-medium text-xs">
+                {{tallerSeleccionado?.horario || 'Por definir'}}
+              </div>
+            </div>
+          </div>
+
+          <!-- Modalidad -->
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center">
+              <mat-icon class="text-purple-400 text-sm">computer</mat-icon>
+            </div>
+            <div>
+              <div class="text-gray-400 text-xs">MODALIDAD</div>
+              <div class="text-white font-medium text-xs">
+                {{tallerSeleccionado?.modalidad || 'Presencial'}}
+              </div>
+            </div>
+          </div>
+
+          <!-- Precio -->
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center">
+              <mat-icon class="text-green-400 text-sm">attach_money</mat-icon>
+            </div>
+<div>
+  <div class="text-gray-400 text-xs">PRECIO</div>
+  <div class="text-white font-medium text-xs">
+    {{(tallerSeleccionado?.precio ?? null) ? ('S/ ' + tallerSeleccionado!.precio) : 'Gratuito'}}
+  </div>
+</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Proceso de Pago -->
+      <div class="bg-yellow-500/10 border border-yellow-500/30 rounded-2xl p-4 mb-4">
+        <h4 class="text-yellow-400 font-semibold mb-3 text-center">Proceso de Pago</h4>
+
+        <!-- QR Code -->
+        <div class="flex justify-center mb-4">
+          <div class="bg-white p-3 rounded-2xl shadow-lg">
+            <img [src]="qrCode" alt="QR Code para pago" class="w-48 h-48 object-contain">
+          </div>
+        </div>
+
+        <!-- Instrucciones -->
+        <div class="text-center mb-4">
+          <p class="text-yellow-300 text-sm font-semibold mb-2">
+            ⚠️ Antes de enviar el botón "Inscribirse", asegúrate de:
+          </p>
+          <ol class="text-gray-300 text-sm text-left list-decimal list-inside space-y-1">
+            <li>Realizar el pago mediante el código QR</li>
+            <li>Tomar una captura de pantalla del comprobante</li>
+            <li>Enviar la foto del comprobante por WhatsApp</li>
+          </ol>
+        </div>
+
+        <!-- Botón WhatsApp -->
+        <button (click)="abrirWhatsApp()"
+          class="w-full py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-2xl transition-all duration-300 shadow-lg shadow-green-500/25 hover:shadow-green-500/40 flex items-center justify-center gap-2 mb-2">
+          <mat-icon>whatsapp</mat-icon>
+          Enviar Comprobante por WhatsApp
+        </button>
+
+        <p class="text-gray-400 text-xs text-center">
+          Número: +51 959 194 292
+        </p>
+      </div>
+
+      <!-- Descripción final -->
+      <p class="text-gray-300 mb-6 leading-relaxed text-center text-sm">
+        Solo presiona "Confirmar Inscripción" después de haber enviado tu comprobante por WhatsApp.
+      </p>
+
+      <!-- Botones -->
+      <div class="flex flex-col gap-3">
+        <button (click)="procesarInscripcion()"
+          class="w-full py-4 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white font-semibold rounded-2xl transition-all duration-300 shadow-lg shadow-green-500/25 hover:shadow-green-500/40 flex items-center justify-center gap-2">
+          <mat-icon>check_circle</mat-icon>
+          Confirmar Inscripción
+        </button>
+
+        <button (click)="cerrarModales()"
+          class="w-full py-4 border border-gray-600 text-gray-300 hover:bg-gray-800/50 rounded-2xl transition-all duration-300 backdrop-blur-sm">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Estilos CSS personalizados -->
 <style>

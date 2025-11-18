@@ -1,194 +1,188 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { catchError, finalize } from 'rxjs/operators';
-import { environment } from '../../../../../environments/environment';
-import { HeaderCliente } from '../../../../shared/components/header-cliente/header-cliente';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule, NgFor, NgClass, DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
+import { TalleresService } from '../../services/talleres.service';
+import { AuthService } from '../../../../core/services/auth.service';
+import { AdminDataService } from '../../../../core/services/admin.data.service';
+import { MatIconModule } from '@angular/material/icon';
 import { FooterCliente } from '../../../../shared/components/footer-cliente/footer-cliente';
-
-// Interfaces para tipado fuerte
-interface Categoria {
-  _id: string;
-  nombre: string;
-  tipo: string;
-  descripcion: string;
-  estado: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-}
-
-interface Subcategoria {
-  _id: string;
-  nombre: string;
-  descripcion: string;
-  id_categoria: string;
-  estado: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-  id: string;
-}
-
-interface Profesor {
-  _id: string;
-  nombre: string;
-  descripcion: string;
-  especialidad: string;
-  imagen_url: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-}
-
-interface Taller {
-  _id: string;
-  nombre: string;
-  descripcion: string;
-  fecha_inicio: string;
-  fecha_fin: string;
-  horario: string;
-  modalidad: string;
-  precio: number;
-  cupo_total: number;
-  cupo_disponible: number;
-  id_categoria: Categoria;
-  id_subcategoria: Subcategoria;
-  id_profesor: Profesor;
-  estado: string;
-  imagen_url: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-}
+import { HeaderCliente } from '../../../../shared/components/header-cliente/header-cliente';
 
 @Component({
-  selector: 'app-talleres',
+  selector: 'app-carrusel',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, HeaderCliente,FooterCliente],
+  imports: [CommonModule, NgFor, NgClass, DatePipe, MatIconModule, FooterCliente, HeaderCliente],
   templateUrl: './talleres.html',
-  styleUrls: ['./talleres.css']
+  styleUrls: ['./talleres.css'],
 })
 export class Talleres implements OnInit {
-  // Estado del componente
-  talleres: Taller[] = [];
-  cargando: boolean = false;
-  error: string = '';
+  private talleresService = inject(TalleresService);
+  private authService = inject(AuthService);
+  private adminDataService = inject(AdminDataService);
+  private router = inject(Router);
+  
+  // Propiedades para el estado de carga y errores
+  cargando: boolean = true;
+  error: string | null = null;
+  
+  talleres: any[] = [];
+  currentIndex = 0;
+  
+  // Variables para controlar modales
+  showModalNoLogueado = false;
+  showModalInscripcion = false;
+  showModalDetalles = false;
+  tallerSeleccionado: any = null;
+  usuarioData: any = null;
 
-  constructor(private http: HttpClient) {}
+  // QR code
+  qrCode = 'assets/img/qr-pago.png';
 
   ngOnInit(): void {
     this.cargarTalleres();
   }
 
-  /**
-   * Carga los talleres desde la API
-   */
   cargarTalleres(): void {
     this.cargando = true;
-    this.error = '';
+    this.error = null;
+    
+    this.talleresService.getTalleresActivos().subscribe({
+      next: (response: any) => {
+        console.log('Respuesta de talleres:', response);
+        
+        // SOLUCIÓN: Acceder a response.data que es el array
+        const talleresData = response.data || [];
+        
+        this.talleres = talleresData.map((taller: any) => ({
+          ...taller,
+          categoria: taller.id_subcategoria?.nombre || 'Taller',
+          duracion: this.calcularDuracion(taller.fecha_inicio, taller.fecha_fin),
+          cupos: taller.cupo_disponible,
+          lugar: taller.modalidad === 'presencial' ? 'Sede Principal' : 'Virtual',
+          subtitulo: taller.id_subcategoria?.nombre || 'Taller Especializado',
+          subdescripcion: taller.id_subcategoria?.descripcion || 'Aprende técnicas avanzadas'
+        }));
 
-    this.getTalleres().pipe(
-      finalize(() => {
+        console.log('Talleres procesados:', this.talleres);
         this.cargando = false;
-      })
-    ).subscribe({
-      next: (talleres) => {
-        this.talleres = talleres;
       },
-      error: (error) => {
-        console.error('Error al cargar talleres:', error);
-        this.error = 'No se pudieron cargar los talleres. Por favor, intenta más tarde.';
+      error: (err: any) => {
+        console.error('Error cargando talleres activos:', err);
         this.talleres = [];
-      }
+        this.error = 'Error al cargar los talleres. Por favor, intenta nuevamente.';
+        this.cargando = false;
+      },
     });
   }
 
-  /**
-   * Obtiene los talleres desde la API
-   */
-  getTalleres(): Observable<Taller[]> {
-    return this.http.get<Taller[]>(`${environment.apiUrl}talleres/activos`).pipe(
-      catchError(error => {
-        console.error('Error en la petición de talleres:', error);
-        return of([]);
-      })
-    );
-  }
-
-  /**
-   * Maneja la inscripción a un taller
-   */
-  inscribirse(taller: Taller): void {
-    if (taller.cupo_disponible <= 0) {
-      alert('Lo sentimos, no hay cupos disponibles para este taller.');
-      return;
+  public calcularDuracion(fechaInicio: string, fechaFin: string): string {
+    const inicio = new Date(fechaInicio);
+    const fin = new Date(fechaFin);
+    const diffTime = Math.abs(fin.getTime() - inicio.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+    
+    if (diffDays >= 7) {
+      const semanas = Math.ceil(diffDays / 7);
+      return `${semanas} semana${semanas > 1 ? 's' : ''}`;
     }
+    
+    return `${diffDays} día${diffDays > 1 ? 's' : ''}`;
+  }
 
-    // Aquí puedes implementar la lógica de inscripción
-    console.log('Inscribiendo al taller:', taller.nombre);
+  prevSlide(): void {
+    this.currentIndex =
+      (this.currentIndex - 1 + this.talleres.length) % this.talleres.length;
+  }
+
+  nextSlide(): void {
+    this.currentIndex = (this.currentIndex + 1) % this.talleres.length;
+  }
+
+  irSlide(index: number): void {
+    this.currentIndex = index;
+  }
+
+  abrirModalDetalles(taller: any): void {
+    this.tallerSeleccionado = taller;
+    this.showModalDetalles = true;
+  }
+
+  abrirModalInscripcion(taller: any): void {
+    this.tallerSeleccionado = taller;
     
-    // Ejemplo de confirmación
-    const confirmacion = confirm(`¿Estás seguro de que quieres inscribirte en "${taller.nombre}" por S/ ${taller.precio}?`);
-    
-    if (confirmacion) {
-      // Aquí iría la llamada a la API para inscribirse
-      alert('¡Inscripción exitosa! Te hemos enviado un correo con los detalles.');
-      
-      // Actualizar cupos disponibles (esto sería en una implementación real con la API)
-      // taller.cupo_disponible--;
+    if (this.authService.isAuthenticated()) {
+      this.usuarioData = this.authService.getUserData();
+      this.showModalInscripcion = true;
+      this.showModalNoLogueado = false;
+    } else {
+      this.showModalNoLogueado = true;
+      this.showModalInscripcion = false;
     }
   }
 
-  /**
-   * Formatea una fecha para mostrar
-   */
-  formatearFecha(fecha: string): string {
-    return new Date(fecha).toLocaleDateString('es-ES', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric'
-    });
+  irALogin(): void {
+    this.cerrarModales();
+    this.router.navigate(['/login']);
   }
 
-  /**
-   * Verifica si un taller está próximo a comenzar
-   */
-  esTallerProximo(taller: Taller): boolean {
-    const fechaInicio = new Date(taller.fecha_inicio);
-    const hoy = new Date();
-    const diferencia = fechaInicio.getTime() - hoy.getTime();
-    const diasDiferencia = diferencia / (1000 * 3600 * 24);
-    
-    return diasDiferencia <= 7 && diasDiferencia >= 0; // Próximos 7 días
+  cerrarModales(): void {
+    this.showModalNoLogueado = false;
+    this.showModalInscripcion = false;
+    this.showModalDetalles = false;
+    this.tallerSeleccionado = null;
+    this.usuarioData = null;
   }
 
-  /**
-   * Verifica si un taller tiene pocos cupos disponibles
-   */
-  tienePocosCupos(taller: Taller): boolean {
-    return taller.cupo_disponible > 0 && taller.cupo_disponible <= 3;
+  abrirWhatsApp(): void {
+    const mensaje = `Hola, acabo de realizar el pago para el taller "${this.tallerSeleccionado?.nombre}". Adjunto comprobante.`;
+    const url = `https://wa.me/51959194292?text=${encodeURIComponent(mensaje)}`;
+    window.open(url, '_blank');
   }
 
-  /**
-   * Filtra talleres por modalidad
-   */
-  filtrarPorModalidad(modalidad: string): Taller[] {
-    return this.talleres.filter(taller => taller.modalidad === modalidad);
+  procesarInscripcion(): void {
+    if (this.tallerSeleccionado && this.usuarioData) {
+      const inscripcionData = {
+        id_usuario: this.usuarioData.id,
+        estado: "pendiente"
+      };
+
+      this.adminDataService.inscribirseTaller(inscripcionData).subscribe({
+        next: (responseInscripcion: any) => {
+          console.log('Inscripción exitosa:', responseInscripcion);
+          
+          const detalleData = {
+            id_inscripcion: responseInscripcion._id,
+            id_taller: this.tallerSeleccionado._id,
+            cantidad: 1,
+            precio_unitario: this.tallerSeleccionado.precio || 0,
+            precio_total: this.tallerSeleccionado.precio || 0,
+            observaciones: `Inscripción ${this.tallerSeleccionado.nombre}`
+          };
+
+          this.adminDataService.crearDetalleInscripcion(detalleData).subscribe({
+            next: (responseDetalle: any) => {
+              console.log('Detalle de inscripción creado:', responseDetalle);
+              this.cerrarModales();
+              alert(`¡Inscripción exitosa para ${this.tallerSeleccionado.nombre}!`);
+            },
+            error: (errorDetalle: any) => {
+              console.error('Error en detalle de inscripción:', errorDetalle);
+              alert('Error al completar la inscripción. Por favor, contacta con soporte.');
+            }
+          });
+        },
+        error: (errorInscripcion: any) => {
+          console.error('Error en inscripción:', errorInscripcion);
+          alert('Error al realizar la inscripción. Por favor, intenta nuevamente.');
+        }
+      });
+    }
   }
 
-  /**
-   * Obtiene talleres únicos por profesor (para evitar duplicados en la sección de profesores)
-   */
-  getTalleresUnicosPorProfesor(): Taller[] {
-    const profesoresVistos = new Set();
-    return this.talleres.filter(taller => {
-      if (profesoresVistos.has(taller.id_profesor._id)) {
-        return false;
-      }
-      profesoresVistos.add(taller.id_profesor._id);
-      return true;
-    });
+  getNombreCompleto(): string {
+    if (this.usuarioData) {
+      return `${this.usuarioData.nombre} ${this.usuarioData.apellido}`;
+    }
+    return 'Usuario';
   }
 }

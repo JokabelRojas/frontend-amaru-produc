@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { AdminDataService } from '../../../../core/services/admin.data.service';
@@ -27,6 +28,7 @@ export class ModalPremios {
   constructor(
     private dialogRef: MatDialogRef<ModalPremios>,
     private adminDataService: AdminDataService,
+    private snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     // Si se reciben datos, activar modo edición y rellenar campos
@@ -42,6 +44,16 @@ export class ModalPremios {
     }
   }
 
+  // Método para mostrar mensajes
+  private mostrarMensaje(mensaje: string, tipo: 'success' | 'error' = 'success'): void {
+    this.snackBar.open(mensaje, 'Cerrar', {
+      duration: 5000,
+      panelClass: tipo === 'success' ? ['snackbar-success'] : ['snackbar-error'],
+      horizontalPosition: 'end',
+      verticalPosition: 'top'
+    });
+  }
+
   // Método para formatear la fecha para el input date
   private formatearFecha(fecha: string): string {
     if (!fecha) return '';
@@ -51,7 +63,17 @@ export class ModalPremios {
 
   guardarPremio(): void {
     if (!this.nuevoPremio.titulo || !this.nuevoPremio.fecha || !this.nuevoPremio.descripcion) {
-      console.warn('Faltan campos obligatorios');
+      this.mostrarMensaje('Por favor complete todos los campos obligatorios', 'error');
+      return;
+    }
+
+    // Validar que la fecha no sea futura (opcional, según requisitos)
+    const fechaPremio = new Date(this.nuevoPremio.fecha);
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0); // Resetear horas para comparar solo fechas
+    
+    if (fechaPremio > hoy) {
+      this.mostrarMensaje('La fecha del premio no puede ser futura', 'error');
       return;
     }
 
@@ -60,10 +82,14 @@ export class ModalPremios {
       this.adminDataService.updatePremio(this.idPremio, this.nuevoPremio).subscribe({
         next: (res) => {
           console.log('Premio actualizado correctamente:', res);
+          const mensaje = res?.message || 'Premio actualizado correctamente';
+          this.mostrarMensaje(mensaje);
           this.dialogRef.close(true);
         },
         error: (err) => {
           console.error('Error al actualizar premio:', err);
+          const mensaje = err.error?.message || 'Error al actualizar el premio';
+          this.mostrarMensaje(mensaje, 'error');
         }
       });
     } else {
@@ -71,10 +97,14 @@ export class ModalPremios {
       this.adminDataService.createPremios(this.nuevoPremio).subscribe({
         next: (res) => {
           console.log('Premio agregado correctamente:', res);
+          const mensaje = res?.message || 'Premio creado correctamente';
+          this.mostrarMensaje(mensaje);
           this.dialogRef.close(true);
         },
         error: (err) => {
           console.error('Error al agregar premio:', err);
+          const mensaje = err.error?.message || 'Error al crear el premio';
+          this.mostrarMensaje(mensaje, 'error');
         }
       });
     }

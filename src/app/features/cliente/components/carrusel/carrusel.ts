@@ -36,22 +36,32 @@ export class Carrusel implements OnInit {
     this.cargarTalleres();
   }
 
-  cargarTalleres(): void {
-    this.talleresService.getTalleresActivos().subscribe({
-      next: (data: any[]) => {
-        this.talleres = data.map(taller => ({
-          ...taller,
-          categoria: taller.id_subcategoria?.nombre || 'Taller',
-          duracion: this.calcularDuracion(taller.fecha_inicio, taller.fecha_fin),
-          cupos: taller.cupo_disponible,
-          lugar: taller.modalidad === 'presencial' ? 'Sede Principal' : 'Virtual',
-          subtitulo: taller.id_subcategoria?.nombre || 'Taller Especializado',
-          subdescripcion: taller.id_subcategoria?.descripcion || 'Aprende técnicas avanzadas'
-        }));
-      },
-      error: (err: any) => console.error('Error cargando talleres activos:', err),
-    });
-  }
+cargarTalleres(): void {
+  this.talleresService.getTalleresActivos().subscribe({
+    next: (response: any) => {
+      console.log('Respuesta de talleres:', response);
+      
+      // SOLUCIÓN: Acceder a response.data que es el array
+      const talleresData = response.data || [];
+      
+      this.talleres = talleresData.map((taller: any) => ({
+        ...taller,
+        categoria: taller.id_subcategoria?.nombre || 'Taller',
+        duracion: this.calcularDuracion(taller.fecha_inicio, taller.fecha_fin),
+        cupos: taller.cupo_disponible,
+        lugar: taller.modalidad === 'presencial' ? 'Sede Principal' : 'Virtual',
+        subtitulo: taller.id_subcategoria?.nombre || 'Taller Especializado',
+        subdescripcion: taller.id_subcategoria?.descripcion || 'Aprende técnicas avanzadas'
+      }));
+
+      console.log('Talleres procesados:', this.talleres);
+    },
+    error: (err: any) => {
+      console.error('Error cargando talleres activos:', err);
+      this.talleres = [];
+    },
+  });
+}
 
   public calcularDuracion(fechaInicio: string, fechaFin: string): string {
     const inicio = new Date(fechaInicio);

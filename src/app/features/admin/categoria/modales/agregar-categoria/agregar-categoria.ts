@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar'; // Importar SnackBar
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
@@ -29,6 +30,7 @@ export class AgregarCategoria {
   constructor(
     private dialogRef: MatDialogRef<AgregarCategoria>,
     private adminDataService: AdminDataService,
+    private snackBar: MatSnackBar, // Inyectar SnackBar
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     // Si se reciben datos, activar modo edición y rellenar campos
@@ -43,9 +45,19 @@ export class AgregarCategoria {
     }
   }
 
+  // Método para mostrar mensajes
+  private mostrarMensaje(mensaje: string, tipo: 'success' | 'error' = 'success'): void {
+    this.snackBar.open(mensaje, 'Cerrar', {
+      duration: 5000,
+      panelClass: tipo === 'success' ? ['snackbar-success'] : ['snackbar-error'],
+      horizontalPosition: 'end',
+      verticalPosition: 'top'
+    });
+  }
+
   guardarCategoria(): void {
     if (!this.nuevaCategoria.nombre || !this.nuevaCategoria.tipo || !this.nuevaCategoria.descripcion) {
-      console.warn('Faltan campos obligatorios');
+      this.mostrarMensaje('Por favor, complete todos los campos obligatorios', 'error');
       return;
     }
 
@@ -54,10 +66,14 @@ export class AgregarCategoria {
       this.adminDataService.updateCategoria(this.idCategoria, this.nuevaCategoria).subscribe({
         next: (res) => {
           console.log('Categoría actualizada correctamente:', res);
+          const mensaje = res?.message || 'Categoría actualizada correctamente';
+          this.mostrarMensaje(mensaje);
           this.dialogRef.close(true);
         },
         error: (err) => {
           console.error('Error al actualizar categoría:', err);
+          const mensaje = err.error?.message || 'Error al actualizar la categoría';
+          this.mostrarMensaje(mensaje, 'error');
         }
       });
     } else {
@@ -65,10 +81,14 @@ export class AgregarCategoria {
       this.adminDataService.addCategoria(this.nuevaCategoria).subscribe({
         next: (res) => {
           console.log('Categoría agregada correctamente:', res);
+          const mensaje = res?.message || 'Categoría agregada correctamente';
+          this.mostrarMensaje(mensaje);
           this.dialogRef.close(true);
         },
         error: (err) => {
           console.error('Error al agregar categoría:', err);
+          const mensaje = err.error?.message || 'Error al agregar la categoría';
+          this.mostrarMensaje(mensaje, 'error');
         }
       });
     }
@@ -77,5 +97,4 @@ export class AgregarCategoria {
   cerrarModal(): void {
     this.dialogRef.close();
   }
-
 }

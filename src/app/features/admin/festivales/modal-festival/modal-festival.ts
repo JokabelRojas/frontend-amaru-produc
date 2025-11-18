@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { AdminDataService } from '../../../../core/services/admin.data.service';
@@ -33,8 +34,19 @@ export class ModalFestival implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<ModalFestival>,
     private adminDataService: AdminDataService,
+    private snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
+
+  // Método para mostrar mensajes
+  private mostrarMensaje(mensaje: string, tipo: 'success' | 'error' = 'success'): void {
+    this.snackBar.open(mensaje, 'Cerrar', {
+      duration: 5000,
+      panelClass: tipo === 'success' ? ['snackbar-success'] : ['snackbar-error'],
+      horizontalPosition: 'end',
+      verticalPosition: 'top'
+    });
+  }
 
   ngOnInit(): void {
     this.cargarActividades();
@@ -62,7 +74,11 @@ export class ModalFestival implements OnInit {
       next: (actividades) => {
         this.actividades = actividades;
       },
-      error: (err) => console.error('Error al cargar actividades:', err)
+      error: (err) => {
+        console.error('Error al cargar actividades:', err);
+        const mensaje = err.error?.message || 'Error al cargar actividades';
+        this.mostrarMensaje(mensaje, 'error');
+      }
     });
   }
 
@@ -75,7 +91,13 @@ export class ModalFestival implements OnInit {
 
   guardarFestival(): void {
     if (!this.validarCamposObligatorios()) {
-      console.warn('Faltan campos obligatorios');
+      this.mostrarMensaje('Por favor complete todos los campos obligatorios', 'error');
+      return;
+    }
+
+    // Validar que la fecha de inicio no sea mayor que la fecha de fin
+    if (new Date(this.nuevoFestival.fecha_inicio) > new Date(this.nuevoFestival.fecha_fin)) {
+      this.mostrarMensaje('La fecha de inicio no puede ser mayor que la fecha de fin', 'error');
       return;
     }
 
@@ -91,10 +113,14 @@ export class ModalFestival implements OnInit {
       this.adminDataService.updateFestival(this.idFestival, festivalData).subscribe({
         next: (res) => {
           console.log('Festival actualizado correctamente:', res);
+          const mensaje = res?.message || 'Festival actualizado correctamente';
+          this.mostrarMensaje(mensaje);
           this.dialogRef.close(true);
         },
         error: (err) => {
           console.error('Error al actualizar festival:', err);
+          const mensaje = err.error?.message || 'Error al actualizar el festival';
+          this.mostrarMensaje(mensaje, 'error');
         }
       });
     } else {
@@ -102,10 +128,14 @@ export class ModalFestival implements OnInit {
       this.adminDataService.createFestival(festivalData).subscribe({
         next: (res) => {
           console.log('Festival agregado correctamente:', res);
+          const mensaje = res?.message || 'Festival creado correctamente';
+          this.mostrarMensaje(mensaje);
           this.dialogRef.close(true);
         },
         error: (err) => {
           console.error('Error al agregar festival:', err);
+          const mensaje = err.error?.message || 'Error al crear el festival';
+          this.mostrarMensaje(mensaje, 'error');
         }
       });
     }
