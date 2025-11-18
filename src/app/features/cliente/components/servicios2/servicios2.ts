@@ -1,13 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { map, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 import { Servicio } from '../../models/servicio.model';
 import { HeaderCliente } from '../../../../shared/components/header-cliente/header-cliente';
+import { FooterCliente } from '../../../../shared/components/footer-cliente/footer-cliente';
+
+// Interface para la respuesta de la API
+interface ApiResponse<T> {
+  data: T;
+  message: string;
+  success: boolean;
+  timestamp: string;
+}
 
 @Component({
   selector: 'app-servicios2',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, HeaderCliente],
+  imports: [CommonModule, HttpClientModule, HeaderCliente, FooterCliente],
   templateUrl: './servicios2.html',
 })
 export class Servicios2 implements OnInit {
@@ -29,20 +40,36 @@ export class Servicios2 implements OnInit {
     this.cargarServicios();
   }
 
-cargarServicios(): void {
-  this.http.get<Servicio[]>('https://amaru-produc-backend.onrender.com/servicios/activos')
-    .subscribe({
-      next: (data) => {
-        this.servicios = data; // Mostrar todos los servicios, no solo 3
-        this.cargando = false;
-      },
-      error: (err) => {
-        console.error('Error cargando servicios activos:', err);
-        this.error = 'No se pudieron cargar los servicios';
-        this.cargando = false;
-      }
-    });
-}
+  cargarServicios(): void {
+    this.http.get<ApiResponse<Servicio[]>>('https://amaru-produc-backend.onrender.com/servicios/activos')
+      .pipe(
+        map(response => {
+          console.log('Respuesta completa de servicios:', response);
+          // Extrae el array de servicios de response.data
+          return response.data || [];
+        }),
+        catchError(err => {
+          console.error('Error cargando servicios activos:', err);
+          this.error = 'No se pudieron cargar los servicios';
+          this.cargando = false;
+          return of([]); // Retorna array vacío en caso de error
+        })
+      )
+      .subscribe({
+        next: (data) => {
+          this.servicios = data;
+          this.cargando = false;
+          console.log('Servicios cargados:', this.servicios);
+        },
+        error: (err) => {
+          console.error('Error en suscripción:', err);
+          this.error = 'No se pudieron cargar los servicios';
+          this.cargando = false;
+          this.servicios = [];
+        }
+      });
+  }
+
   // Función para abrir modal de confirmación
   confirmarCotizacion(servicio: Servicio): void {
     this.servicioSeleccionado = servicio;
