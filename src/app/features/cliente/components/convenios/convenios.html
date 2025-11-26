@@ -39,68 +39,119 @@
       <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent rounded-full"></div>
     </div>
 
-    <!-- Carrusel de convenios mejorado -->
+    <!-- Grid de convenios con imágenes -->
     <div class="relative group">
       <!-- Efecto de borde gradiente -->
       <div class="absolute -inset-4 bg-gradient-to-r from-orange-500/20 to-pink-500/20 rounded-3xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity duration-500 animate-pulse-slow"></div>
       
-      <!-- Contenedor del carrusel -->
-      <div class="relative bg-gradient-to-br from-gray-900/80 to-black/90 backdrop-blur-xl rounded-3xl border border-white/10 p-6 md:p-8 shadow-2xl">
+      <!-- Contenedor principal -->
+      <div class="relative bg-gradient-to-br from-gray-900/80 to-black/90 backdrop-blur-xl rounded-3xl border border-white/10 p-8 md:p-12 shadow-2xl">
         
         <!-- Número decorativo -->
         <div class="absolute -top-4 -left-4 text-6xl md:text-8xl font-black text-white/5 select-none z-0">
-          05
+          02
         </div>
         
-        <!-- Track del carrusel -->
-        <div class="slider-container overflow-hidden rounded-2xl">
-          <div #track class="slider-track flex gap-4 md:gap-6 py-4 transition-transform duration-500 ease-linear">
-            <ng-container *ngFor="let logo of logosLoop; let i = index">
-              <div class="logo-item flex-shrink-0 w-40 md:w-48 h-28 md:h-32 relative group/logo">
-                <!-- Efecto de borde individual -->
-                <div class="absolute -inset-1 bg-gradient-to-r from-orange-500 to-pink-500 rounded-2xl blur opacity-0 group-hover/logo:opacity-30 transition-opacity duration-300"></div>
+        <!-- Grid de logos -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+          
+          <!-- Logo 1 -->
+          <div class="logo-item relative group/logo">
+            <!-- Efecto de borde individual -->
+            <div class="absolute -inset-2 bg-gradient-to-r from-orange-500 to-pink-500 rounded-2xl blur opacity-0 group-hover/logo:opacity-30 transition-opacity duration-300"></div>
+            
+            <!-- Card del logo -->
+            <div class="relative bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm rounded-2xl border border-white/10 p-6 flex items-center justify-center group-hover/logo:border-orange-500/30 transition-all duration-300 h-48">
+              
+              <!-- Contenedor de la imagen -->
+              <div class="w-full h-full flex items-center justify-center relative">
+                <!-- Imagen del logo -->
+                <img 
+                  src="cultura.jpg" 
+                  alt="Logo Convenio 1" 
+                  class="max-w-full max-h-20 object-contain opacity-80 group-hover/logo:opacity-100 transition-opacity duration-300 group-hover/logo:scale-110 transition-transform duration-300"
+                  onerror="this.src='assets/images/placeholder-logo.png'"
+                />
                 
-                <!-- Card del logo -->
-                <div class="relative bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm rounded-2xl border border-white/10 p-4 w-full h-full flex items-center justify-center group-hover/logo:border-orange-500/30 transition-all duration-300">
-                  
-                  <!-- Contenido del logo -->
-                  <div class="w-full h-full flex items-center justify-center relative">
-                    <!-- Logo con gradiente -->
-                    <div class="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-300 to-pink-300 opacity-80 group-hover/logo:opacity-100 transition-opacity duration-300">
-                      LOGO<span class="text-white/70">{{logo}}</span>
-                    </div>
-                    
-                    <!-- Indicador hover -->
-                    <div class="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full opacity-0 group-hover/logo:opacity-100 transition-opacity duration-300 shadow-lg shadow-orange-500/25"></div>
-                    
-                    <!-- Efecto de esquina decorativa -->
-                    <div class="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-orange-500/40 rounded-tl-lg opacity-0 group-hover/logo:opacity-100 transition-opacity duration-300"></div>
-                    <div class="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-pink-500/40 rounded-br-lg opacity-0 group-hover/logo:opacity-100 transition-opacity duration-300"></div>
-                  </div>
-                  
-                  <!-- Tooltip con nombre del convenio -->
-                  <div class="absolute -bottom-12 left-1/2 transform -translate-x-1/2 bg-black/80 backdrop-blur-sm text-white text-xs py-2 px-3 rounded-lg border border-white/10 opacity-0 group-hover/logo:opacity-100 transition-opacity duration-300 whitespace-nowrap z-20">
-                    <div class="flex items-center gap-2">
-                      <div class="w-1.5 h-1.5 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full"></div>
-                      <span>Convenio {{logo}}</span>
-                    </div>
-                  </div>
+                <!-- Indicador hover -->
+                <div class="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full opacity-0 group-hover/logo:opacity-100 transition-opacity duration-300 shadow-lg shadow-orange-500/25"></div>
+                
+                <!-- Efecto de esquina decorativa -->
+                <div class="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-orange-500/40 rounded-tl-lg opacity-0 group-hover/logo:opacity-100 transition-opacity duration-300"></div>
+                <div class="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-pink-500/40 rounded-br-lg opacity-0 group-hover/logo:opacity-100 transition-opacity duration-300"></div>
+              </div>
+              
+              <!-- Tooltip con nombre del convenio -->
+              <div class="absolute -bottom-14 left-1/2 transform -translate-x-1/2 bg-black/80 backdrop-blur-sm text-white text-sm py-2 px-4 rounded-lg border border-white/10 opacity-0 group-hover/logo:opacity-100 transition-opacity duration-300 whitespace-nowrap z-20">
+                <div class="flex items-center gap-2">
+                  <div class="w-1.5 h-1.5 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full"></div>
+                  <span>Ministerio de Cultura</span>
                 </div>
               </div>
-            </ng-container>
+            </div>
           </div>
+
+          <!-- Logo 2 -->
+          <div class="logo-item relative group/logo">
+            <!-- Efecto de borde individual -->
+            <div class="absolute -inset-2 bg-gradient-to-r from-orange-500 to-pink-500 rounded-2xl blur opacity-0 group-hover/logo:opacity-30 transition-opacity duration-300"></div>
+            
+            <!-- Card del logo -->
+            <div class="relative bg-gradient-to-br from-gray-800/60 to-black/80 backdrop-blur-sm rounded-2xl border border-white/10 p-6 flex items-center justify-center group-hover/logo:border-orange-500/30 transition-all duration-300 h-48">
+              
+<!-- Contenedor de la imagen -->
+<div class="w-full h-full flex items-center justify-center relative">
+  <!-- Imagen del logo - Tamaño extra grande -->
+  <img 
+    src="LOGO-30.png" 
+    alt="Logo Convenio 2" 
+    class="w-auto h-40 object-contain opacity-80 group-hover/logo:opacity-100 transition-all duration-300 group-hover/logo:scale-110"
+    onerror="this.src='assets/images/placeholder-logo.png'"
+  />
+  
+  <!-- Indicador hover -->
+  <div class="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full opacity-0 group-hover/logo:opacity-100 transition-opacity duration-300 shadow-lg shadow-orange-500/25"></div>
+  
+  <!-- Efecto de esquina decorativa -->
+  <div class="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-orange-500/40 rounded-tl-lg opacity-0 group-hover/logo:opacity-100 transition-opacity duration-300"></div>
+  <div class="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-pink-500/40 rounded-br-lg opacity-0 group-hover/logo:opacity-100 transition-opacity duration-300"></div>
+</div>
+              
+              <!-- Tooltip con nombre del convenio -->
+              <div class="absolute -bottom-14 left-1/2 transform -translate-x-1/2 bg-black/80 backdrop-blur-sm text-white text-sm py-2 px-4 rounded-lg border border-white/10 opacity-0 group-hover/logo:opacity-100 transition-opacity duration-300 whitespace-nowrap z-20">
+                <div class="flex items-center gap-2">
+                  <div class="w-1.5 h-1.5 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full"></div>
+                  <span>Municipalidad de Jesus Nazareno</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
 
         <!-- Elementos decorativos de esquina -->
         <div class="absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-orange-500/40 rounded-tr-3xl"></div>
         <div class="absolute bottom-4 left-4 w-6 h-6 border-b-2 border-l-2 border-pink-500/40 rounded-bl-3xl"></div>
         
-        <!-- Indicador de scroll -->
-        <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 flex items-center gap-2 text-gray-400 text-sm">
-          <i class="fas fa-arrow-left text-xs"></i>
-          <span class="text-xs">Desliza para ver más</span>
-          <i class="fas fa-arrow-right text-xs"></i>
+      </div>
+    </div>
+
+    <!-- Información adicional sobre convenios -->
+    <div class="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
+      <div class="bg-white/5 rounded-2xl p-6 border border-white/10 hover:border-orange-500/30 transition-all duration-300">
+        <div class="w-12 h-12 bg-gradient-to-r from-orange-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <i class="fas fa-handshake text-white text-lg"></i>
         </div>
+        <h3 class="text-xl font-bold text-white mb-2">Alianzas Estratégicas</h3>
+        <p class="text-gray-300">Trabajamos con instituciones reconocidas para brindarte los mejores programas educativos</p>
+      </div>
+      
+      <div class="bg-white/5 rounded-2xl p-6 border border-white/10 hover:border-pink-500/30 transition-all duration-300">
+        <div class="w-12 h-12 bg-gradient-to-r from-pink-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <i class="fas fa-award text-white text-lg"></i>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-2">Certificación Conjunta</h3>
+        <p class="text-gray-300">Nuestros certificados tienen el respaldo de las instituciones con las que colaboramos</p>
       </div>
     </div>
 
@@ -151,4 +202,14 @@
       transform: translateY(0);
     }
   }
-</style>
+
+  /* Efectos de imagen mejorados */
+  .logo-item img {
+    filter: grayscale(30%);
+    transition: all 0.3s ease;
+  }
+
+  .logo-item:hover img {
+    filter: grayscale(0%);
+  }
+</style>  

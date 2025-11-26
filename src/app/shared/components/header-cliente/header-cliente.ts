@@ -1,7 +1,8 @@
 import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
-import { AuthService } from '../../../core/services/auth.service'; // Ajusta la ruta según tu estructura
+import { AuthService } from '../../../core/services/auth.service';
+import { AdminDataService } from '../../../core/services/admin.data.service';
 
 @Component({
   selector: 'app-header-cliente',
@@ -15,11 +16,17 @@ export class HeaderCliente implements OnInit, OnDestroy {
   showTalleresMenu = false;
   showTalleresMobile = false;
   isScrolled = false;
+  showInscripcionesModal = false;
+  isLoading = false;
+  
   private userData: any = null;
+  private allInscripciones: any[] = [];
+  inscripcionesFiltradas: any[] = [];
 
   constructor(
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private adminDataService: AdminDataService // Inyectar el servicio
   ) {}
 
   ngOnInit() {
@@ -41,17 +48,25 @@ export class HeaderCliente implements OnInit, OnDestroy {
       return this.userData.nombre || 'Usuario';
     }
     
-    // Intentar obtener del localStorage si no está cargado
     const storedUser = this.getStoredUser();
     return storedUser?.nombre || 'Usuario';
   }
 
-  /** Carga los datos del usuario desde el localStorage */
+  /** Obtiene el ID del usuario */
+  getUserId(): string {
+    if (this.userData) {
+      return this.userData.id;
+    }
+    
+    const storedUser = this.getStoredUser();
+    return storedUser?.id || null;
+  }
+
+  /** Carga los datos del usuario */
   private loadUserData() {
     this.userData = this.getStoredUser();
   }
 
-  /** Obtiene los datos del usuario del localStorage */
   private getStoredUser(): any {
     if (typeof window !== 'undefined' && localStorage) {
       try {
@@ -65,11 +80,91 @@ export class HeaderCliente implements OnInit, OnDestroy {
     return null;
   }
 
+  /** Abre el modal de inscripciones */
+  async openInscripcionesModal() {
+    this.showInscripcionesModal = true;
+    await this.loadInscripciones();
+  }
+
+  /** Cierra el modal de inscripciones */
+  closeInscripcionesModal() {
+    this.showInscripcionesModal = false;
+    this.isLoading = false;
+  }
+
+  /** Carga las inscripciones desde la API */
+  private async loadInscripciones() {
+    this.isLoading = true;
+    try {
+      // Llamar al servicio para obtener las inscripciones
+      const result = await this.adminDataService.getDetalleInscripciones().toPromise();
+      this.allInscripciones = result ?? [];
+      
+      // Filtrar inscripciones por el ID del usuario actual
+      const userId = this.getUserId();
+      this.inscripcionesFiltradas = this.allInscripciones.filter(
+        (inscripcion: any) => inscripcion.id_inscripcion.id_usuario === userId
+      );
+      
+    } catch (error) {
+      console.error('Error al cargar inscripciones:', error);
+      this.inscripcionesFiltradas = [];
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  /** Obtiene la clase CSS para el badge de estado */
+  getEstadoBadgeClass(estado: string): string {
+    const baseClasses = 'px-3 py-1 rounded-full text-xs font-semibold';
+    
+    switch (estado?.toLowerCase()) {
+      case 'pendiente':
+        return `${baseClasses} bg-yellow-500/20 text-yellow-300 border border-yellow-500/30`;
+      case 'aprobado':
+      case 'activo':
+        return `${baseClasses} bg-green-500/20 text-green-300 border border-green-500/30`;
+      case 'rechazado':
+      case 'cancelado':
+        return `${baseClasses} bg-red-500/20 text-red-300 border border-red-500/30`;
+      default:
+        return `${baseClasses} bg-gray-500/20 text-gray-300 border border-gray-500/30`;
+    }
+  }
+
+  /** Obtiene el texto legible para el estado */
+  getEstadoText(estado: string): string {
+    const estados: { [key: string]: string } = {
+      'pendiente': 'Pendiente',
+      'aprobado': 'Aprobado',
+      'activo': 'Activo',
+      'rechazado': 'Rechazado',
+      'cancelado': 'Cancelado'
+    };
+    
+    return estados[estado?.toLowerCase()] || estado || 'Desconocido';
+  }
+
+  /** Formatea la fecha para mostrar */
+  formatFecha(fechaString: string): string {
+    if (!fechaString) return 'Fecha no disponible';
+    
+    try {
+      const fecha = new Date(fechaString);
+      return fecha.toLocaleDateString('es-ES', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    } catch (error) {
+      return 'Fecha inválida';
+    }
+  }
+
   /** Cierra sesión */
   logout() {
     this.authService.logout();
     
-    // También limpiar datos específicos del usuario si los guardaste
     if (typeof window !== 'undefined' && localStorage) {
       localStorage.removeItem('user_data');
     }
@@ -79,7 +174,6 @@ export class HeaderCliente implements OnInit, OnDestroy {
     this.router.navigate(['/']);
   }
 
-  /** Detecta el scroll para cambiar el color del header */
   @HostListener('window:scroll', [])
   onWindowScroll() {
     if (typeof window !== 'undefined') {
@@ -87,7 +181,6 @@ export class HeaderCliente implements OnInit, OnDestroy {
     }
   }
 
-  /** Abre o cierra el menú móvil */
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
     if (!this.isMenuOpen) {
@@ -95,24 +188,21 @@ export class HeaderCliente implements OnInit, OnDestroy {
     }
   }
 
-  /** Muestra el submenú de Talleres en desktop */
   toggleTalleresMenu(state: boolean) {
     this.showTalleresMenu = state;
   }
 
-  /** Alternar submenú de talleres en móvil */
   toggleTalleresMobile() {
     this.showTalleresMobile = !this.showTalleresMobile;
   }
 
-  /** Cerrar todos los menús al navegar */
   closeAllMenus() {
     this.isMenuOpen = false;
     this.showTalleresMobile = false;
     this.showTalleresMenu = false;
+    this.showInscripcionesModal = false;
   }
 
-  /** Navega a una ruta y cierra el menú móvil si está abierto */
   navigateTo(path: string) {
     this.router.navigate([path]);
     this.closeAllMenus();
