@@ -368,3 +368,54 @@
     gap: 1rem;
   }
 }
+
+/* Secciones */
+.section-title {
+  grid-column: 1 / -1;
+  margin: 2rem 0 1rem 0;
+  padding: 0 1rem;
+}
+
+.section-title h2 {
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.section-divider {
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary-color), transparent);
+  border-radius: 1px;
+}
+
+/* Nuevos colores para las cards de inscripciones */
+.card-inscripciones-hoy {
+  --card-color: #10b981;
+  --card-gradient: linear-gradient(135deg, #10b981, #059669);
+}
+
+.card-inscripciones-mes {
+  --card-color: #3b82f6;
+  --card-gradient: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.card-inscripciones-anio {
+  --card-color: #8b5cf6;
+  --card-gradient: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.card-taller-popular {
+  --card-color: #f59e0b;
+  --card-gradient: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.card-inscripciones-pendientes {
+  --card-color: #ef4444;
+  --card-gradient: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.card-ingresos-totales {
+  --card-color: #06b6d4;
+  --card-gradient: linear-gradient(135deg, #06b6d4, #0891b2);
+}

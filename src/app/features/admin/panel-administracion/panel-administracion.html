@@ -48,6 +48,12 @@
   <!-- Grid de Cards -->
   <div *ngIf="!loading" class="cards-grid">
     
+    <!-- Sección: Estadísticas Generales -->
+    <div class="section-title">
+      <h2>Estadísticas Generales</h2>
+      <div class="section-divider"></div>
+    </div>
+    
     <!-- Card Talleres -->
     <div class="card card-talleres">
       <div class="card-bg-overlay"></div>
@@ -218,5 +224,95 @@
       <div class="card-glow"></div>
     </div>
 
+    <!-- Sección: Análisis de Inscripciones -->
+    <div class="section-title">
+      <h2>Análisis de Inscripciones</h2>
+      <div class="section-divider"></div>
+    </div>
+
+    <!-- Card Inscripciones Hoy -->
+    <div class="card card-inscripciones-hoy">
+      <div class="card-bg-overlay"></div>
+      <div class="card-decoration">11</div>
+      <div class="card-icon">
+        <div class="icon-container">
+          <mat-icon>today</mat-icon>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3>Inscripciones Hoy</h3>
+        <p class="card-number">{{ estadisticas.inscripcionesHoy }}</p>
+        <span class="card-label">{{ estadisticas.fechaHoy }}</span>
+      </div>
+      <div class="card-glow"></div>
+    </div>
+
+    <!-- Card Inscripciones Mes Actual -->
+    <div class="card card-inscripciones-mes">
+      <div class="card-bg-overlay"></div>
+      <div class="card-decoration">12</div>
+      <div class="card-icon">
+        <div class="icon-container">
+          <mat-icon>date_range</mat-icon>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3>Inscripciones Mes</h3>
+        <p class="card-number">{{ estadisticas.inscripcionesMesActual }}</p>
+        <span class="card-label">{{ estadisticas.mesActual }}</span>
+      </div>
+      <div class="card-glow"></div>
+    </div>
+
+    <!-- Card Inscripciones Año Actual -->
+    <div class="card card-inscripciones-anio">
+      <div class="card-bg-overlay"></div>
+      <div class="card-decoration">13</div>
+      <div class="card-icon">
+        <div class="icon-container">
+          <mat-icon>calendar_today</mat-icon>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3>Inscripciones Año</h3>
+        <p class="card-number">{{ estadisticas.inscripcionesAnioActual }}</p>
+        <span class="card-label">{{ estadisticas.anioActual }}</span>
+      </div>
+      <div class="card-glow"></div>
+    </div>
+
+    <!-- Card Taller Más Popular -->
+    <div class="card card-taller-popular">
+      <div class="card-bg-overlay"></div>
+      <div class="card-decoration">14</div>
+      <div class="card-icon">
+        <div class="icon-container">
+          <mat-icon>trending_up</mat-icon>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3>Taller Más Popular</h3>
+        <p class="card-number">{{ estadisticas.tallerMasPopular?.inscripciones || 0 }}</p>
+        <span class="card-label">{{ estadisticas.tallerMasPopular?.nombre || 'N/A' }}</span>
+      </div>
+      <div class="card-glow"></div>
+    </div>
+
+    <!-- Card Inscripciones Pendientes -->
+    <div class="card card-inscripciones-pendientes">
+      <div class="card-bg-overlay"></div>
+      <div class="card-decoration">15</div>
+      <div class="card-icon">
+        <div class="icon-container">
+          <mat-icon>pending_actions</mat-icon>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3>Inscripciones Pendientes</h3>
+        <p class="card-number">{{ estadisticas.inscripcionesPendientes }}</p>
+        <span class="card-label">Por confirmar</span>
+      </div>
+      <div class="card-glow"></div>
+    </div>
   </div>
 </div>

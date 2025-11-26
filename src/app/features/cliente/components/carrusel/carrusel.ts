@@ -5,11 +5,12 @@ import { TalleresService } from '../../services/talleres.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { AdminDataService } from '../../../../core/services/admin.data.service';
 import { MatIconModule } from '@angular/material/icon';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-carrusel',
   standalone: true,
-  imports: [CommonModule, NgFor, NgClass, DatePipe, MatIconModule],
+  imports: [CommonModule,FormsModule, NgFor, NgClass, DatePipe, MatIconModule],
   templateUrl: './carrusel.html',
   styleUrls: ['./carrusel.css'],
 })
@@ -29,12 +30,19 @@ export class Carrusel implements OnInit {
   tallerSeleccionado: any = null;
   usuarioData: any = null;
 
+    emailInscripcion: string = '';
+
+
   // QR code
   qrCode = 'assets/img/qr-pago.png';
 
   ngOnInit(): void {
     this.cargarTalleres();
   }
+    esEmailValido(email: string): boolean {
+  const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+  return pattern.test(email);
+}
 
 cargarTalleres(): void {
   this.talleresService.getTalleresActivos().subscribe({
@@ -127,45 +135,52 @@ cargarTalleres(): void {
     window.open(url, '_blank');
   }
 
-  procesarInscripcion(): void {
-    if (this.tallerSeleccionado && this.usuarioData) {
-      const inscripcionData = {
-        id_usuario: this.usuarioData.id,
-        estado: "pendiente"
-      };
-
-      this.adminDataService.inscribirseTaller(inscripcionData).subscribe({
-        next: (responseInscripcion: any) => {
-          console.log('Inscripción exitosa:', responseInscripcion);
-          
-          const detalleData = {
-            id_inscripcion: responseInscripcion._id,
-            id_taller: this.tallerSeleccionado._id,
-            cantidad: 1,
-            precio_unitario: this.tallerSeleccionado.precio || 0,
-            precio_total: this.tallerSeleccionado.precio || 0,
-            observaciones: `Inscripción ${this.tallerSeleccionado.nombre}`
-          };
-
-          this.adminDataService.crearDetalleInscripcion(detalleData).subscribe({
-            next: (responseDetalle: any) => {
-              console.log('Detalle de inscripción creado:', responseDetalle);
-              this.cerrarModales();
-              alert(`¡Inscripción exitosa para ${this.tallerSeleccionado.nombre}!`);
-            },
-            error: (errorDetalle: any) => {
-              console.error('Error en detalle de inscripción:', errorDetalle);
-              alert('Error al completar la inscripción. Por favor, contacta con soporte.');
-            }
-          });
-        },
-        error: (errorInscripcion: any) => {
-          console.error('Error en inscripción:', errorInscripcion);
-          alert('Error al realizar la inscripción. Por favor, intenta nuevamente.');
-        }
-      });
-    }
+procesarInscripcion(): void {
+  // Validar que el email esté presente y sea válido
+  if (!this.emailInscripcion || !this.esEmailValido(this.emailInscripcion)) {
+    alert('Por favor, ingrese un email válido para continuar con la inscripción.');
+    return;
   }
+
+  if (this.tallerSeleccionado && this.usuarioData) {
+    const inscripcionData = {
+      id_usuario: this.usuarioData.id,
+      email: this.emailInscripcion,
+      estado: "pendiente"
+    };
+
+    this.adminDataService.inscribirseTaller(inscripcionData).subscribe({
+      next: (responseInscripcion: any) => {
+        console.log('Inscripción exitosa:', responseInscripcion);
+        
+        const detalleData = {
+          id_inscripcion: responseInscripcion._id,
+          id_taller: this.tallerSeleccionado._id,
+          cantidad: 1,
+          precio_unitario: this.tallerSeleccionado.precio || 0,
+          precio_total: this.tallerSeleccionado.precio || 0,
+          observaciones: `Inscripción ${this.tallerSeleccionado.nombre} - Email: ${this.emailInscripcion}`
+        };
+
+        this.adminDataService.crearDetalleInscripcion(detalleData).subscribe({
+          next: (responseDetalle: any) => {
+            console.log('Detalle de inscripción creado:', responseDetalle);
+            this.cerrarModales();
+            alert(`¡Inscripción exitosa para ${this.tallerSeleccionado.nombre}! Se enviará la confirmación a: ${this.emailInscripcion}`);
+          },
+          error: (errorDetalle: any) => {
+            console.error('Error en detalle de inscripción:', errorDetalle);
+            alert('Error al completar la inscripción. Por favor, contacta con soporte.');
+          }
+        });
+      },
+      error: (errorInscripcion: any) => {
+        console.error('Error en inscripción:', errorInscripcion);
+        alert('Error al realizar la inscripción. Por favor, intenta nuevamente.');
+      }
+    });
+  }
+}
 
   getNombreCompleto(): string {
     if (this.usuarioData) {
